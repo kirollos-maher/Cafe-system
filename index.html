@@ -109,14 +109,12 @@
 .badge-purple { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
 .badge-teal { background: #14B8A6; color: #FFFFFF !important; border-color: #0D9488; }
 
-/* حالات الطلبات */
 .badge-pending { background: #F59E0B; color: #1A1A2E !important; border-color: #D97706; }
 .badge-preparing { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
 .badge-ready { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
 .badge-paid { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
 .badge-cancelled { background: #EF4444; color: #FFFFFF !important; border-color: #DC2626; }
 
-/* حالات الطاولات */
 .badge-table-available { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
 .badge-table-occupied { background: var(--primary); color: var(--text-primary) !important; border-color: var(--primary-dark); }
 .badge-table-reserved { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
@@ -1370,18 +1368,18 @@ body {
             <p>📱 امسح واطلب من مكانك</p>
         </div>
 
-        <!-- اختيار الطاولة - تحت الـ Hero مباشرة -->
-<div style="margin-bottom:16px; background:var(--bg-card); border-radius:var(--radius-md); padding:14px 16px; border:1px solid var(--border-light);">
-    <label style="font-size:13px; font-weight:600; color:var(--text-secondary); display:block; margin-bottom:6px;">
-        🪑 اختر رقم الطاولة
-    </label>
-    <select id="customerTableSelect" style="width:100%; padding:12px 16px; background:var(--bg-input); border:2px solid var(--border); border-radius:var(--radius-sm); color:var(--text-primary); font-size:16px; outline:none; font-family:var(--font);">
-        <option value="">-- اختر طاولة --</option>
-    </select>
-    <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
-        <i class="fa-solid fa-info-circle"></i> اختر رقم الطاولة اللي قاعد عليها
-    </div>
-</div>
+        <!-- اختيار الطاولة -->
+        <div style="margin-bottom:16px; background:var(--bg-card); border-radius:var(--radius-md); padding:14px 16px; border:1px solid var(--border-light);">
+            <label style="font-size:13px; font-weight:600; color:var(--text-secondary); display:block; margin-bottom:6px;">
+                🪑 اختر رقم الطاولة
+            </label>
+            <select id="customerTableSelect" style="width:100%; padding:12px 16px; background:var(--bg-input); border:2px solid var(--border); border-radius:var(--radius-sm); color:var(--text-primary); font-size:16px; outline:none; font-family:var(--font);">
+                <option value="">-- اختر طاولة --</option>
+            </select>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+                <i class="fa-solid fa-info-circle"></i> اختر رقم الطاولة اللي قاعد عليها
+            </div>
+        </div>
 
         <!-- Categories -->
         <div class="customer-categories" id="customerCategories"></div>
@@ -2453,6 +2451,26 @@ async function loadCustomerData() {
         customerMenuItems = itemsRes.data || [];
         customerCategories = catsRes.data || [];
         
+        // تحميل الطاولات المتاحة
+        const { data: tablesData } = await supabaseClient
+            .from('tables')
+            .select('*')
+            .eq('business_id', bizId)
+            .eq('status', 'available')
+            .order('number');
+        
+        const tableSelect = document.getElementById('customerTableSelect');
+        if (tablesData && tablesData.length > 0) {
+            tableSelect.innerHTML = `
+                <option value="">-- اختر طاولة --</option>
+                ${tablesData.map(t => `
+                    <option value="${t.id}">طاولة ${t.number} (${t.capacity} أشخاص)</option>
+                `).join('')}
+            `;
+        } else {
+            tableSelect.innerHTML = `<option value="">⚠️ مفيش طاولات متاحة حالياً</option>`;
+        }
+        
         renderCustomerCategories();
         renderCustomerItems();
         
@@ -2625,27 +2643,36 @@ async function submitCustomerOrder() {
         return;
     }
     
+    // جلب الطاولة المختارة
+    const tableSelect = document.getElementById('customerTableSelect');
+    const tableId = tableSelect.value;
+    
+    if (!tableId) {
+        document.getElementById('customerCartError').textContent = '⚠️ اختر رقم الطاولة أولاً';
+        return;
+    }
+    
     if (!customerBusiness) {
         document.getElementById('customerCartError').textContent = t('error_general');
         return;
     }
     
     try {
-        const { data: tablesData } = await supabaseClient
+        // التحقق من إن الطاولة لسه متاحة
+        const { data: tableCheck } = await supabaseClient
             .from('tables')
-            .select('*')
-            .eq('business_id', customerBusiness.id)
-            .eq('status', 'available')
-            .limit(1);
+            .select('status')
+            .eq('id', tableId)
+            .single();
         
-        let tableId = null;
-        if (tablesData && tablesData.length > 0) {
-            tableId = tablesData[0].id;
-            await supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', tableId);
-        } else {
-            document.getElementById('customerCartError').textContent = t('error_no_tables');
+        if (!tableCheck || tableCheck.status !== 'available') {
+            document.getElementById('customerCartError').textContent = '⚠️ الطاولة أصبحت مشغولة، اختر طاولة أخرى';
+            loadCustomerData();
             return;
         }
+        
+        // تحديث حالة الطاولة لمشغولة
+        await supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', tableId);
         
         const subtotal = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
         const serviceFee = subtotal * (serviceFeePercent / 100);
@@ -2684,7 +2711,11 @@ async function submitCustomerOrder() {
         showCustomerToast(t('order_created'));
         document.getElementById('customerCartError').textContent = '';
         
-        renderCustomerItems(currentCustomerFilter);
+        // تحديث قائمة الطاولات
+        loadCustomerData();
+        renderTables();
+        renderOrdersList();
+        renderDashboard();
         
     } catch (e) {
         console.error('Error submitting order:', e);
@@ -3005,7 +3036,7 @@ async function renderDashboard() {
 }
 
 // ============================================================
-// TABLES — مع إصلاح حالة الطاولات
+// TABLES — مع إصلاح مشكلة الطاولات
 // ============================================================
 function renderTables() {
     const grid = document.getElementById('tablesGrid');
@@ -3058,7 +3089,7 @@ function renderTables() {
 }
 
 // ============================================================
-// TABLE SHEET — مع Service Fee و VAT + زرار تم الدفع
+// TABLE SHEET
 // ============================================================
 function openTableSheet(tableId) {
     if (!hasPermission('create_orders')) {
@@ -3069,7 +3100,7 @@ function openTableSheet(tableId) {
     const table = tables.find(t => t.id === tableId);
     if (!table) return;
     
-    // تحديث حالة الطاولة من الـ orders
+    // البحث عن طلب نشط على الطاولة
     const activeOrder = Object.values(orders).find(o => 
         o.table_id === tableId && 
         o.status !== 'completed' && 
@@ -3077,11 +3108,12 @@ function openTableSheet(tableId) {
         o.status !== 'paid'
     );
     
-    // لو الطاولة متاحة ومفيش طلب، نفتح صفحة إنشاء طلب
-    if (!activeOrder && table.status !== 'occupied') {
+    // لو مفيش طلب نشط، نفتح صفحة إنشاء طلب
+    if (!activeOrder) {
         // لو الطاولة كانت مشغولة غلط، نعدلها
         if (table.status === 'occupied') {
             supabaseClient.from('tables').update({ status: 'available' }).eq('id', tableId).catch(() => {});
+            table.status = 'available';
         }
         
         document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
@@ -3120,146 +3152,109 @@ function openTableSheet(tableId) {
     }
     
     // لو في طلب نشط
-    if (activeOrder) {
-        const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
-        const isReady = status === 'ready';
-        const isPaid = status === 'paid';
-        
-        // حساب الرسوم
-        const subtotal = activeOrder.subtotal || activeOrder.total || 0;
-        const serviceFee = subtotal * (serviceFeePercent / 100);
-        const vat = (subtotal + serviceFee) * (vatPercent / 100);
-        const total = subtotal + serviceFee + vat;
-        
-        let actionButtons = '';
-        
-        if (!isReady && !isPaid) {
+    const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
+    const isReady = status === 'ready';
+    const isPaid = status === 'paid';
+    
+    // حساب الرسوم
+    const subtotal = activeOrder.subtotal || activeOrder.total || 0;
+    const serviceFee = subtotal * (serviceFeePercent / 100);
+    const vat = (subtotal + serviceFee) * (vatPercent / 100);
+    const total = subtotal + serviceFee + vat;
+    
+    let actionButtons = '';
+    
+    if (!isReady && !isPaid) {
+        actionButtons = `
+            <button class="btn btn-primary" style="flex:1;" onclick="markAsReady('${activeOrder.id}')">
+                <i class="fa-solid fa-utensils"></i> ${t('preparing')}
+            </button>
+        `;
+    } else if (isReady && !isPaid) {
+        if (hasPermission('print_receipt')) {
             actionButtons = `
-                <button class="btn btn-primary" style="flex:1;" onclick="markAsReady('${activeOrder.id}')">
-                    <i class="fa-solid fa-utensils"></i> ${t('preparing')}
+                <button class="btn btn-success" style="flex:1;" onclick="printReceipt('${activeOrder.id}')">
+                    <i class="fa-solid fa-print"></i> ${t('print_receipt')}
+                </button>
+                <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
+                    <i class="fa-solid fa-credit-card"></i> ${t('payment')}
                 </button>
             `;
-        } else if (isReady && !isPaid) {
-            // زرار الطباعة + زرار تم الدفع
-            if (hasPermission('print_receipt')) {
-                actionButtons = `
-                    <button class="btn btn-success" style="flex:1;" onclick="printReceipt('${activeOrder.id}')">
-                        <i class="fa-solid fa-print"></i> ${t('print_receipt')}
-                    </button>
-                    <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
-                        <i class="fa-solid fa-credit-card"></i> ${t('payment')}
-                    </button>
-                `;
-            } else {
-                actionButtons = `
-                    <button class="btn btn-ghost" style="flex:1;" disabled>
-                        <i class="fa-solid fa-print"></i> ${t('error_permission')}
-                    </button>
-                    <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
-                        <i class="fa-solid fa-credit-card"></i> ${t('payment')}
-                    </button>
-                `;
-            }
-        } else if (isPaid) {
+        } else {
             actionButtons = `
-                <button class="btn btn-success" style="flex:1;" disabled>
-                    <i class="fa-solid fa-check"></i> ${t('paid')}
+                <button class="btn btn-ghost" style="flex:1;" disabled>
+                    <i class="fa-solid fa-print"></i> ${t('error_permission')}
+                </button>
+                <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
+                    <i class="fa-solid fa-credit-card"></i> ${t('payment')}
                 </button>
             `;
         }
-        
-        const statusBadgeMap = {
-            pending: 'badge-pending',
-            preparing: 'badge-preparing',
-            ready: 'badge-ready',
-            paid: 'badge-paid',
-            cancelled: 'badge-cancelled'
-        };
-        
-        const statusLabelMap = {
-            pending: t('pending'),
-            preparing: t('preparing'),
-            ready: t('ready'),
-            paid: t('paid'),
-            cancelled: t('cancelled')
-        };
-        
-        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
-        const body = document.getElementById('tableSheetBody');
-        
-        body.innerHTML = `
-            <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                <span class="badge badge-gold">${t('order')} #${activeOrder.id.slice(0, 8)}</span>
-                <span class="badge ${statusBadgeMap[status] || 'badge-warning'}">
-                    ${statusLabelMap[status] || status}
-                </span>
-            </div>
-            <div id="orderItemsList"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
-            
-            <!-- تفاصيل الرسوم -->
-            <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:10px 14px;margin:8px 0;">
-                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
-                    <span>${t('subtotal')}</span>
-                    <span>${money(subtotal)}</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
-                    <span>${t('service_fee')} (${serviceFeePercent}%)</span>
-                    <span>${money(serviceFee)}</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
-                    <span>${t('vat')} (${vatPercent}%)</span>
-                    <span>${money(vat)}</span>
-                </div>
-                <div style="display:flex;justify-content:space-between;padding:6px 0 0 0;border-top:2px solid var(--border);font-weight:700;font-size:16px;color:var(--text-primary);">
-                    <span>${t('total')}</span>
-                    <span style="color:var(--primary-dark);">${money(total)}</span>
-                </div>
-            </div>
-            
-            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-                ${actionButtons}
-                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('back')}</button>
-            </div>
-            <div class="error-text" id="tableSheetError"></div>
+    } else if (isPaid) {
+        actionButtons = `
+            <button class="btn btn-success" style="flex:1;" disabled>
+                <i class="fa-solid fa-check"></i> ${t('paid')}
+            </button>
         `;
-        
-        loadOrderItems(activeOrder.id);
-        openSheet('tableOverlay');
-    } else {
-        // لو مفيش طلب نشط، نفتح صفحة إنشاء طلب
-        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
-        const body = document.getElementById('tableSheetBody');
-        
-        body.innerHTML = `
-            <div class="section-title">${t('menu')}</div>
-            <div class="menu-quick-add" id="menuItemsForTable">
-                ${menuItems.length === 0 ? '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>' : ''}
-            </div>
-            <div id="tableOrderItems"></div>
-            <div style="display:flex;gap:8px;margin-top:12px;">
-                <button class="btn btn-primary" style="flex:1;" onclick="createOrder('${tableId}')">
-                    <i class="fa-solid fa-check"></i> ${t('confirm_order')}
-                </button>
-                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('cancel')}</button>
-            </div>
-            <div class="error-text" id="tableSheetError"></div>
-        `;
-        
-        const menuContainer = document.getElementById('menuItemsForTable');
-        if (menuItems.length > 0) {
-            menuItems.slice(0, 12).forEach(item => {
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-outline btn-sm';
-                btn.innerHTML = `${escapeHtml(item.name)} ${money(item.price)}`;
-                btn.onclick = () => addItemToOrder(item);
-                menuContainer.appendChild(btn);
-            });
-        }
-        
-        _orderItems = [];
-        renderTableOrderItems();
-        openSheet('tableOverlay');
     }
+    
+    const statusBadgeMap = {
+        pending: 'badge-pending',
+        preparing: 'badge-preparing',
+        ready: 'badge-ready',
+        paid: 'badge-paid',
+        cancelled: 'badge-cancelled'
+    };
+    
+    const statusLabelMap = {
+        pending: t('pending'),
+        preparing: t('preparing'),
+        ready: t('ready'),
+        paid: t('paid'),
+        cancelled: t('cancelled')
+    };
+    
+    document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+    const body = document.getElementById('tableSheetBody');
+    
+    body.innerHTML = `
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span class="badge badge-gold">${t('order')} #${activeOrder.id.slice(0, 8)}</span>
+            <span class="badge ${statusBadgeMap[status] || 'badge-warning'}">
+                ${statusLabelMap[status] || status}
+            </span>
+        </div>
+        <div id="orderItemsList"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
+        
+        <!-- تفاصيل الرسوم -->
+        <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:10px 14px;margin:8px 0;">
+            <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                <span>${t('subtotal')}</span>
+                <span>${money(subtotal)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                <span>${t('service_fee')} (${serviceFeePercent}%)</span>
+                <span>${money(serviceFee)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                <span>${t('vat')} (${vatPercent}%)</span>
+                <span>${money(vat)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:6px 0 0 0;border-top:2px solid var(--border);font-weight:700;font-size:16px;color:var(--text-primary);">
+                <span>${t('total')}</span>
+                <span style="color:var(--primary-dark);">${money(total)}</span>
+            </div>
+        </div>
+        
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            ${actionButtons}
+            <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('back')}</button>
+        </div>
+        <div class="error-text" id="tableSheetError"></div>
+    `;
+    
+    loadOrderItems(activeOrder.id);
+    openSheet('tableOverlay');
 }
 
 // ============================================================
@@ -3455,8 +3450,7 @@ async function printReceipt(orderId) {
     const total = subtotal + serviceFee + vat;
     
     // جلب تفاصيل الطلب
-    const { data: items } = await supabaseClient
-        .from('order_items')
+    const { data: items } = await supabaseClient        .from('order_items')
         .select('*, menu_items(*)')
         .eq('order_id', orderId);
     
@@ -4384,6 +4378,7 @@ console.log('🖼️ Item images with upload support');
 console.log('🖼️ Business logo support');
 console.log('🪑 Table becomes available after payment');
 console.log('💳 Payment button added next to print');
+console.log('🪑 Customer can select table number');
 </script>
 </body>
 </html>
