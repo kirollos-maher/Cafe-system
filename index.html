@@ -2544,7 +2544,7 @@ function downloadQR() {
 }
 
 // ============================================================
-// CUSTOMER PAGE
+// CUSTOMER PAGE - FIXED VERSION
 // ============================================================
 function initCustomerPage() {
     const params = new URLSearchParams(window.location.search);
@@ -2562,31 +2562,77 @@ async function loadCustomerData() {
     
     if (!bizId) {
         document.getElementById('customerBizName').textContent = '❌ رابط غير صحيح';
+        document.getElementById('customerMenuItems').innerHTML = `
+            <div class="empty" style="padding:40px 16px;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:var(--danger);"></i>
+                <div style="font-size:16px; font-weight:700; margin-top:8px;">رابط غير صحيح</div>
+                <div style="font-size:13px; color:var(--text-muted);">تأكد من الرابط المستخدم</div>
+            </div>
+        `;
+        return;
+    }
+    
+    if (!supabaseClient) {
+        document.getElementById('customerBizName').textContent = '⚠️ خطأ في الاتصال';
+        document.getElementById('customerMenuItems').innerHTML = `
+            <div class="empty" style="padding:40px 16px;">
+                <i class="fa-solid fa-wifi" style="font-size:40px;color:var(--warning);"></i>
+                <div style="font-size:16px; font-weight:700; margin-top:8px;">خطأ في الاتصال</div>
+                <div style="font-size:13px; color:var(--text-muted);">تأكد من اتصال الإنترنت</div>
+            </div>
+        `;
         return;
     }
     
     try {
-        const { data: biz } = await supabaseClient.from('businesses').select('*').eq('id', bizId).single();
-        if (biz) {
-            customerBusiness = biz;
-            document.getElementById('customerBizName').textContent = biz.name;
-            document.title = biz.name + ' - Menu';
-            
-            const savedLogo = localStorage.getItem('platepro_logo');
-            if (savedLogo) {
-                const logoContainer = document.getElementById('customerLogoContainer');
-                logoContainer.innerHTML = `<img src="${savedLogo}" class="logo-img" alt="Logo">`;
-            }
+        // تحميل بيانات المطعم
+        const { data: biz, error: bizError } = await supabaseClient
+            .from('businesses')
+            .select('*')
+            .eq('id', bizId)
+            .maybeSingle();
+        
+        if (bizError || !biz) {
+            document.getElementById('customerBizName').textContent = '❌ مطعم غير موجود';
+            document.getElementById('customerMenuItems').innerHTML = `
+                <div class="empty" style="padding:40px 16px;">
+                    <i class="fa-solid fa-store-slash" style="font-size:40px;color:var(--danger);"></i>
+                    <div style="font-size:16px; font-weight:700; margin-top:8px;">المطعم غير موجود</div>
+                    <div style="font-size:13px; color:var(--text-muted);">تأكد من الكود المستخدم</div>
+                </div>
+            `;
+            return;
         }
         
+        customerBusiness = biz;
+        document.getElementById('customerBizName').textContent = biz.name;
+        document.title = biz.name + ' - Menu';
+        
+        // تحميل الشعار
+        const savedLogo = localStorage.getItem('platepro_logo');
+        if (savedLogo) {
+            const logoContainer = document.getElementById('customerLogoContainer');
+            logoContainer.innerHTML = `<img src="${savedLogo}" class="logo-img" alt="Logo">`;
+        }
+        
+        // تحميل المنيو والتصنيفات
         const [itemsRes, catsRes] = await Promise.all([
-            supabaseClient.from('menu_items').select('*').eq('business_id', bizId).eq('is_active', true).order('sort_order'),
-            supabaseClient.from('menu_categories').select('*').eq('business_id', bizId).eq('is_active', true).order('sort_order')
+            supabaseClient.from('menu_items')
+                .select('*')
+                .eq('business_id', bizId)
+                .eq('is_active', true)
+                .order('sort_order'),
+            supabaseClient.from('menu_categories')
+                .select('*')
+                .eq('business_id', bizId)
+                .eq('is_active', true)
+                .order('sort_order')
         ]);
         
         customerMenuItems = itemsRes.data || [];
         customerCategories = catsRes.data || [];
         
+        // تحميل الطاولات المتاحة
         const { data: tablesData } = await supabaseClient
             .from('tables')
             .select('*')
@@ -2599,7 +2645,7 @@ async function loadCustomerData() {
             tableSelect.innerHTML = `
                 <option value="">-- اختر طاولة --</option>
                 ${tablesData.map(t => `
-                    <option value="${t.id}">طاولة ${t.number} (${t.capacity} ${t('persons')})</option>
+                    <option value="${t.id}">طاولة ${t.number} (${t.capacity || 4} أشخاص)</option>
                 `).join('')}
             `;
         } else {
@@ -2608,16 +2654,27 @@ async function loadCustomerData() {
         
         renderCustomerCategories();
         renderCustomerItems();
-        
         loadFeesSettings();
+        
+        console.log('✅ Customer data loaded successfully');
+        
     } catch (e) {
         console.error('Error loading customer data:', e);
         document.getElementById('customerBizName').textContent = '⚠️ خطأ في التحميل';
+        document.getElementById('customerMenuItems').innerHTML = `
+            <div class="empty" style="padding:40px 16px;">
+                <i class="fa-solid fa-circle-exclamation" style="font-size:40px;color:var(--danger);"></i>
+                <div style="font-size:16px; font-weight:700; margin-top:8px;">⚠️ حدث خطأ</div>
+                <div style="font-size:13px; color:var(--text-muted);">حاول تحديث الصفحة</div>
+            </div>
+        `;
     }
 }
 
 function renderCustomerCategories() {
     const container = document.getElementById('customerCategories');
+    if (!container) return;
+    
     container.innerHTML = `
         <button class="btn active" onclick="filterCustomerItems('all')">${t('all')}</button>
         ${customerCategories.map(cat => `
@@ -2643,13 +2700,15 @@ function filterCustomerItems(categoryId) {
 
 function renderCustomerItems(categoryId) {
     const container = document.getElementById('customerMenuItems');
+    if (!container) return;
+    
     let items = customerMenuItems;
     
     if (categoryId && categoryId !== 'all') {
         items = items.filter(item => item.category_id === categoryId);
     }
     
-    if (items.length === 0) {
+    if (!items || items.length === 0) {
         container.innerHTML = `
             <div class="empty" style="padding:40px 16px;">
                 <i class="fa-solid fa-utensils" style="font-size:40px;"></i>
@@ -2715,7 +2774,7 @@ function updateCustomerCartUI() {
     document.getElementById('cartCount').textContent = count;
     document.getElementById('cartTotal').textContent = money(total);
     
-    cart.style.display = count > 0 ? 'block' : 'none';
+    if (cart) cart.style.display = count > 0 ? 'block' : 'none';
 }
 
 function showCustomerCart() {
@@ -4753,7 +4812,7 @@ console.log('👨‍🍳 Chef: start preparing → mark ready');
 console.log('💳 Cashier: handle payment');
 console.log('📱 QR Code for customer ordering');
 console.log('✅ Table status preserved after refresh');
-console.log('✅ All errors fixed!');
+console.log('✅ Customer page fixed!');
 </script>
 </body>
 </html>
