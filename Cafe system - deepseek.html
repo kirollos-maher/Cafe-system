@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Plate Pro - Cafe System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ============================================================
+   DESIGN SYSTEM — Plate Pro
+   ============================================================ */
+:root {
+    --gold: #C9A050;
+    --gold-light: #E8D5A3;
+    --gold-dark: #A8883A;
+    --gold-glow: rgba(201, 160, 80, 0.25);
+    --navy: #1A1A2E;
+    --navy-light: #2A2A4E;
+    --cream: #F8F6F0;
+    --bg: var(--cream);
+    --bg-raised: #FFFFFF;
+    --bg-sunken: #F0EDE6;
+    --surface: #FFFFFF;
+    --border: #E5E2D9;
+    --border-strong: #C9C4B8;
+    --text: var(--navy);
+    --text-dim: #6B6B80;
+    --text-faint: #9A9AAE;
+    --success: #2D9B4E;
+    --danger: #DC3545;
+    --warning: #F59E0B;
+    --info: #3B82F6;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --font-display: 'Cairo', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --shadow-sm: 0 2px 8px rgba(26, 26, 46, 0.06);
+    --shadow-md: 0 4px 20px rgba(26, 26, 46, 0.08);
+    --shadow-gold: 0 4px 24px rgba(201, 160, 80, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-display);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
+
+.centered-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    background: linear-gradient(160deg, var(--cream) 0%, var(--bg) 100%);
+}
+
+.brand-mark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.brand-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 24px;
+}
+
+.brand-title .gold { color: var(--gold); }
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-md);
+}
+
+.field {
+    margin-bottom: 16px;
+    text-align: right;
+}
+
+.field label {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.field input, .field select {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--bg-sunken);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    font-family: var(--font-display);
+}
+
+.field input:focus, .field select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px var(--gold-glow);
+}
+
+.field input.mono { font-family: var(--font-mono); letter-spacing: 0.08em; }
+
+.btn {
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    padding: 14px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s var(--ease), background 0.15s var(--ease);
+    touch-action: manipulation;
+}
+
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-block { width: 100%; }
+
+.btn-gold {
+    background: var(--gold);
+    color: #fff;
+    box-shadow: var(--shadow-gold);
+}
+.btn-gold:hover { box-shadow: 0 6px 32px rgba(201, 160, 80, 0.4); }
+
+.btn-outline-gold {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+}
+.btn-outline-gold:hover { background: var(--gold); color: #fff; }
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+}
+.btn-ghost:hover { background: var(--bg-sunken); }
+
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+.error-text { color: var(--danger); font-size: 13px; margin-top: 8px; min-height: 18px; }
+
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 16px;
+    right: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    z-index: 999;
+    display: none;
+    color: #fff;
+    box-shadow: var(--shadow-md);
+}
+
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+.toast.warning { background: var(--warning); }
+
+.mono { font-family: var(--font-mono); }
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-header .biz-name {
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--navy);
+}
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 3px rgba(45, 155, 78, 0.2);
+    animation: pulseLive 1.8s infinite;
+}
+
+@keyframes pulseLive {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.view { display: none; padding: 16px; max-width: 640px; margin: 0 auto; }
+.view.active { display: block; animation: viewIn 0.3s var(--ease); }
+
+@keyframes viewIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 20px 0 12px;
+}
+.section-title:first-child { margin-top: 0; }
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.stat-card .stat-value {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.stat-card.gold {
+    border-color: var(--gold);
+    background: linear-gradient(160deg, rgba(201, 160, 80, 0.06), transparent);
+}
+.stat-card.gold .stat-value { color: var(--gold); }
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.table-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s var(--ease);
+    box-shadow: var(--shadow-sm);
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-card:active { transform: scale(0.96); }
+
+.table-card .table-num {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--navy);
+}
+
+.table-card .table-status {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.table-card.occupied {
+    border-color: var(--gold);
+    background: linear-gradient(160deg, rgba(201, 160, 80, 0.08), transparent);
+}
+.table-card.occupied .table-status { color: var(--gold); }
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.badge-gold { background: var(--gold-glow); color: var(--gold); }
+.badge-success { background: rgba(45, 155, 78, 0.12); color: var(--success); }
+.badge-danger { background: rgba(220, 53, 69, 0.12); color: var(--danger); }
+
+.list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border);
+}
+.list-row:last-child { border-bottom: none; }
+.list-row .row-title { font-weight: 600; font-size: 14px; }
+.list-row .row-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+.list-row .row-value { font-family: var(--font-mono); font-weight: 700; }
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 70;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-faint);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.nav-btn i { font-size: 20px; }
+.nav-btn.active { color: var(--gold); }
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+}
+.overlay.show { display: flex; }
+
+.sheet {
+    background: var(--surface);
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 480px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+    animation: sheetUp 0.35s var(--ease);
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.12);
+}
+
+@keyframes sheetUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 4px;
+    margin: 0 auto 16px;
+}
+
+.sheet-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sheet-title .close-x {
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 14px;
+}
+
+.empty {
+    text-align: center;
+    padding: 40px 16px;
+    color: var(--text-dim);
+}
+.empty i { font-size: 32px; color: var(--text-faint); margin-bottom: 12px; display: block; }
+
+@media (min-width: 700px) {
+    .stat-grid { grid-template-columns: repeat(4, 1fr); }
+    .tables-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+   SETUP SCREEN
+   ============================================================ -->
+<div id="setupScreen" class="screen active">
+    <div class="centered-screen">
+        <div class="brand-mark">PLATE PRO</div>
+        <div class="brand-title">
+            <span class="gold">✦</span> تسجيل الدخول <span class="gold">✦</span>
+        </div>
+        <div class="card">
+            <div class="field">
+                <label>كود النشاط التجاري</label>
+                <input type="text" id="setupBusinessCode" class="mono" placeholder="مثال: CAFE01" style="text-transform:uppercase">
+            </div>
+            <button class="btn btn-gold btn-block" id="setupContinueBtn">
+                <i class="fa-solid fa-arrow-left"></i> متابعة
+            </button>
+            <div class="error-text" id="setupError"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+   ACTIVATION SCREEN
+   ============================================================ -->
+<div id="activationScreen" class="screen">
+    <div class="centered-screen">
+        <div class="brand-mark">PLATE PRO</div>
+        <div class="brand-title" id="activationBizName">—</div>
+        <div class="card">
+            <p style="color:var(--text-dim);font-size:13px;margin-bottom:16px;">
+                الجهاز ده لسه مش مفعّل على النشاط ده. أدخل كود التفعيل اللي معاك.
+            </p>
+            <div class="field">
+                <label>كود التفعيل</label>
+                <input type="text" id="activationCodeInput" class="mono" placeholder="XXXX-XXXX" style="text-transform:uppercase">
+            </div>
+            <button class="btn btn-gold btn-block" id="activateBtn">
+                <i class="fa-solid fa-check"></i> تفعيل
+            </button>
+            <button class="btn btn-ghost btn-block" style="margin-top:8px;" id="backToSetupBtn">رجوع</button>
+            <div class="error-text" id="activationError"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+   LOCK SCREEN
+   ============================================================ -->
+<div id="lockScreen" class="screen">
+    <div class="centered-screen">
+        <div class="brand-mark" id="lockBizCode">—</div>
+        <div class="brand-title" id="lockBizName">—</div>
+        <div class="card">
+            <div id="lockRoleChoice">
+                <label style="display:block;margin-bottom:12px;font-weight:600;">هل انت؟</label>
+                <button class="btn btn-gold btn-block" style="margin-bottom:10px;" id="lockOwnerBtn">
+                    <i class="fa-solid fa-user-shield"></i> المالك / الأدمن
+                </button>
+                <button class="btn btn-outline-gold btn-block" id="lockEmployeeBtn">
+                    <i class="fa-solid fa-user"></i> موظف
+                </button>
+            </div>
+
+            <div id="lockOwnerForm" style="display:none;">
+                <div class="field">
+                    <label>PIN المالك</label>
+                    <input type="password" inputmode="numeric" id="lockPinInput" class="mono" placeholder="••••" style="text-align:center;letter-spacing:0.4em;font-size:22px;">
+                </div>
+                <button class="btn btn-gold btn-block" id="unlockOwnerBtn">
+                    <i class="fa-solid fa-unlock"></i> دخول
+                </button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockBtn">رجوع</button>
+            </div>
+
+            <div id="lockEmployeeForm" style="display:none;">
+                <div class="field">
+                    <label>اسمك</label>
+                    <input type="text" id="lockEmpName" placeholder="">
+                </div>
+                <div class="field">
+                    <label>PIN الموظف</label>
+                    <input type="password" inputmode="numeric" id="lockEmpPin" class="mono" placeholder="••••" style="text-align:center;letter-spacing:0.4em;font-size:22px;">
+                </div>
+                <button class="btn btn-gold btn-block" id="unlockEmpBtn">
+                    <i class="fa-solid fa-unlock"></i> دخول
+                </button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockEmpBtn">رجوع</button>
+            </div>
+
+            <div class="error-text" id="lockError"></div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--text-faint);" class="mono" id="subStatusLine"></div>
+    </div>
+</div>
+
+<!-- ============================================================
+   MAIN APP
+   ============================================================ -->
+<div id="mainApp" class="screen">
+    <div class="app-header">
+        <div>
+            <div class="biz-name" id="headerBizName">—</div>
+        </div>
+        <div class="header-actions">
+            <div class="icon-btn"><span class="live-dot"></span></div>
+            <button class="icon-btn" id="lockAppBtn"><i class="fa-solid fa-lock"></i></button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+        <div class="section-title">أداء اليوم</div>
+        <div class="stat-grid">
+            <div class="stat-card gold"><div class="stat-label">إيراد اليوم</div><div class="stat-value mono" id="dashRevenue">0</div></div>
+            <div class="stat-card"><div class="stat-label">الطلبات النشطة</div><div class="stat-value mono" id="dashActiveOrders">0</div></div>
+            <div class="stat-card"><div class="stat-label">طاولات مشغولة</div><div class="stat-value mono" id="dashOccupiedTables">0</div></div>
+            <div class="stat-card"><div class="stat-label">طاولات متاحة</div><div class="stat-value mono" id="dashAvailableTables">0</div></div>
+        </div>
+    </div>
+
+    <!-- TABLES -->
+    <div class="view" id="view-tables">
+        <div class="section-title">الطاولات</div>
+        <div class="tables-grid" id="tablesGrid"></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="view" id="view-orders">
+        <div class="section-title">الطلبات النشطة</div>
+        <div id="activeOrdersList"></div>
+    </div>
+
+    <!-- MENU -->
+    <div class="view" id="view-menu">
+        <div class="section-title">المنيو</div>
+        <div id="menuView"></div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-btn active" data-view="view-dashboard" onclick="navigateTo('view-dashboard')">
+            <i class="fa-solid fa-gauge-high"></i><span>الرئيسية</span>
+        </button>
+        <button class="nav-btn" data-view="view-tables" onclick="navigateTo('view-tables')">
+            <i class="fa-solid fa-table-cells"></i><span>الطاولات</span>
+        </button>
+        <button class="nav-btn" data-view="view-orders" onclick="navigateTo('view-orders')">
+            <i class="fa-solid fa-receipt"></i><span>الطلبات</span>
+        </button>
+        <button class="nav-btn" data-view="view-menu" onclick="navigateTo('view-menu')">
+            <i class="fa-solid fa-utensils"></i><span>المنيو</span>
+        </button>
+    </div>
+</div>
+
+<!-- ============================================================
+   TABLE SHEET
+   ============================================================ -->
+<div class="overlay" id="tableOverlay">
+    <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <span id="tableSheetTitle">طاولة</span>
+            <button class="close-x" onclick="closeSheet('tableOverlay')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="tableSheetBody"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SUPABASE_URL = 'https://bccuzjjnrqnmqwcypucr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_X3pnp718gcVx9-wrisvtHw_44hMVVZ_';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ============================================================
+// STATE
+// ============================================================
+let business = null;
+let deviceRecord = null;
+let currentUser = null;
+let tables = [];
+let orders = {};
+let menuItems = [];
+let _orderItems = [];
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function showToast(msg, type = 'success') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast ' + type;
+    el.style.display = 'block';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.style.display = 'none'; }, 2600);
+}
+
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function openSheet(id) { document.getElementById(id).classList.add('show'); }
+function closeSheet(id) { document.getElementById(id).classList.remove('show'); }
+
+function navigateTo(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
+    
+    if (viewId === 'view-dashboard') renderDashboard();
+    if (viewId === 'view-tables') renderTables();
+    if (viewId === 'view-orders') renderOrdersList();
+    if (viewId === 'view-menu') renderMenuView();
+}
+
+function getDeviceId() {
+    let id = localStorage.getItem('platepro_device_id');
+    if (!id) {
+        id = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('platepro_device_id', id);
+    }
+    return id;
+}
+
+function money(n) {
+    return (Number(n) || 0).toLocaleString('ar-EG', { maximumFractionDigits: 2 });
+}
+
+// ============================================================
+// ALL FUNCTIONS DEFINED BEFORE USE
+// ============================================================
+
+// --- SETUP ---
+async function handleSetupContinue() {
+    const code = document.getElementById('setupBusinessCode').value.trim().toUpperCase();
+    const errEl = document.getElementById('setupError');
+    errEl.textContent = '';
+    if (!code) { errEl.textContent = 'اكتب كود النشاط.'; return; }
+    
+    const btn = document.getElementById('setupContinueBtn');
+    btn.disabled = true;
+    
+    try {
+        const { data: biz, error } = await supabase.from('businesses').select('*').eq('code', code).single();
+        if (error || !biz) { errEl.textContent = 'مفيش نشاط بالكود ده.'; return; }
+        business = biz;
+        localStorage.setItem('platepro_business_code', code);
+
+        const deviceId = getDeviceId();
+        const { data: dev } = await supabase.from('devices').select('*').eq('business_id', biz.id).eq('device_id', deviceId).maybeSingle();
+        
+        if (!dev) {
+            document.getElementById('activationBizName').textContent = biz.name;
+            showScreen('activationScreen');
+            return;
+        }
+        deviceRecord = dev;
+        proceedToLock();
+    } catch (e) {
+        console.error(e);
+        errEl.textContent = 'حصل خطأ في الاتصال، حاول تاني.';
+    } finally { btn.disabled = false; }
+}
+
+// --- ACTIVATION ---
+async function handleActivateDevice() {
+    const code = document.getElementById('activationCodeInput').value.trim().toUpperCase();
+    const errEl = document.getElementById('activationError');
+    errEl.textContent = '';
+    if (!code) { errEl.textContent = 'اكتب كود التفعيل.'; return; }
+    
+    try {
+        const { data: actCode, error } = await supabase.from('activation_codes').select('*').eq('business_id', business.id).eq('code', code).eq('used', false).single();
+        if (error || !actCode) { errEl.textContent = 'الكود غير صحيح أو مستخدم قبل كده.'; return; }
+
+        const deviceId = getDeviceId();
+        const expiry = new Date(); expiry.setDate(expiry.getDate() + 30);
+        const { data: newDev, error: devErr } = await supabase.from('devices').insert({
+            business_id: business.id,
+            device_id: deviceId,
+            device_label: 'جهاز جديد',
+            is_active: true,
+            revoked: false,
+            expiry_date: expiry.toISOString()
+        }).select().single();
+        
+        if (devErr) { errEl.textContent = 'فشل التفعيل، حاول تاني.'; return; }
+
+        await supabase.from('activation_codes').update({ used: true, used_at: new Date().toISOString() }).eq('id', actCode.id);
+        deviceRecord = newDev;
+        showToast('تم تفعيل الجهاز بنجاح', 'success');
+        proceedToLock();
+    } catch (e) {
+        console.error(e);
+        errEl.textContent = 'حصل خطأ، حاول تاني.';
+    }
+}
+
+// --- LOCK ---
+function proceedToLock() {
+    document.getElementById('lockBizCode').textContent = business.code;
+    document.getElementById('lockBizName').textContent = business.name;
+    
+    const expiry = deviceRecord.expiry_date ? new Date(deviceRecord.expiry_date) : null;
+    const subLine = document.getElementById('subStatusLine');
+    if (deviceRecord.revoked || !deviceRecord.is_active) {
+        subLine.textContent = 'الجهاز موقوف — تواصل مع الإدارة';
+    } else if (expiry && expiry < new Date()) {
+        subLine.textContent = 'الاشتراك منتهي — تواصل مع الإدارة';
+    } else if (expiry) {
+        const days = Math.ceil((expiry - new Date()) / 86400000);
+        subLine.textContent = `متبقي ${days} يوم على الاشتراك`;
+    }
+    resetLockRole();
+    showScreen('lockScreen');
+}
+
+function selectLockRole(role) {
+    document.getElementById('lockError').textContent = '';
+    document.getElementById('lockRoleChoice').style.display = 'none';
+    document.getElementById('lockOwnerForm').style.display = role === 'owner' ? 'block' : 'none';
+    document.getElementById('lockEmployeeForm').style.display = role === 'employee' ? 'block' : 'none';
+}
+
+function resetLockRole() {
+    document.getElementById('lockError').textContent = '';
+    document.getElementById('lockPinInput').value = '';
+    document.getElementById('lockEmpName').value = '';
+    document.getElementById('lockEmpPin').value = '';
+    document.getElementById('lockOwnerForm').style.display = 'none';
+    document.getElementById('lockEmployeeForm').style.display = 'none';
+    document.getElementById('lockRoleChoice').style.display = 'block';
+}
+
+async function handleEmployeeUnlock() {
+    const name = document.getElementById('lockEmpName').value.trim();
+    const pin = document.getElementById('lockEmpPin').value.trim();
+    const errEl = document.getElementById('lockError');
+    errEl.textContent = '';
+    
+    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = 'الجهاز موقوف.'; return; }
+    if (deviceRecord.expiry_date && new Date(deviceRecord.expiry_date) < new Date()) { errEl.textContent = 'الاشتراك منتهي.'; return; }
+    if (!name || !pin) { errEl.textContent = 'اكتب الاسم والـ PIN.'; return; }
+
+    const { data: emps, error } = await supabase.from('employees').select('*').eq('business_id', business.id).eq('is_active', true);
+    if (error) { errEl.textContent = 'حصل خطأ، حاول تاني.'; return; }
+    
+    const emp = (emps || []).find(e => e.name && e.name.trim().toLowerCase() === name.toLowerCase() && String(e.pin) === pin);
+    if (emp) {
+        currentUser = { type: 'employee', ...emp };
+        enterMainApp();
+        return;
+    }
+    errEl.textContent = 'الاسم أو الـ PIN غير صحيح.';
+}
+
+async function handleUnlock() {
+    const pin = document.getElementById('lockPinInput').value.trim();
+    const errEl = document.getElementById('lockError');
+    errEl.textContent = '';
+    
+    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = 'الجهاز موقوف.'; return; }
+    if (deviceRecord.expiry_date && new Date(deviceRecord.expiry_date) < new Date()) { errEl.textContent = 'الاشتراك منتهي.'; return; }
+    if (!pin) { errEl.textContent = 'اكتب الـ PIN.'; return; }
+
+    if (pin === business.owner_pin) {
+        currentUser = { type: 'owner', name: 'المالك', permissions: { orders: true, kitchen: true, reports: true, settings: true } };
+        enterMainApp();
+        return;
+    }
+    
+    const { data: emp } = await supabase.from('employees').select('*').eq('business_id', business.id).eq('pin', pin).eq('is_active', true).maybeSingle();
+    if (emp) {
+        currentUser = { type: 'employee', ...emp };
+        enterMainApp();
+        return;
+    }
+    errEl.textContent = 'PIN غير صحيح.';
+}
+
+function lockApp() {
+    currentUser = null;
+    document.getElementById('lockPinInput').value = '';
+    proceedToLock();
+}
+
+// ============================================================
+// MAIN APP
+// ============================================================
+async function enterMainApp() {
+    document.getElementById('headerBizName').textContent = business.name;
+    showScreen('mainApp');
+    
+    await loadAllData();
+    renderDashboard();
+    renderTables();
+    renderOrdersList();
+    renderMenuView();
+}
+
+async function loadAllData() {
+    await Promise.all([
+        loadTables(),
+        loadMenuItems(),
+        loadActiveOrders()
+    ]);
+}
+
+async function loadTables() {
+    let { data } = await supabase.from('tables').select('*').eq('business_id', business.id).order('number');
+    if (!data || data.length === 0) {
+        const seed = Array.from({ length: 8 }, (_, i) => ({
+            business_id: business.id,
+            number: i + 1,
+            capacity: 4,
+            status: 'available'
+        }));
+        const { data: created } = await supabase.from('tables').insert(seed).select();
+        data = created || [];
+    }
+    tables = data;
+}
+
+async function loadMenuItems() {
+    const { data } = await supabase.from('menu_items').select('*').eq('business_id', business.id).eq('is_active', true);
+    menuItems = data || [];
+}
+
+async function loadActiveOrders() {
+    const { data } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('business_id', business.id)
+        .in('status', ['pending', 'preparing', 'ready'])
+        .order('created_at', { ascending: false });
+    
+    orders = {};
+    (data || []).forEach(order => {
+        orders[order.id] = order;
+    });
+    return data || [];
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function renderDashboard() {
+    const activeOrders = Object.values(orders).filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+    const occupiedTables = tables.filter(t => t.status === 'occupied');
+    const availableTables = tables.filter(t => t.status === 'available');
+    
+    let revenue = 0;
+    const { data: completedOrders } = await supabase
+        .from('orders')
+        .select('total')
+        .eq('business_id', business.id)
+        .eq('status', 'completed');
+    revenue = (completedOrders || []).reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+    
+    document.getElementById('dashRevenue').textContent = money(revenue);
+    document.getElementById('dashActiveOrders').textContent = activeOrders.length;
+    document.getElementById('dashOccupiedTables').textContent = occupiedTables.length;
+    document.getElementById('dashAvailableTables').textContent = availableTables.length;
+}
+
+// ============================================================
+// TABLES
+// ============================================================
+function renderTables() {
+    const grid = document.getElementById('tablesGrid');
+    const statusMap = {
+        available: { label: 'متاحة', class: '' },
+        occupied: { label: 'مشغولة', class: 'occupied' }
+    };
+    
+    grid.innerHTML = tables.map(table => {
+        const s = statusMap[table.status] || statusMap.available;
+        return `
+            <div class="table-card ${s.class}" onclick="openTableSheet('${table.id}')">
+                <div class="table-num">${table.number}</div>
+                <div class="table-status">${s.label}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// TABLE SHEET
+// ============================================================
+function openTableSheet(tableId) {
+    const table = tables.find(t => t.id === tableId);
+    if (!table) return;
+    
+    document.getElementById('tableSheetTitle').textContent = `طاولة ${table.number}`;
+    const body = document.getElementById('tableSheetBody');
+    
+    const activeOrder = Object.values(orders).find(o => o.table_id === tableId && o.status !== 'completed' && o.status !== 'cancelled');
+    
+    if (table.status === 'available' && !activeOrder) {
+        body.innerHTML = `
+            <div class="section-title">اختر من المنيو</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;" id="menuItemsForTable">
+                ${menuItems.length === 0 ? '<div class="empty">مفيش أصناف</div>' : ''}
+            </div>
+            <button class="btn btn-gold btn-block" onclick="createOrder('${tableId}')">
+                <i class="fa-solid fa-check"></i> تأكيد الطلب
+            </button>
+            <button class="btn btn-ghost btn-block" onclick="closeSheet('tableOverlay')">إلغاء</button>
+            <div class="error-text" id="tableSheetError"></div>
+        `;
+        
+        const menuContainer = document.getElementById('menuItemsForTable');
+        if (menuItems.length > 0) {
+            menuItems.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-gold btn-sm';
+                btn.innerHTML = `${item.name} — ${money(item.price)}`;
+                btn.onclick = () => addItemToOrder(item);
+                menuContainer.appendChild(btn);
+            });
+        }
+        
+        _orderItems = [];
+        openSheet('tableOverlay');
+    } else {
+        body.innerHTML = `
+            <div class="empty">
+                <i class="fa-solid fa-receipt"></i>
+                <div>يوجد طلب نشط على هذه الطاولة</div>
+                <button class="btn btn-ghost btn-block" onclick="closeSheet('tableOverlay')">إغلاق</button>
+            </div>
+        `;
+        openSheet('tableOverlay');
+    }
+}
+
+function addItemToOrder(item) {
+    const existing = _orderItems.find(i => i.menu_item_id === item.id);
+    if (existing) {
+        existing.quantity += 1;
+        existing.total = existing.quantity * existing.unit_price;
+    } else {
+        _orderItems.push({
+            menu_item_id: item.id,
+            name: item.name,
+            unit_price: item.price,
+            quantity: 1,
+            total: item.price
+        });
+    }
+    showToast(`تم إضافة ${item.name}`, 'success');
+}
+
+async function createOrder(tableId) {
+    if (_orderItems.length === 0) {
+        document.getElementById('tableSheetError').textContent = 'أضف صنف واحد على الأقل.';
+        return;
+    }
+    
+    const subtotal = _orderItems.reduce((sum, i) => sum + i.total, 0);
+    
+    try {
+        const { data: order, error } = await supabase.from('orders').insert({
+            business_id: business.id,
+            table_id: tableId,
+            status: 'pending',
+            subtotal: subtotal,
+            total: subtotal
+        }).select().single();
+        
+        if (error) throw error;
+        
+        const orderItems = _orderItems.map(item => ({
+            order_id: order.id,
+            menu_item_id: item.menu_item_id,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            total: item.total
+        }));
+        
+        await supabase.from('order_items').insert(orderItems);
+        await supabase.from('tables').update({ status: 'occupied' }).eq('id', tableId);
+        
+        _orderItems = [];
+        closeSheet('tableOverlay');
+        showToast('تم إنشاء الطلب بنجاح!', 'success');
+        await loadActiveOrders();
+        renderTables();
+        renderOrdersList();
+        renderDashboard();
+    } catch (e) {
+        document.getElementById('tableSheetError').textContent = 'فشل إنشاء الطلب';
+        console.error(e);
+    }
+}
+
+// ============================================================
+// ORDERS LIST
+// ============================================================
+function renderOrdersList() {
+    const activeOrders = Object.values(orders).filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+    const el = document.getElementById('activeOrdersList');
+    
+    if (activeOrders.length === 0) {
+        el.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>مفيش طلبات نشطة</div>`;
+    } else {
+        el.innerHTML = activeOrders.map(order => {
+            const table = tables.find(t => t.id === order.table_id);
+            return `
+                <div class="list-row">
+                    <div>
+                        <div class="row-title">طاولة ${table?.number || '?'}</div>
+                        <div class="row-sub">${new Date(order.created_at).toLocaleTimeString()}</div>
+                    </div>
+                    <div class="row-value">${money(order.total)}</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// ============================================================
+// MENU VIEW
+// ============================================================
+function renderMenuView() {
+    const el = document.getElementById('menuView');
+    if (menuItems.length === 0) {
+        el.innerHTML = `<div class="empty"><i class="fa-solid fa-utensils"></i>مفيش أصناف</div>`;
+    } else {
+        el.innerHTML = menuItems.map(item => `
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <div style="font-weight:700;">${item.name}</div>
+                    ${item.description ? `<div style="font-size:12px;color:var(--text-dim);">${item.description}</div>` : ''}
+                </div>
+                <div style="font-weight:700;color:var(--gold);">${money(item.price)}</div>
+            </div>
+        `).join('');
+    }
+}
+
+// ============================================================
+// BIND EVENTS (بدل onclick في الـ HTML)
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup
+    document.getElementById('setupContinueBtn').addEventListener('click', handleSetupContinue);
+    
+    // Activation
+    document.getElementById('activateBtn').addEventListener('click', handleActivateDevice);
+    document.getElementById('backToSetupBtn').addEventListener('click', function() {
+        showScreen('setupScreen');
+    });
+    
+    // Lock
+    document.getElementById('lockOwnerBtn').addEventListener('click', function() {
+        selectLockRole('owner');
+    });
+    document.getElementById('lockEmployeeBtn').addEventListener('click', function() {
+        selectLockRole('employee');
+    });
+    document.getElementById('unlockOwnerBtn').addEventListener('click', handleUnlock);
+    document.getElementById('unlockEmpBtn').addEventListener('click', handleEmployeeUnlock);
+    document.getElementById('resetLockBtn').addEventListener('click', resetLockRole);
+    document.getElementById('resetLockEmpBtn').addEventListener('click', resetLockRole);
+    
+    // Main App
+    document.getElementById('lockAppBtn').addEventListener('click', lockApp);
+    
+    // Auto-resume
+    tryAutoResume();
+});
+
+// ============================================================
+// AUTO-RESUME
+// ============================================================
+async function tryAutoResume() {
+    const code = localStorage.getItem('platepro_business_code');
+    if (!code) return;
+    try {
+        const { data: biz } = await supabase.from('businesses').select('*').eq('code', code).single();
+        if (!biz) return;
+        business = biz;
+        const { data: dev } = await supabase.from('devices').select('*').eq('business_id', biz.id).eq('device_id', getDeviceId()).maybeSingle();
+        if (!dev) return;
+        deviceRecord = dev;
+        proceedToLock();
+    } catch (e) { 
+        console.warn('auto-resume failed', e); 
+        // Clear invalid code
+        localStorage.removeItem('platepro_business_code');
+    }
+}
+
+console.log('🍽️ Plate Pro — Cafe System');
+console.log('✅ All functions loaded successfully!');
+</script>
+</body>
+</html>
