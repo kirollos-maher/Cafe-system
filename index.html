@@ -243,97 +243,6 @@ body {
 .btn-xs { padding: 4px 12px; font-size: 11px; }
 
 /* ============================================================
-   LANGUAGE TOGGLE
-   ============================================================ */
-.lang-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    background: var(--bg-input);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-light);
-    cursor: pointer;
-    transition: all 0.3s var(--ease);
-    color: var(--text-secondary);
-    font-weight: 600;
-    font-size: 13px;
-}
-
-.lang-toggle:hover {
-    border-color: var(--primary);
-    color: var(--text-primary);
-}
-
-.lang-toggle i {
-    font-size: 16px;
-}
-
-/* ============================================================
-   THEME TOGGLE
-   ============================================================ */
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--bg-input);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-light);
-    transition: all 0.3s var(--ease);
-}
-
-.theme-toggle .toggle-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    transition: color 0.3s var(--ease);
-}
-
-.theme-toggle .toggle-switch {
-    position: relative;
-    width: 52px;
-    height: 28px;
-    background: var(--border);
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.3s var(--ease);
-    flex-shrink: 0;
-}
-
-.theme-toggle .toggle-switch .toggle-slider {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 22px;
-    height: 22px;
-    background: var(--bg-card);
-    border-radius: 50%;
-    transition: all 0.3s var(--ease);
-    box-shadow: var(--shadow);
-}
-
-.theme-toggle .toggle-switch.active {
-    background: var(--primary);
-}
-
-.theme-toggle .toggle-switch.active .toggle-slider {
-    left: 27px;
-}
-
-.theme-toggle .toggle-icons {
-    display: flex;
-    gap: 6px;
-    font-size: 16px;
-}
-
-.theme-toggle .toggle-icons .icon-sun { color: var(--warning); }
-.theme-toggle .toggle-icons .icon-moon { color: var(--text-muted); }
-
-[data-theme="light"] .theme-toggle .toggle-icons .icon-moon { color: var(--text-muted); }
-[data-theme="light"] .theme-toggle .toggle-icons .icon-sun { color: var(--warning); }
-
-/* ============================================================
    TOAST
    ============================================================ */
 .toast {
@@ -561,6 +470,322 @@ body {
 }
 
 /* ============================================================
+   CUSTOMER PAGE STYLES — محسنة
+   ============================================================ */
+.customer-page {
+    background: var(--bg);
+    min-height: 100vh;
+    padding-bottom: 100px;
+}
+
+.customer-hero {
+    background: linear-gradient(145deg, var(--primary-light), var(--bg-card));
+    border-radius: var(--radius-lg);
+    padding: 20px 18px;
+    text-align: center;
+    margin-bottom: 12px;
+    border: 1px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.customer-hero::before {
+    content: '🍽️';
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-size: 80px;
+    opacity: 0.08;
+}
+
+.customer-hero .brand {
+    font-size: 10px;
+    color: var(--primary);
+    font-family: var(--mono);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
+
+.customer-hero h1 {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 4px 0 2px;
+}
+
+.customer-hero p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.customer-categories {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 14px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.customer-categories::-webkit-scrollbar { display: none; }
+
+.customer-categories .btn {
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.customer-menu-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.customer-menu-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+}
+
+.customer-menu-card .item-image {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    overflow: hidden;
+}
+
+.customer-menu-card .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.customer-menu-card .item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.customer-menu-card .item-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.customer-menu-card .item-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.customer-menu-card .item-price {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: var(--mono);
+    font-size: 14px;
+}
+
+.customer-menu-card .item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.customer-menu-card .item-actions .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Customer Cart */
+#customerCart {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: var(--text-primary);
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-gold);
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    z-index: 100;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+#customerCart:hover {
+    transform: translateX(-50%) scale(1.04);
+}
+
+#customerCart .cart-badge {
+    background: var(--text-primary);
+    color: var(--bg);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin: 0 6px;
+}
+
+/* Cart Sheet */
+.cart-summary {
+    background: var(--bg-input);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin: 8px 0;
+}
+
+.cart-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.cart-summary .summary-row.total {
+    border-top: 2px solid var(--border);
+    padding-top: 10px;
+    margin-top: 6px;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text-primary);
+}
+
+.cart-summary .summary-row.total .amount {
+    color: var(--primary-dark);
+}
+
+/* QR Code */
+.qr-container {
+    display: none;
+    margin-top: 12px;
+    text-align: center;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    border: 1px solid var(--border-light);
+}
+
+.qr-container .qr-box {
+    display: inline-block;
+    background: #fff;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.qr-container .qr-box img {
+    width: 180px;
+    height: 180px;
+}
+
+.qr-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    border: 1px solid var(--border-light);
+}
+
+.qr-toggle-row .qr-label {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.qr-toggle-row .qr-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ============================================================
+   BADGES & LISTS
+   ============================================================ */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.badge-gold { background: var(--primary-glow); color: var(--primary-dark); }
+.badge-success { background: var(--success-bg); color: var(--success); }
+.badge-danger { background: var(--danger-bg); color: var(--danger); }
+.badge-info { background: var(--info-bg); color: var(--info); }
+.badge-warning { background: var(--warning-bg); color: var(--warning); }
+
+.list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border-light);
+    transition: border-color 0.3s var(--ease);
+}
+.list-row:last-child { border-bottom: none; }
+
+.list-row .row-title { font-weight: 600; font-size: 14px; color: var(--text-primary); transition: color 0.3s var(--ease); }
+.list-row .row-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; transition: color 0.3s var(--ease); }
+.list-row .row-value { font-family: var(--mono); font-weight: 700; color: var(--text-primary); transition: color 0.3s var(--ease); }
+.list-row .row-actions { display: flex; gap: 6px; align-items: center; }
+
+.panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 4px 14px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s var(--ease);
+}
+
+.empty {
+    text-align: center;
+    padding: 30px 16px;
+    color: var(--text-muted);
+    transition: color 0.3s var(--ease);
+}
+.empty i { font-size: 28px; color: var(--text-muted); margin-bottom: 8px; display: block; transition: color 0.3s var(--ease); }
+
+.order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: border-color 0.3s var(--ease);
+}
+.order-item:last-child { border-bottom: none; }
+
+.order-item .item-name { font-weight: 600; font-size: 14px; color: var(--text-primary); transition: color 0.3s var(--ease); }
+.order-item .item-details { font-size: 12px; color: var(--text-muted); transition: color 0.3s var(--ease); }
+.order-item .item-price { font-family: var(--mono); font-weight: 700; color: var(--text-primary); transition: color 0.3s var(--ease); }
+
+/* ============================================================
    TABLES GRID
    ============================================================ */
 .tables-grid {
@@ -632,77 +857,6 @@ body {
 .badge-gold { background: var(--primary); color: var(--text-primary); }
 .badge-info { background: var(--info); }
 .badge-success { background: var(--success); }
-
-/* ============================================================
-   BADGES
-   ============================================================ */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 12px;
-    border-radius: 16px;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.badge-gold { background: var(--primary-glow); color: var(--primary-dark); }
-.badge-success { background: var(--success-bg); color: var(--success); }
-.badge-danger { background: var(--danger-bg); color: var(--danger); }
-.badge-info { background: var(--info-bg); color: var(--info); }
-.badge-warning { background: var(--warning-bg); color: var(--warning); }
-
-/* ============================================================
-   LISTS
-   ============================================================ */
-.list-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 4px;
-    border-bottom: 1px solid var(--border-light);
-    transition: border-color 0.3s var(--ease);
-}
-.list-row:last-child { border-bottom: none; }
-
-.list-row .row-title { font-weight: 600; font-size: 14px; color: var(--text-primary); transition: color 0.3s var(--ease); }
-.list-row .row-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; transition: color 0.3s var(--ease); }
-.list-row .row-value { font-family: var(--mono); font-weight: 700; color: var(--text-primary); transition: color 0.3s var(--ease); }
-.list-row .row-actions { display: flex; gap: 6px; align-items: center; }
-
-.panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 4px 14px;
-    box-shadow: var(--shadow);
-    transition: all 0.3s var(--ease);
-}
-
-.empty {
-    text-align: center;
-    padding: 30px 16px;
-    color: var(--text-muted);
-    transition: color 0.3s var(--ease);
-}
-.empty i { font-size: 28px; color: var(--text-muted); margin-bottom: 8px; display: block; transition: color 0.3s var(--ease); }
-
-/* ============================================================
-   ORDER ITEMS
-   ============================================================ */
-.order-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-light);
-    transition: border-color 0.3s var(--ease);
-}
-.order-item:last-child { border-bottom: none; }
-
-.order-item .item-name { font-weight: 600; font-size: 14px; color: var(--text-primary); transition: color 0.3s var(--ease); }
-.order-item .item-details { font-size: 12px; color: var(--text-muted); transition: color 0.3s var(--ease); }
-.order-item .item-price { font-family: var(--mono); font-weight: 700; color: var(--text-primary); transition: color 0.3s var(--ease); }
 
 /* ============================================================
    PAYMENT OPTIONS
@@ -876,158 +1030,7 @@ body {
     .stat-card .stat-value { font-size: 22px; }
     .stat-card.revenue .stat-value { font-size: 30px; }
     .app-header .biz-name { font-size: 14px; }
-    .lang-toggle { font-size: 11px; padding: 4px 10px; }
-}
-
-/* ============================================================
-   CUSTOMER PAGE STYLES
-   ============================================================ */
-.customer-hero {
-    background: linear-gradient(145deg, var(--primary-light), var(--bg-card));
-    border-radius: var(--radius-lg);
-    padding: 24px 20px;
-    text-align: center;
-    margin-bottom: 16px;
-    border: 1px solid var(--primary);
-}
-
-.customer-hero h2 {
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--primary-dark);
-}
-
-.customer-hero p {
-    font-size: 13px;
-    color: var(--text-muted);
-}
-
-.customer-categories {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding: 8px 0 16px;
-    scrollbar-width: none;
-}
-
-.customer-categories::-webkit-scrollbar { display: none; }
-
-.customer-categories .btn {
-    flex-shrink: 0;
-    font-size: 12px;
-    padding: 6px 14px;
-}
-
-.customer-menu-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.2s;
-}
-
-.customer-menu-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-}
-
-.customer-menu-card .item-name {
-    font-weight: 700;
-    font-size: 15px;
-}
-
-.customer-menu-card .item-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.customer-menu-card .item-price {
-    font-weight: 700;
-    color: var(--primary-dark);
-    font-family: var(--mono);
-}
-
-#customerCart {
-    position: fixed;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--primary);
-    color: var(--text-primary);
-    padding: 14px 28px;
-    border-radius: 50px;
-    box-shadow: var(--shadow-gold);
-    font-weight: 700;
-    cursor: pointer;
-    display: none;
-    z-index: 100;
-    transition: all 0.3s;
-}
-
-#customerCart:hover {
-    transform: translateX(-50%) scale(1.03);
-}
-
-#customerCart .cart-badge {
-    background: var(--text-primary);
-    color: var(--bg);
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    margin-right: 8px;
-}
-
-/* ============================================================
-   QR CODE
-   ============================================================ */
-.qr-container {
-    display: none;
-    margin-top: 12px;
-    text-align: center;
-    background: var(--bg-card);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    border: 1px solid var(--border-light);
-}
-
-.qr-container .qr-box {
-    display: inline-block;
-    background: #fff;
-    padding: 16px;
-    border-radius: var(--radius-sm);
-}
-
-.qr-container .qr-box img {
-    width: 200px;
-    height: 200px;
-}
-
-.qr-toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg-card);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    border: 1px solid var(--border-light);
-}
-
-.qr-toggle-row .qr-label {
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.qr-toggle-row .qr-sub {
-    font-size: 11px;
-    color: var(--text-muted);
+    .customer-menu-card .item-image { width: 50px; height: 50px; font-size: 22px; }
 }
 </style>
 </head>
@@ -1140,9 +1143,8 @@ body {
             <div class="biz-sub mono" id="headerBizCode">—</div>
         </div>
         <div class="header-actions">
-            <button class="lang-toggle" id="langToggleBtn" onclick="toggleLanguage()">
-                <i class="fa-solid fa-language"></i>
-                <span id="langToggleLabel">English</span>
+            <button class="btn btn-ghost btn-sm" onclick="toggleLanguage()" style="padding:4px 10px;font-size:12px;">
+                <i class="fa-solid fa-language"></i> <span id="langToggleLabel">English</span>
             </button>
             <div class="icon-btn"><span class="live-dot"></span></div>
             <button class="icon-btn" id="lockAppBtn"><i class="fa-solid fa-lock"></i></button>
@@ -1183,15 +1185,14 @@ body {
             </button>
         </div>
 
-        <!-- QR Container -->
         <div class="qr-container" id="qrContainer">
             <div class="qr-box">
                 <img id="qrCodeImage" src="" alt="QR Code">
             </div>
-            <div style="margin-top:12px; font-size:12px; color:var(--text-muted);">
+            <div style="margin-top:10px; font-size:12px; color:var(--text-muted);">
                 <i class="fa-solid fa-info-circle"></i> امسح الكود لفتح منيو العميل
             </div>
-            <button class="btn btn-ghost btn-sm" onclick="downloadQR()" style="margin-top:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="downloadQR()" style="margin-top:6px;">
                 <i class="fa-solid fa-download"></i> تحميل QR
             </button>
         </div>
@@ -1261,14 +1262,14 @@ body {
 </div>
 
 <!-- ============================================================
-   CUSTOMER PAGE (تظهر لما ?customer=true)
+   CUSTOMER PAGE
    ============================================================ -->
-<div id="customerPage" class="screen" style="background:var(--bg); min-height:100vh; padding-bottom:80px;">
+<div id="customerPage" class="screen customer-page">
     <div style="max-width:480px; margin:0 auto; padding:16px;">
-        <!-- Header -->
+        <!-- Hero -->
         <div class="customer-hero">
-            <div style="font-size:12px; color:var(--primary); font-family:var(--mono); letter-spacing:0.2em;">✦ PLATE PRO ✦</div>
-            <h2 id="customerBizName">المطعم</h2>
+            <div class="brand">✦ PLATE PRO ✦</div>
+            <h1 id="customerBizName">المطعم</h1>
             <p>📱 امسح واطلب من مكانك</p>
         </div>
 
@@ -1295,10 +1296,27 @@ body {
                     <button class="close-x" onclick="closeSheet('customerCartOverlay')"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div id="customerCartItems"></div>
-                <div style="display:flex; justify-content:space-between; padding:12px 0; border-top:2px solid var(--primary); font-weight:700; font-size:18px;">
-                    <span>الإجمالي</span>
-                    <span style="color:var(--primary-dark);" id="customerCartTotal">0</span>
+                
+                <!-- Summary with Service Fee & VAT -->
+                <div class="cart-summary" id="cartSummary">
+                    <div class="summary-row">
+                        <span>المجموع</span>
+                        <span id="cartSubtotal">0</span>
+                    </div>
+                    <div class="summary-row" id="serviceFeeRow">
+                        <span>رسوم الخدمة (<span id="serviceFeePercent">0</span>%)</span>
+                        <span id="cartServiceFee">0</span>
+                    </div>
+                    <div class="summary-row" id="vatRow">
+                        <span>ضريبة القيمة المضافة (<span id="vatPercent">14</span>%)</span>
+                        <span id="cartVat">0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>الإجمالي</span>
+                        <span class="amount" id="customerCartTotal">0</span>
+                    </div>
                 </div>
+                
                 <button class="btn btn-primary btn-block" onclick="submitCustomerOrder()">
                     <i class="fa-solid fa-check"></i> تأكيد الطلب
                 </button>
@@ -1350,6 +1368,7 @@ body {
         <div class="field"><label>اسم الصنف</label><input type="text" id="menuItemName" placeholder="مثال: كابتشينو"></div>
         <div class="field"><label>السعر (جنية)</label><input type="number" id="menuItemPrice" class="mono" placeholder="25"></div>
         <div class="field"><label>الوصف (اختياري)</label><input type="text" id="menuItemDesc" placeholder="وصف مختصر"></div>
+        <div class="field"><label>رابط الصورة (اختياري)</label><input type="text" id="menuItemImage" placeholder="https://example.com/image.jpg"></div>
         <div class="field"><label>التصنيف</label>
             <select id="menuItemCategory"><option value="">بدون تصنيف</option></select>
         </div>
@@ -1502,6 +1521,27 @@ body {
     </div>
 </div>
 
+<!-- Settings Sheet for Service Fee & VAT -->
+<div class="overlay" id="settingsFeesOverlay">
+    <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <span>⚙️ إعدادات الرسوم</span>
+            <button class="close-x" onclick="closeSheet('settingsFeesOverlay')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="field">
+            <label>رسوم الخدمة (Service Fee) %</label>
+            <input type="number" id="serviceFeeInput" class="mono" step="0.5" min="0" value="10" placeholder="مثال: 10">
+        </div>
+        <div class="field">
+            <label>ضريبة القيمة المضافة (VAT) %</label>
+            <input type="number" id="vatInput" class="mono" step="0.5" min="0" value="14" placeholder="مثال: 14">
+        </div>
+        <button class="btn btn-primary btn-block" onclick="saveFeesSettings()">حفظ</button>
+        <div class="error-text" id="feesError"></div>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1517,6 +1557,53 @@ try {
     console.log('✅ Supabase initialized');
 } catch (e) {
     console.error('❌ Supabase init failed:', e);
+}
+
+// ============================================================
+// FEES STATE
+// ============================================================
+let serviceFeePercent = 10;
+let vatPercent = 14;
+
+function loadFeesSettings() {
+    const saved = localStorage.getItem('platepro_service_fee');
+    if (saved) serviceFeePercent = parseFloat(saved) || 10;
+    const savedVat = localStorage.getItem('platepro_vat');
+    if (savedVat) vatPercent = parseFloat(savedVat) || 14;
+}
+
+function saveFeesSettings() {
+    const serviceInput = document.getElementById('serviceFeeInput');
+    const vatInput = document.getElementById('vatInput');
+    const errEl = document.getElementById('feesError');
+    
+    const service = parseFloat(serviceInput.value);
+    const vat = parseFloat(vatInput.value);
+    
+    if (isNaN(service) || service < 0) {
+        errEl.textContent = 'أدخل نسبة خدمة صحيحة';
+        return;
+    }
+    if (isNaN(vat) || vat < 0) {
+        errEl.textContent = 'أدخل نسبة ضريبة صحيحة';
+        return;
+    }
+    
+    serviceFeePercent = service;
+    vatPercent = vat;
+    localStorage.setItem('platepro_service_fee', service.toString());
+    localStorage.setItem('platepro_vat', vat.toString());
+    
+    closeSheet('settingsFeesOverlay');
+    showToast('✅ تم حفظ الإعدادات', 'success');
+    updateCustomerCartUI();
+}
+
+function openFeesSettings() {
+    document.getElementById('serviceFeeInput').value = serviceFeePercent;
+    document.getElementById('vatInput').value = vatPercent;
+    document.getElementById('feesError').textContent = '';
+    openSheet('settingsFeesOverlay');
 }
 
 // ============================================================
@@ -1795,6 +1882,9 @@ async function loadCustomerData() {
         
         renderCustomerCategories();
         renderCustomerItems();
+        
+        // Load fees
+        loadFeesSettings();
     } catch (e) {
         console.error('Error loading customer data:', e);
         document.getElementById('customerBizName').textContent = '⚠️ خطأ في التحميل';
@@ -1846,22 +1936,33 @@ function renderCustomerItems(categoryId) {
         return;
     }
     
-    container.innerHTML = items.map(item => `
-        <div class="customer-menu-card">
-            <div>
-                <div class="item-name">${escapeHtml(item.name)}</div>
-                ${item.description ? `<div class="item-desc">${escapeHtml(item.description)}</div>` : ''}
-                <div class="item-price">${money(item.price)} ج.م</div>
+    container.innerHTML = items.map(item => {
+        const imageHtml = item.image_url ? 
+            `<img src="${item.image_url}" alt="${escapeHtml(item.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">` : 
+            '🍽️';
+        
+        return `
+            <div class="customer-menu-card">
+                <div class="item-image">
+                    ${imageHtml}
+                </div>
+                <div class="item-info">
+                    <div class="item-name">${escapeHtml(item.name)}</div>
+                    ${item.description ? `<div class="item-desc">${escapeHtml(item.description)}</div>` : ''}
+                    <div class="item-price">${money(item.price)} ج.م</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-primary btn-xs" onclick="addToCustomerCart('${item.id}')">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
             </div>
-            <button class="btn btn-primary btn-xs" onclick="addToCustomerCart('${item.id}')">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // ============================================================
-// CUSTOMER CART
+// CUSTOMER CART — مع Service Fee و VAT
 // ============================================================
 function addToCustomerCart(itemId) {
     const item = customerMenuItems.find(i => i.id === itemId);
@@ -1881,7 +1982,10 @@ function addToCustomerCart(itemId) {
 function updateCustomerCartUI() {
     const cart = document.getElementById('customerCart');
     const count = customerCart.reduce((sum, i) => sum + i.quantity, 0);
-    const total = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const subtotal = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const serviceFee = subtotal * (serviceFeePercent / 100);
+    const vat = (subtotal + serviceFee) * (vatPercent / 100);
+    const total = subtotal + serviceFee + vat;
     
     document.getElementById('cartCount').textContent = count;
     document.getElementById('cartTotal').textContent = money(total);
@@ -1913,8 +2017,18 @@ function showCustomerCart() {
         </div>
     `).join('');
     
-    const total = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const subtotal = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    const serviceFee = subtotal * (serviceFeePercent / 100);
+    const vat = (subtotal + serviceFee) * (vatPercent / 100);
+    const total = subtotal + serviceFee + vat;
+    
+    document.getElementById('cartSubtotal').textContent = money(subtotal);
+    document.getElementById('serviceFeePercent').textContent = serviceFeePercent;
+    document.getElementById('cartServiceFee').textContent = money(serviceFee);
+    document.getElementById('vatPercent').textContent = vatPercent;
+    document.getElementById('cartVat').textContent = money(vat);
     document.getElementById('customerCartTotal').textContent = money(total);
+    
     openSheet('customerCartOverlay');
 }
 
@@ -1962,6 +2076,9 @@ async function submitCustomerOrder() {
         }
         
         const subtotal = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+        const serviceFee = subtotal * (serviceFeePercent / 100);
+        const vat = (subtotal + serviceFee) * (vatPercent / 100);
+        const total = subtotal + serviceFee + vat;
         
         const { data: order, error } = await supabaseClient.from('orders').insert({
             business_id: customerBusiness.id,
@@ -1969,8 +2086,10 @@ async function submitCustomerOrder() {
             order_type: 'dine_in',
             status: 'pending',
             subtotal: subtotal,
-            total: subtotal,
-            notes: '📱 طلب من العميل عبر QR'
+            total: total,
+            notes: '📱 طلب من العميل عبر QR\n' + 
+                   'رسوم الخدمة: ' + money(serviceFee) + '\n' +
+                   'ضريبة القيمة المضافة: ' + money(vat)
         }).select().single();
         
         if (error) throw error;
@@ -2168,6 +2287,7 @@ async function enterMainApp() {
     showScreen('mainApp');
     
     loadTheme();
+    loadFeesSettings();
     await loadAllData();
     
     if (currentUser.type === 'owner') {
@@ -2329,7 +2449,7 @@ function renderTables() {
 }
 
 // ============================================================
-// TABLE SHEET (مختصر)
+// TABLE SHEET
 // ============================================================
 function openTableSheet(tableId) {
     if (!hasPermission('create_orders')) {
@@ -2438,7 +2558,7 @@ function openTableSheet(tableId) {
 }
 
 // ============================================================
-// ORDER MANAGEMENT (مختصر)
+// ORDER MANAGEMENT
 // ============================================================
 function addItemToOrder(item) {
     const existing = _orderItems.find(i => i.menu_item_id === item.id);
@@ -2772,7 +2892,7 @@ async function loadOrderDetailItems(orderId) {
 }
 
 // ============================================================
-// MENU VIEW + MANAGEMENT
+// MENU VIEW
 // ============================================================
 function renderMenuView() {
     const el = document.getElementById('menuView');
@@ -2785,9 +2905,13 @@ function renderMenuView() {
     let html = '';
     if (menuCategories.length === 0) {
         menuItems.forEach(item => {
+            const imageHtml = item.image_url ? 
+                `<img src="${item.image_url}" style="width:48px;height:48px;border-radius:8px;object-fit:cover;" onerror="this.style.display='none'">` : 
+                '';
             html += `
-                <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-                    <div>
+                <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:14px;margin-bottom:8px;display:flex;gap:14px;align-items:center;">
+                    ${imageHtml ? `<div style="flex-shrink:0;">${imageHtml}</div>` : ''}
+                    <div style="flex:1;">
                         <div style="font-weight:700;">${escapeHtml(item.name)}</div>
                         ${item.description ? `<div style="font-size:12px;color:var(--text-muted);">${escapeHtml(item.description)}</div>` : ''}
                     </div>
@@ -2804,15 +2928,21 @@ function renderMenuView() {
                     <div style="font-weight:700;font-size:16px;color:var(--primary-dark);margin-bottom:8px;">
                         <i class="fa-solid ${cat.icon || 'fa-utensils'}"></i> ${escapeHtml(cat.name)}
                     </div>
-                    ${items.map(item => `
-                        <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-                            <div>
-                                <div style="font-weight:600;">${escapeHtml(item.name)}</div>
-                                ${item.description ? `<div style="font-size:11px;color:var(--text-muted);">${escapeHtml(item.description)}</div>` : ''}
+                    ${items.map(item => {
+                        const imageHtml = item.image_url ? 
+                            `<img src="${item.image_url}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" onerror="this.style.display='none'">` : 
+                            '';
+                        return `
+                            <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:6px;display:flex;gap:12px;align-items:center;">
+                                ${imageHtml ? `<div style="flex-shrink:0;">${imageHtml}</div>` : ''}
+                                <div style="flex:1;">
+                                    <div style="font-weight:600;">${escapeHtml(item.name)}</div>
+                                    ${item.description ? `<div style="font-size:11px;color:var(--text-muted);">${escapeHtml(item.description)}</div>` : ''}
+                                </div>
+                                <div style="font-weight:700;color:var(--primary-dark);">${money(item.price)}</div>
                             </div>
-                            <div style="font-weight:700;color:var(--primary-dark);">${money(item.price)}</div>
-                        </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>
             `;
         });
@@ -2832,7 +2962,7 @@ function renderMenuManagement() {
             <div class="list-row">
                 <div>
                     <div class="row-title">${escapeHtml(item.name)}</div>
-                    <div class="row-sub">${money(item.price)} ${cat ? '· ' + escapeHtml(cat.name) : ''}</div>
+                    <div class="row-sub">${money(item.price)} ${cat ? '· ' + escapeHtml(cat.name) : ''} ${item.image_url ? '🖼️' : ''}</div>
                 </div>
                 <div class="row-actions">
                     <button class="btn btn-ghost btn-xs" onclick="editMenuItem('${item.id}')"><i class="fa-solid fa-pen"></i></button>
@@ -2856,6 +2986,7 @@ function openMenuItemSheet() {
     document.getElementById('menuItemName').value = '';
     document.getElementById('menuItemPrice').value = '';
     document.getElementById('menuItemDesc').value = '';
+    document.getElementById('menuItemImage').value = '';
     document.getElementById('menuItemActive').checked = true;
     document.getElementById('menuItemSheetTitle').textContent = 'إضافة صنف';
     document.getElementById('deleteMenuItemBtn').style.display = 'none';
@@ -2883,6 +3014,7 @@ function editMenuItem(itemId) {
     document.getElementById('menuItemName').value = item.name;
     document.getElementById('menuItemPrice').value = item.price;
     document.getElementById('menuItemDesc').value = item.description || '';
+    document.getElementById('menuItemImage').value = item.image_url || '';
     document.getElementById('menuItemActive').checked = item.is_active !== false;
     document.getElementById('menuItemSheetTitle').textContent = 'تعديل صنف';
     document.getElementById('deleteMenuItemBtn').style.display = 'flex';
@@ -2905,6 +3037,7 @@ async function saveMenuItem() {
     const name = document.getElementById('menuItemName').value.trim();
     const price = parseFloat(document.getElementById('menuItemPrice').value);
     const description = document.getElementById('menuItemDesc').value.trim();
+    const image_url = document.getElementById('menuItemImage').value.trim();
     const category_id = document.getElementById('menuItemCategory').value || null;
     const is_active = document.getElementById('menuItemActive').checked;
     const errEl = document.getElementById('menuItemError');
@@ -2920,7 +3053,7 @@ async function saveMenuItem() {
     }
     
     try {
-        const data = { name, price, description, category_id, is_active };
+        const data = { name, price, description, image_url: image_url || null, category_id, is_active };
         if (id) {
             await supabaseClient.from('menu_items').update(data).eq('id', id);
             showToast('تم تحديث الصنف', 'success');
@@ -3125,7 +3258,7 @@ async function savePaymentMethod() {
 }
 
 // ============================================================
-// EMPLOYEE MANAGEMENT (مع الصلاحيات)
+// EMPLOYEE MANAGEMENT
 // ============================================================
 function openEmployeeSheet() {
     document.getElementById('editEmployeeId').value = '';
@@ -3272,6 +3405,19 @@ function renderSettings() {
         <div class="list-row"><div class="row-title">الاسم</div><div class="row-value">${escapeHtml(business.name)}</div></div>
         <div class="list-row"><div class="row-title">الكود</div><div class="row-value mono">${escapeHtml(business.code)}</div></div>
         
+        <div class="section-title">💰 الرسوم والضرائب</div>
+        <div class="list-row">
+            <div class="row-title">رسوم الخدمة</div>
+            <div class="row-value mono">${serviceFeePercent}%</div>
+        </div>
+        <div class="list-row">
+            <div class="row-title">ضريبة القيمة المضافة</div>
+            <div class="row-value mono">${vatPercent}%</div>
+        </div>
+        <button class="btn btn-primary btn-sm btn-block" onclick="openFeesSettings()">
+            <i class="fa-solid fa-pen"></i> تعديل الرسوم
+        </button>
+        
         <div class="section-title">💳 طرق الدفع</div>
         <button class="btn btn-primary btn-sm" onclick="openPaymentMethodSheet()"><i class="fa-solid fa-plus"></i> إضافة</button>
         <div class="panel" id="settingsPaymentMethods"></div>
@@ -3347,12 +3493,10 @@ function switchBusiness() {
 // BIND EVENTS
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Setup
     document.getElementById('setupContinueBtn').addEventListener('click', handleSetupContinue);
     document.getElementById('activateBtn').addEventListener('click', handleActivateDevice);
     document.getElementById('backToSetupBtn').addEventListener('click', function() { showScreen('setupScreen'); });
     
-    // Lock
     document.getElementById('lockOwnerBtn').addEventListener('click', function() { selectLockRole('owner'); });
     document.getElementById('lockEmployeeBtn').addEventListener('click', function() { selectLockRole('employee'); });
     document.getElementById('unlockOwnerBtn').addEventListener('click', handleUnlock);
@@ -3362,10 +3506,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('lockAppBtn').addEventListener('click', lockApp);
     
     loadTheme();
-    
-    // Check if customer page
+    loadFeesSettings();
     initCustomerPage();
-    
     tryAutoResume();
 });
 
@@ -3389,7 +3531,8 @@ async function tryAutoResume() {
 
 console.log('🍽️ Plate Pro — Full System!');
 console.log('📱 QR Code for customer ordering');
-console.log('🔐 Employee permissions system');
+console.log('💰 Service Fee & VAT included');
+console.log('🖼️ Item images supported');
 </script>
 </body>
 </html>
