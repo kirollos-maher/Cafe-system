@@ -2902,10 +2902,18 @@ async function submitCustomerOrder() {
         showCustomerToast(t('order_created'));
         document.getElementById('customerCartError').textContent = '';
         
-        loadCustomerData();
-        renderTables();
-        renderKitchenOrders();
-        renderDashboard();
+        // 🔥 إعادة تحميل البيانات بالكامل
+        await loadCustomerData();
+        
+        if (business) {
+            await loadActiveOrders();
+            await loadTables();
+            renderTables();
+            renderKitchenOrders();
+            renderDashboard();
+        }
+        
+        console.log('✅ Order created and synced successfully!');
         
     } catch (e) {
         console.error('Error submitting order:', e);
