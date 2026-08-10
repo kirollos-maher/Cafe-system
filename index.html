@@ -470,7 +470,7 @@ body {
 }
 
 /* ============================================================
-   CUSTOMER PAGE STYLES — محسنة
+   CUSTOMER PAGE — تصميم محسن
    ============================================================ */
 .customer-page {
     background: var(--bg);
@@ -479,43 +479,42 @@ body {
 }
 
 .customer-hero {
-    background: linear-gradient(145deg, var(--primary-light), var(--bg-card));
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
     border-radius: var(--radius-lg);
-    padding: 20px 18px;
+    padding: 24px 20px;
     text-align: center;
-    margin-bottom: 12px;
-    border: 1px solid var(--primary);
+    margin-bottom: 16px;
     position: relative;
     overflow: hidden;
 }
 
-.customer-hero::before {
+.customer-hero::after {
     content: '🍽️';
     position: absolute;
-    top: -20px;
-    right: -10px;
+    bottom: -20px;
+    left: -10px;
     font-size: 80px;
-    opacity: 0.08;
+    opacity: 0.1;
 }
 
 .customer-hero .brand {
     font-size: 10px;
-    color: var(--primary);
+    color: rgba(255,255,255,0.7);
     font-family: var(--mono);
     letter-spacing: 0.3em;
     text-transform: uppercase;
 }
 
 .customer-hero h1 {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 900;
-    color: var(--text-primary);
+    color: #fff;
     margin: 4px 0 2px;
 }
 
 .customer-hero p {
     font-size: 13px;
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.8);
 }
 
 .customer-categories {
@@ -535,6 +534,15 @@ body {
     padding: 8px 16px;
     border-radius: 20px;
     white-space: nowrap;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.customer-categories .btn.active {
+    background: var(--primary);
+    color: var(--text-primary);
+    border-color: var(--primary);
 }
 
 .customer-menu-card {
@@ -607,12 +615,6 @@ body {
     gap: 8px;
 }
 
-.customer-menu-card .item-actions .btn {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-/* Customer Cart */
 #customerCart {
     position: fixed;
     bottom: 80px;
@@ -648,7 +650,6 @@ body {
     margin: 0 6px;
 }
 
-/* Cart Sheet */
 .cart-summary {
     background: var(--bg-input);
     border-radius: var(--radius-sm);
@@ -677,7 +678,9 @@ body {
     color: var(--primary-dark);
 }
 
-/* QR Code */
+/* ============================================================
+   QR CODE
+   ============================================================ */
 .qr-container {
     display: none;
     margin-top: 12px;
@@ -1031,6 +1034,7 @@ body {
     .stat-card.revenue .stat-value { font-size: 30px; }
     .app-header .biz-name { font-size: 14px; }
     .customer-menu-card .item-image { width: 50px; height: 50px; font-size: 22px; }
+    .customer-hero h1 { font-size: 22px; }
 }
 </style>
 </head>
@@ -1274,9 +1278,7 @@ body {
         </div>
 
         <!-- Categories -->
-        <div class="customer-categories" id="customerCategories">
-            <button class="btn btn-primary btn-sm" onclick="filterCustomerItems('all')">🍽️ الكل</button>
-        </div>
+        <div class="customer-categories" id="customerCategories"></div>
 
         <!-- Menu Items -->
         <div id="customerMenuItems"></div>
@@ -1297,7 +1299,6 @@ body {
                 </div>
                 <div id="customerCartItems"></div>
                 
-                <!-- Summary with Service Fee & VAT -->
                 <div class="cart-summary" id="cartSummary">
                     <div class="summary-row">
                         <span>المجموع</span>
@@ -1368,7 +1369,7 @@ body {
         <div class="field"><label>اسم الصنف</label><input type="text" id="menuItemName" placeholder="مثال: كابتشينو"></div>
         <div class="field"><label>السعر (جنية)</label><input type="number" id="menuItemPrice" class="mono" placeholder="25"></div>
         <div class="field"><label>الوصف (اختياري)</label><input type="text" id="menuItemDesc" placeholder="وصف مختصر"></div>
-        <div class="field"><label>رابط الصورة (اختياري)</label><input type="text" id="menuItemImage" placeholder="https://example.com/image.jpg"></div>
+        <div class="field"><label>رابط الصورة</label><input type="text" id="menuItemImage" placeholder="https://example.com/image.jpg"></div>
         <div class="field"><label>التصنيف</label>
             <select id="menuItemCategory"><option value="">بدون تصنيف</option></select>
         </div>
@@ -1521,21 +1522,21 @@ body {
     </div>
 </div>
 
-<!-- Settings Sheet for Service Fee & VAT -->
+<!-- Fees Settings Sheet -->
 <div class="overlay" id="settingsFeesOverlay">
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>⚙️ إعدادات الرسوم</span>
+            <span>⚙️ إعدادات الرسوم والضرائب</span>
             <button class="close-x" onclick="closeSheet('settingsFeesOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="field">
             <label>رسوم الخدمة (Service Fee) %</label>
-            <input type="number" id="serviceFeeInput" class="mono" step="0.5" min="0" value="10" placeholder="مثال: 10">
+            <input type="number" id="serviceFeeInput" class="mono" step="0.5" min="0" placeholder="مثال: 10">
         </div>
         <div class="field">
             <label>ضريبة القيمة المضافة (VAT) %</label>
-            <input type="number" id="vatInput" class="mono" step="0.5" min="0" value="14" placeholder="مثال: 14">
+            <input type="number" id="vatInput" class="mono" step="0.5" min="0" placeholder="مثال: 14">
         </div>
         <button class="btn btn-primary btn-block" onclick="saveFeesSettings()">حفظ</button>
         <div class="error-text" id="feesError"></div>
@@ -1596,6 +1597,7 @@ function saveFeesSettings() {
     
     closeSheet('settingsFeesOverlay');
     showToast('✅ تم حفظ الإعدادات', 'success');
+    renderSettings();
     updateCustomerCartUI();
 }
 
@@ -1883,7 +1885,6 @@ async function loadCustomerData() {
         renderCustomerCategories();
         renderCustomerItems();
         
-        // Load fees
         loadFeesSettings();
     } catch (e) {
         console.error('Error loading customer data:', e);
@@ -1894,9 +1895,9 @@ async function loadCustomerData() {
 function renderCustomerCategories() {
     const container = document.getElementById('customerCategories');
     container.innerHTML = `
-        <button class="btn btn-primary btn-sm" onclick="filterCustomerItems('all')">🍽️ الكل</button>
+        <button class="btn active" onclick="filterCustomerItems('all')">🍽️ الكل</button>
         ${customerCategories.map(cat => `
-            <button class="btn btn-outline btn-sm" onclick="filterCustomerItems('${cat.id}')">
+            <button class="btn" onclick="filterCustomerItems('${cat.id}')">
                 <i class="fa-solid ${cat.icon || 'fa-utensils'}"></i> ${escapeHtml(cat.name)}
             </button>
         `).join('')}
@@ -1906,13 +1907,12 @@ function renderCustomerCategories() {
 function filterCustomerItems(categoryId) {
     currentCustomerFilter = categoryId;
     document.querySelectorAll('#customerCategories .btn').forEach(btn => {
-        btn.className = btn.className.replace('btn-primary', 'btn-outline');
-        btn.className = btn.className.replace('btn-outline', 'btn-outline');
+        btn.classList.remove('active');
     });
     const btns = document.querySelectorAll('#customerCategories .btn');
     const idx = categoryId === 'all' ? 0 : customerCategories.findIndex(c => c.id === categoryId) + 1;
     if (btns[idx]) {
-        btns[idx].className = btns[idx].className.replace('btn-outline', 'btn-primary');
+        btns[idx].classList.add('active');
     }
     renderCustomerItems(categoryId);
 }
@@ -1962,7 +1962,7 @@ function renderCustomerItems(categoryId) {
 }
 
 // ============================================================
-// CUSTOMER CART — مع Service Fee و VAT
+// CUSTOMER CART
 // ============================================================
 function addToCustomerCart(itemId) {
     const item = customerMenuItems.find(i => i.id === itemId);
@@ -2121,7 +2121,7 @@ async function submitCustomerOrder() {
 }
 
 // ============================================================
-// SETUP / ACTIVATION / LOCK
+// SETUP / ACTIVATION / LOCK (مختصر)
 // ============================================================
 async function handleSetupContinue() {
     const code = document.getElementById('setupBusinessCode').value.trim().toUpperCase();
@@ -2319,7 +2319,7 @@ async function loadAllData() {
 }
 
 // ============================================================
-// DATA LOADERS
+// DATA LOADERS (مختصرة)
 // ============================================================
 async function loadTables() {
     if (!supabaseClient) return;
@@ -2449,7 +2449,7 @@ function renderTables() {
 }
 
 // ============================================================
-// TABLE SHEET
+// TABLE SHEET (مختصر)
 // ============================================================
 function openTableSheet(tableId) {
     if (!hasPermission('create_orders')) {
@@ -2558,7 +2558,7 @@ function openTableSheet(tableId) {
 }
 
 // ============================================================
-// ORDER MANAGEMENT
+// ORDER MANAGEMENT (مختصر)
 // ============================================================
 function addItemToOrder(item) {
     const existing = _orderItems.find(i => i.menu_item_id === item.id);
@@ -2892,7 +2892,7 @@ async function loadOrderDetailItems(orderId) {
 }
 
 // ============================================================
-// MENU VIEW
+// MENU VIEW + MANAGEMENT
 // ============================================================
 function renderMenuView() {
     const el = document.getElementById('menuView');
@@ -3258,7 +3258,7 @@ async function savePaymentMethod() {
 }
 
 // ============================================================
-// EMPLOYEE MANAGEMENT
+// EMPLOYEE MANAGEMENT (مختصر)
 // ============================================================
 function openEmployeeSheet() {
     document.getElementById('editEmployeeId').value = '';
@@ -3411,7 +3411,7 @@ function renderSettings() {
             <div class="row-value mono">${serviceFeePercent}%</div>
         </div>
         <div class="list-row">
-            <div class="row-title">ضريبة القيمة المضافة</div>
+            <div class="row-title">ضريبة القيمة المضافة (VAT)</div>
             <div class="row-value mono">${vatPercent}%</div>
         </div>
         <button class="btn btn-primary btn-sm btn-block" onclick="openFeesSettings()">
