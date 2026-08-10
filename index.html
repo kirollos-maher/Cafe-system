@@ -86,6 +86,106 @@
 }
 
 /* ============================================================
+   BADGES
+   ============================================================ */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all 0.3s var(--ease);
+    border: 1px solid transparent;
+}
+
+.badge-success { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
+.badge-danger { background: #EF4444; color: #FFFFFF !important; border-color: #DC2626; }
+.badge-warning { background: #F59E0B; color: #1A1A2E !important; border-color: #D97706; }
+.badge-info { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
+.badge-gold { background: var(--primary); color: var(--text-primary) !important; border-color: var(--primary-dark); }
+.badge-inactive { background: #6B7280; color: #FFFFFF !important; border-color: #4B5563; }
+.badge-purple { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
+.badge-teal { background: #14B8A6; color: #FFFFFF !important; border-color: #0D9488; }
+
+/* حالات الطلبات */
+.badge-pending { background: #F59E0B; color: #1A1A2E !important; border-color: #D97706; }
+.badge-preparing { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
+.badge-ready { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
+.badge-paid { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
+.badge-cancelled { background: #EF4444; color: #FFFFFF !important; border-color: #DC2626; }
+
+/* حالات الطاولات */
+.badge-table-available { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
+.badge-table-occupied { background: var(--primary); color: var(--text-primary) !important; border-color: var(--primary-dark); }
+.badge-table-reserved { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: var(--bg-input);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    transition: all 0.3s var(--ease);
+}
+
+.theme-toggle .toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.3s var(--ease);
+}
+
+.theme-toggle .toggle-switch {
+    position: relative;
+    width: 56px;
+    height: 30px;
+    background: var(--border);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s var(--ease);
+    flex-shrink: 0;
+}
+
+.theme-toggle .toggle-switch .toggle-slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 24px;
+    height: 24px;
+    background: var(--bg-card);
+    border-radius: 50%;
+    transition: all 0.3s var(--ease);
+    box-shadow: var(--shadow);
+}
+
+.theme-toggle .toggle-switch.active {
+    background: var(--primary);
+}
+
+.theme-toggle .toggle-switch.active .toggle-slider {
+    left: 29px;
+}
+
+.theme-toggle .toggle-icons {
+    display: flex;
+    gap: 8px;
+    font-size: 18px;
+}
+
+.theme-toggle .toggle-icons .icon-sun { color: #F59E0B; }
+.theme-toggle .toggle-icons .icon-moon { color: #9A9AB0; }
+
+[data-theme="light"] .theme-toggle .toggle-icons .icon-moon { color: #9A9AB0; }
+[data-theme="light"] .theme-toggle .toggle-icons .icon-sun { color: #F59E0B; }
+
+/* ============================================================
    BASE STYLES
    ============================================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -383,40 +483,49 @@ body {
 .stat-card:hover { transform: translateY(-2px); }
 
 .stat-card.revenue {
-    background: linear-gradient(145deg, #1A1A2E, #2A2A40);
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
     border-color: var(--primary);
     grid-column: 1 / -1;
     text-align: center;
     padding: 20px;
+    color: #fff;
 }
 
-.stat-card.revenue::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 70% 30%, rgba(232, 184, 75, 0.08), transparent 60%);
-    pointer-events: none;
-}
-
-.stat-card.revenue .stat-label {
-    font-size: 14px;
-    color: var(--primary-light);
-    font-weight: 700;
+.stat-card.revenue .brand-name {
+    font-size: 22px;
+    font-weight: 900;
     letter-spacing: 0.05em;
 }
 
+.stat-card.revenue .brand-sub {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.stat-card.revenue .stat-label {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 600;
+}
+
 .stat-card.revenue .stat-value {
-    font-size: 40px;
-    color: var(--primary);
+    font-size: 38px;
     font-weight: 900;
+    color: #fff;
 }
 
 .stat-card.revenue .stat-value .currency {
-    font-size: 20px;
-    color: var(--text-muted);
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.stat-card.revenue .logo-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.3);
+    margin-bottom: 6px;
 }
 
 .stat-card.occupied-card {
@@ -441,7 +550,7 @@ body {
 .stat-card.orders-card .stat-label { color: #B8D8F5; }
 
 [data-theme="light"] .stat-card.revenue {
-    background: linear-gradient(145deg, #FDF8EE, #F7F0E0);
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
 }
 [data-theme="light"] .stat-card.occupied-card {
     background: linear-gradient(145deg, #FDE8EA, #F7F0F0);
@@ -470,7 +579,7 @@ body {
 }
 
 /* ============================================================
-   CUSTOMER PAGE — تصميم محسن
+   CUSTOMER PAGE
    ============================================================ */
 .customer-page {
     background: var(--bg);
@@ -481,25 +590,26 @@ body {
 .customer-hero {
     background: linear-gradient(145deg, var(--primary), var(--primary-dark));
     border-radius: var(--radius-lg);
-    padding: 24px 20px;
+    padding: 20px;
     text-align: center;
     margin-bottom: 16px;
     position: relative;
     overflow: hidden;
+    color: #fff;
 }
 
-.customer-hero::after {
-    content: '🍽️';
-    position: absolute;
-    bottom: -20px;
-    left: -10px;
-    font-size: 80px;
-    opacity: 0.1;
+.customer-hero .logo-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.3);
+    margin-bottom: 6px;
 }
 
 .customer-hero .brand {
     font-size: 10px;
-    color: rgba(255,255,255,0.7);
+    opacity: 0.7;
     font-family: var(--mono);
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -509,12 +619,12 @@ body {
     font-size: 28px;
     font-weight: 900;
     color: #fff;
-    margin: 4px 0 2px;
+    margin: 2px 0;
 }
 
 .customer-hero p {
     font-size: 13px;
-    color: rgba(255,255,255,0.8);
+    opacity: 0.85;
 }
 
 .customer-categories {
@@ -724,24 +834,8 @@ body {
 }
 
 /* ============================================================
-   BADGES & LISTS
+   LISTS
    ============================================================ */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 12px;
-    border-radius: 16px;
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.badge-gold { background: var(--primary-glow); color: var(--primary-dark); }
-.badge-success { background: var(--success-bg); color: var(--success); }
-.badge-danger { background: var(--danger-bg); color: var(--danger); }
-.badge-info { background: var(--info-bg); color: var(--info); }
-.badge-warning { background: var(--warning-bg); color: var(--warning); }
-
 .list-row {
     display: flex;
     align-items: center;
@@ -856,10 +950,6 @@ body {
     font-weight: 700;
     color: #fff;
 }
-
-.badge-gold { background: var(--primary); color: var(--text-primary); }
-.badge-info { background: var(--info); }
-.badge-success { background: var(--success); }
 
 /* ============================================================
    PAYMENT OPTIONS
@@ -1070,7 +1160,7 @@ body {
         <div class="brand-mark">✦ PLATE PRO ✦</div>
         <div class="brand-title" id="activationBizName" style="font-size:22px;">—</div>
         <div class="card">
-            <p style="color:var(--text-secondary);font-size:14px;margin-bottom:18px;transition:color 0.3s var(--ease);">
+            <p style="color:var(--text-secondary);font-size:14px;margin-bottom:18px;">
                 الجهاز ده لسه مش مفعّل على النشاط ده.<br>
                 أدخل كود التفعيل اللي معاك.
             </p>
@@ -1096,7 +1186,7 @@ body {
         <div class="brand-title" id="lockBizName" style="font-size:22px;">—</div>
         <div class="card">
             <div id="lockRoleChoice">
-                <p style="color:var(--text-secondary);margin-bottom:16px;font-size:15px;transition:color 0.3s var(--ease);">اختر طريقة الدخول</p>
+                <p style="color:var(--text-secondary);margin-bottom:16px;font-size:15px;">اختر طريقة الدخول</p>
                 <button class="btn btn-primary btn-block" style="margin-bottom:10px;" id="lockOwnerBtn">
                     <i class="fa-solid fa-user-shield"></i> المالك
                 </button>
@@ -1159,8 +1249,10 @@ body {
     <div class="view active" id="view-dashboard">
         <div class="section-title">📊 أداء اليوم</div>
         <div class="stat-grid">
-            <div class="stat-card revenue">
-                <div class="stat-label">💰 إيراد اليوم</div>
+            <div class="stat-card revenue" id="bizHeaderCard">
+                <div id="bizLogoContainer"></div>
+                <div class="brand-name" id="dashBizName">—</div>
+                <div class="brand-sub">💰 إيراد اليوم</div>
                 <div class="stat-value"><span id="dashRevenue">0</span> <span class="currency">ج.م</span></div>
             </div>
             <div class="stat-card orders-card">
@@ -1271,11 +1363,25 @@ body {
 <div id="customerPage" class="screen customer-page">
     <div style="max-width:480px; margin:0 auto; padding:16px;">
         <!-- Hero -->
-        <div class="customer-hero">
+        <div class="customer-hero" id="customerHero">
+            <div id="customerLogoContainer"></div>
             <div class="brand">✦ PLATE PRO ✦</div>
             <h1 id="customerBizName">المطعم</h1>
-            <p>📱 Scan to order from your seat</p>
+            <p>📱 امسح واطلب من مكانك</p>
         </div>
+
+        <!-- اختيار الطاولة - تحت الـ Hero مباشرة -->
+<div style="margin-bottom:16px; background:var(--bg-card); border-radius:var(--radius-md); padding:14px 16px; border:1px solid var(--border-light);">
+    <label style="font-size:13px; font-weight:600; color:var(--text-secondary); display:block; margin-bottom:6px;">
+        🪑 اختر رقم الطاولة
+    </label>
+    <select id="customerTableSelect" style="width:100%; padding:12px 16px; background:var(--bg-input); border:2px solid var(--border); border-radius:var(--radius-sm); color:var(--text-primary); font-size:16px; outline:none; font-family:var(--font);">
+        <option value="">-- اختر طاولة --</option>
+    </select>
+    <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+        <i class="fa-solid fa-info-circle"></i> اختر رقم الطاولة اللي قاعد عليها
+    </div>
+</div>
 
         <!-- Categories -->
         <div class="customer-categories" id="customerCategories"></div>
@@ -1369,7 +1475,17 @@ body {
         <div class="field"><label>اسم الصنف</label><input type="text" id="menuItemName" placeholder="مثال: كابتشينو"></div>
         <div class="field"><label>السعر (جنية)</label><input type="number" id="menuItemPrice" class="mono" placeholder="25"></div>
         <div class="field"><label>الوصف (اختياري)</label><input type="text" id="menuItemDesc" placeholder="وصف مختصر"></div>
-        <div class="field"><label>رابط الصورة</label><input type="text" id="menuItemImage" placeholder="https://example.com/image.jpg"></div>
+        <div class="field">
+            <label>صورة الصنف</label>
+            <input type="file" id="menuItemImageInput" accept="image/*" style="padding:8px;">
+            <div id="menuItemImagePreview" style="margin-top:8px; display:none;">
+                <img id="menuItemImagePreviewImg" style="max-width:100px;max-height:100px;border-radius:8px;">
+                <button class="btn btn-danger btn-xs" onclick="document.getElementById('menuItemImageInput').value='';document.getElementById('menuItemImagePreview').style.display='none';">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <input type="hidden" id="menuItemImageData">
+        </div>
         <div class="field"><label>التصنيف</label>
             <select id="menuItemCategory"><option value="">بدون تصنيف</option></select>
         </div>
@@ -1543,6 +1659,31 @@ body {
     </div>
 </div>
 
+<!-- Logo Settings Sheet -->
+<div class="overlay" id="settingsLogoOverlay">
+    <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <span>🖼️ إعدادات الشعار (Logo)</span>
+            <button class="close-x" onclick="closeSheet('settingsLogoOverlay')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="field">
+            <label>شعار المحل</label>
+            <input type="file" id="logoInput" accept="image/*" style="padding:8px;">
+            <div style="margin-top:8px; text-align:center;">
+                <div id="logoPreview" style="display:none;">
+                    <img id="logoPreviewImg" style="max-width:120px;max-height:120px;border-radius:50%;border:2px solid var(--primary);">
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="removeLogo()" id="removeLogoBtn" style="display:none;margin-top:8px;">
+                    <i class="fa-solid fa-trash"></i> حذف الشعار
+                </button>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="saveLogo()">حفظ الشعار</button>
+        <div class="error-text" id="logoError"></div>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1561,10 +1702,353 @@ try {
 }
 
 // ============================================================
+// TRANSLATIONS
+// ============================================================
+let currentLang = 'ar';
+
+const translations = {
+    ar: {
+        'platepro': '✦ PLATE PRO ✦',
+        'welcome': 'مرحباً بك',
+        'business_code': 'كود النشاط التجاري',
+        'continue': 'متابعة',
+        'back': 'رجوع',
+        'save': 'حفظ',
+        'cancel': 'إلغاء',
+        'close': 'إغلاق',
+        'delete': 'حذف',
+        'edit': 'تعديل',
+        'add': 'إضافة',
+        'today_performance': '📊 أداء اليوم',
+        'today_revenue': '💰 إيراد اليوم',
+        'active_orders': '📋 الطلبات النشطة',
+        'occupied_tables': '🪑 طاولات مشغولة',
+        'available_tables': '🟢 طاولات متاحة',
+        'quick_actions': '⚡ إجراءات سريعة',
+        'add_expense': 'إضافة مصروف',
+        'close_shift': 'إقفال الشيفت',
+        'scan_order': '📱 امسح واطلب من مكانك',
+        'all': '🍽️ الكل',
+        'cart': '🛒 سلة الطلبات',
+        'empty_cart': 'السلة فارغة',
+        'subtotal': 'المجموع',
+        'service_fee': 'رسوم الخدمة',
+        'vat': 'ضريبة القيمة المضافة',
+        'total': 'الإجمالي',
+        'confirm_order': 'تأكيد الطلب',
+        'pending': '⏳ قيد الانتظار',
+        'preparing': '🔪 قيد التحضير',
+        'ready': '💳 في انتظار الدفع',
+        'paid': '✅ تم الدفع',
+        'cancelled': '❌ ملغي',
+        'order': 'طلب',
+        'table': 'طاولة',
+        'print_receipt': '🖨️ طباعة الوصل',
+        'print': 'طباعة',
+        'payment': '💳 الدفع',
+        'select_payment': 'اختر طريقة الدفع',
+        'available': '🟢 متاحة',
+        'occupied': '🟡 مشغولة',
+        'reserved': '🔵 محجوزة',
+        'active': '✅ نشط',
+        'inactive': '⛔ موقف',
+        'waiter': 'نادل',
+        'chef': 'طباخ',
+        'cashier': 'كاشير',
+        'admin': 'أدمن',
+        'settings': '⚙️ الإعدادات',
+        'appearance': '🎨 المظهر',
+        'dark': '🌙 داكن',
+        'light': '☀️ فاتح',
+        'logo': '🖼️ الشعار',
+        'fees': '💰 الرسوم والضرائب',
+        'service_fee_label': 'رسوم الخدمة',
+        'vat_label': 'ضريبة القيمة المضافة (VAT)',
+        'payment_methods': '💳 طرق الدفع',
+        'employees': '👥 الموظفين',
+        'switch_business': '🔄 تبديل النشاط',
+        'edit_fees': 'تعديل الرسوم',
+        'edit_logo': 'تعديل الشعار',
+        'no_logo': 'لا يوجد شعار',
+        'remove_logo': 'حذف الشعار',
+        'save_logo': 'حفظ الشعار',
+        'upload_logo': 'اختر صورة الشعار',
+        'menu': '🍽️ المنيو',
+        'manage_menu': '⚙️ إدارة المنيو',
+        'add_item': 'إضافة صنف',
+        'add_category': 'إضافة تصنيف',
+        'item_name': 'اسم الصنف',
+        'item_price': 'السعر',
+        'item_desc': 'الوصف',
+        'item_image': 'صورة الصنف',
+        'category': 'التصنيف',
+        'no_items': 'مفيش أصناف',
+        'no_categories': 'مفيش تصنيفات',
+        'qr_code': '📱 طلب من العميل',
+        'qr_label': 'QR Code الطاولات',
+        'qr_sub': 'امسح للطلب من المنيو مباشرة',
+        'show_qr': 'عرض QR',
+        'download_qr': 'تحميل QR',
+        'scan_qr': 'امسح الكود لفتح منيو العميل',
+        'expense_desc': 'الوصف',
+        'expense_amount': 'المبلغ',
+        'add_expense_title': 'إضافة مصروف',
+        'close_shift_title': 'تأكيد إقفال الشيفت',
+        'shift_revenue': 'الإيراد',
+        'shift_expenses': 'المصروفات',
+        'shift_profit': 'الصافي',
+        'confirm_close': 'تأكيد الإقفال',
+        'no_open_shift': 'لا يوجد شيفت مفتوح',
+        'permissions': '🔐 الصلاحيات',
+        'perm_dashboard': '👀 الرئيسية',
+        'perm_tables': '🪑 الطاولات',
+        'perm_orders': '📋 الطلبات',
+        'perm_menu': '🍽️ المنيو',
+        'perm_settings': '⚙️ الإعدادات',
+        'perm_create_orders': '🛒 إنشاء طلبات',
+        'perm_add_expense': '💰 إضافة مصروف',
+        'perm_close_shift': '🔒 إقفال الشيفت',
+        'perm_print_receipt': '🧾 طباعة الفواتير',
+        'perm_manage_menu': '📝 إدارة المنيو',
+        'employee_name': 'الاسم',
+        'employee_pin': 'PIN (4 أرقام)',
+        'employee_role': 'الدور',
+        'add_employee': 'إضافة موظف',
+        'edit_employee': 'تعديل موظف',
+        'payment_method_name': 'اسم طريقة الدفع',
+        'payment_method_icon': 'الأيقونة',
+        'add_payment_method': 'إضافة طريقة دفع',
+        'edit_payment_method': 'تعديل طريقة دفع',
+        'cash': 'كاش',
+        'card': 'بطاقة',
+        'wallet': 'محفظة',
+        'mobile_wallet': 'محفظة إلكترونية',
+        'bank_transfer': 'تحويل بنكي',
+        'category_name': 'اسم التصنيف',
+        'category_icon': 'الأيقونة',
+        'add_category_title': 'إضافة تصنيف',
+        'order_created': '✅ تم إنشاء الطلب بنجاح!',
+        'order_updated': '✅ تم تحديث حالة الطلب',
+        'payment_success': '✅ تم الدفع بنجاح!',
+        'payment_failed': '❌ فشل الدفع',
+        'expense_added': '✅ تم تسجيل المصروف',
+        'shift_closed': '✅ تم إقفال الشيفت',
+        'shift_close_failed': '❌ فشل إقفال الشيفت',
+        'item_added': '✅ تم إضافة الصنف',
+        'item_updated': '✅ تم تحديث الصنف',
+        'item_deleted': '✅ تم حذف الصنف',
+        'category_added': '✅ تم إضافة التصنيف',
+        'payment_method_added': '✅ تم إضافة طريقة الدفع',
+        'employee_added': '✅ تم إضافة الموظف',
+        'employee_updated': '✅ تم تحديث الموظف',
+        'employee_deleted': '✅ تم حذف الموظف',
+        'logo_saved': '✅ تم حفظ الشعار',
+        'logo_deleted': '✅ تم حذف الشعار',
+        'fees_saved': '✅ تم حفظ الإعدادات',
+        'error_general': '⚠️ حدث خطأ، حاول تاني',
+        'error_connection': '⚠️ حصل خطأ في الاتصال',
+        'error_invalid_code': '⚠️ كود النشاط غير صحيح',
+        'error_invalid_pin': '⚠️ PIN غير صحيح',
+        'error_no_items': '⚠️ أضف صنف واحد على الأقل',
+        'error_no_tables': '⚠️ مفيش طاولات متاحة',
+        'error_permission': '⛔ ليس لديك صلاحية',
+        'error_upload': '⚠️ فشل رفع الصورة',
+        'recent_orders': '📜 آخر الطلبات',
+        'order_details': 'تفاصيل الطلب',
+        'tables': '🪑 الطاولات',
+        'orders': '📋 الطلبات',
+        'dashboard': 'الرئيسية',
+        'activate': 'تفعيل',
+        'qr_generated': '✅ تم توليد QR Code'
+    },
+    en: {
+        'platepro': '✦ PLATE PRO ✦',
+        'welcome': 'Welcome',
+        'business_code': 'Business Code',
+        'continue': 'Continue',
+        'back': 'Back',
+        'save': 'Save',
+        'cancel': 'Cancel',
+        'close': 'Close',
+        'delete': 'Delete',
+        'edit': 'Edit',
+        'add': 'Add',
+        'today_performance': '📊 Today\'s Performance',
+        'today_revenue': '💰 Today\'s Revenue',
+        'active_orders': '📋 Active Orders',
+        'occupied_tables': '🪑 Occupied Tables',
+        'available_tables': '🟢 Available Tables',
+        'quick_actions': '⚡ Quick Actions',
+        'add_expense': 'Add Expense',
+        'close_shift': 'Close Shift',
+        'scan_order': '📱 Scan & Order from your table',
+        'all': '🍽️ All',
+        'cart': '🛒 Cart',
+        'empty_cart': 'Cart is empty',
+        'subtotal': 'Subtotal',
+        'service_fee': 'Service Fee',
+        'vat': 'VAT',
+        'total': 'Total',
+        'confirm_order': 'Confirm Order',
+        'pending': '⏳ Pending',
+        'preparing': '🔪 Preparing',
+        'ready': '💳 Awaiting Payment',
+        'paid': '✅ Paid',
+        'cancelled': '❌ Cancelled',
+        'order': 'Order',
+        'table': 'Table',
+        'print_receipt': '🖨️ Print Receipt',
+        'print': 'Print',
+        'payment': '💳 Payment',
+        'select_payment': 'Select Payment Method',
+        'available': '🟢 Available',
+        'occupied': '🟡 Occupied',
+        'reserved': '🔵 Reserved',
+        'active': '✅ Active',
+        'inactive': '⛔ Inactive',
+        'waiter': 'Waiter',
+        'chef': 'Chef',
+        'cashier': 'Cashier',
+        'admin': 'Admin',
+        'settings': '⚙️ Settings',
+        'appearance': '🎨 Appearance',
+        'dark': '🌙 Dark',
+        'light': '☀️ Light',
+        'logo': '🖼️ Logo',
+        'fees': '💰 Fees & Taxes',
+        'service_fee_label': 'Service Fee',
+        'vat_label': 'VAT',
+        'payment_methods': '💳 Payment Methods',
+        'employees': '👥 Employees',
+        'switch_business': '🔄 Switch Business',
+        'edit_fees': 'Edit Fees',
+        'edit_logo': 'Edit Logo',
+        'no_logo': 'No Logo',
+        'remove_logo': 'Remove Logo',
+        'save_logo': 'Save Logo',
+        'upload_logo': 'Upload Logo Image',
+        'menu': '🍽️ Menu',
+        'manage_menu': '⚙️ Manage Menu',
+        'add_item': 'Add Item',
+        'add_category': 'Add Category',
+        'item_name': 'Item Name',
+        'item_price': 'Price',
+        'item_desc': 'Description',
+        'item_image': 'Item Image',
+        'category': 'Category',
+        'no_items': 'No items',
+        'no_categories': 'No categories',
+        'qr_code': '📱 Customer Order',
+        'qr_label': 'Tables QR Code',
+        'qr_sub': 'Scan to order directly from menu',
+        'show_qr': 'Show QR',
+        'download_qr': 'Download QR',
+        'scan_qr': 'Scan code to open customer menu',
+        'expense_desc': 'Description',
+        'expense_amount': 'Amount',
+        'add_expense_title': 'Add Expense',
+        'close_shift_title': 'Confirm Close Shift',
+        'shift_revenue': 'Revenue',
+        'shift_expenses': 'Expenses',
+        'shift_profit': 'Net Profit',
+        'confirm_close': 'Confirm Close',
+        'no_open_shift': 'No open shift',
+        'permissions': '🔐 Permissions',
+        'perm_dashboard': '👀 Dashboard',
+        'perm_tables': '🪑 Tables',
+        'perm_orders': '📋 Orders',
+        'perm_menu': '🍽️ Menu',
+        'perm_settings': '⚙️ Settings',
+        'perm_create_orders': '🛒 Create Orders',
+        'perm_add_expense': '💰 Add Expense',
+        'perm_close_shift': '🔒 Close Shift',
+        'perm_print_receipt': '🧾 Print Receipt',
+        'perm_manage_menu': '📝 Manage Menu',
+        'employee_name': 'Name',
+        'employee_pin': 'PIN (4 digits)',
+        'employee_role': 'Role',
+        'add_employee': 'Add Employee',
+        'edit_employee': 'Edit Employee',
+        'payment_method_name': 'Payment Method Name',
+        'payment_method_icon': 'Icon',
+        'add_payment_method': 'Add Payment Method',
+        'edit_payment_method': 'Edit Payment Method',
+        'cash': 'Cash',
+        'card': 'Card',
+        'wallet': 'Wallet',
+        'mobile_wallet': 'Mobile Wallet',
+        'bank_transfer': 'Bank Transfer',
+        'category_name': 'Category Name',
+        'category_icon': 'Icon',
+        'add_category_title': 'Add Category',
+        'order_created': '✅ Order created successfully!',
+        'order_updated': '✅ Order status updated',
+        'payment_success': '✅ Payment successful!',
+        'payment_failed': '❌ Payment failed',
+        'expense_added': '✅ Expense recorded',
+        'shift_closed': '✅ Shift closed',
+        'shift_close_failed': '❌ Failed to close shift',
+        'item_added': '✅ Item added',
+        'item_updated': '✅ Item updated',
+        'item_deleted': '✅ Item deleted',
+        'category_added': '✅ Category added',
+        'payment_method_added': '✅ Payment method added',
+        'employee_added': '✅ Employee added',
+        'employee_updated': '✅ Employee updated',
+        'employee_deleted': '✅ Employee deleted',
+        'logo_saved': '✅ Logo saved',
+        'logo_deleted': '✅ Logo deleted',
+        'fees_saved': '✅ Settings saved',
+        'error_general': '⚠️ An error occurred, please try again',
+        'error_connection': '⚠️ Connection error',
+        'error_invalid_code': '⚠️ Invalid business code',
+        'error_invalid_pin': '⚠️ Incorrect PIN',
+        'error_no_items': '⚠️ Add at least one item',
+        'error_no_tables': '⚠️ No tables available',
+        'error_permission': '⛔ You don\'t have permission',
+        'error_upload': '⚠️ Image upload failed',
+        'recent_orders': '📜 Recent Orders',
+        'order_details': 'Order Details',
+        'tables': '🪑 Tables',
+        'orders': '📋 Orders',
+        'dashboard': 'Dashboard',
+        'activate': 'Activate',
+        'qr_generated': '✅ QR Code generated'
+    }
+};
+
+function toggleLanguage() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = currentLang;
+    document.getElementById('langToggleLabel').textContent = currentLang === 'ar' ? 'English' : 'العربية';
+    applyTranslations();
+}
+
+function t(key) {
+    return translations[currentLang][key] || key;
+}
+
+function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (key) {
+            el.textContent = t(key);
+        }
+    });
+    renderDashboard();
+    renderTables();
+    renderOrdersList();
+    renderMenuView();
+    renderSettings();
+}
+
+// ============================================================
 // FEES STATE
 // ============================================================
 let serviceFeePercent = 10;
 let vatPercent = 14;
+let businessLogo = null;
 
 function loadFeesSettings() {
     const saved = localStorage.getItem('platepro_service_fee');
@@ -1582,11 +2066,11 @@ function saveFeesSettings() {
     const vat = parseFloat(vatInput.value);
     
     if (isNaN(service) || service < 0) {
-        errEl.textContent = 'أدخل نسبة خدمة صحيحة';
+        errEl.textContent = t('error_general');
         return;
     }
     if (isNaN(vat) || vat < 0) {
-        errEl.textContent = 'أدخل نسبة ضريبة صحيحة';
+        errEl.textContent = t('error_general');
         return;
     }
     
@@ -1596,7 +2080,7 @@ function saveFeesSettings() {
     localStorage.setItem('platepro_vat', vat.toString());
     
     closeSheet('settingsFeesOverlay');
-    showToast('✅ تم حفظ الإعدادات', 'success');
+    showToast(t('fees_saved'), 'success');
     renderSettings();
     updateCustomerCartUI();
 }
@@ -1609,26 +2093,110 @@ function openFeesSettings() {
 }
 
 // ============================================================
-// LANGUAGE SYSTEM
+// LOGO MANAGEMENT
 // ============================================================
-let currentLang = 'ar';
-
-function toggleLanguage() {
-    currentLang = currentLang === 'ar' ? 'en' : 'ar';
-    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = currentLang;
-    document.getElementById('langToggleLabel').textContent = currentLang === 'ar' ? 'English' : 'العربية';
-    updateTexts();
+function loadLogo() {
+    const saved = localStorage.getItem('platepro_logo');
+    if (saved) {
+        businessLogo = saved;
+        updateLogoUI();
+    }
 }
 
-function updateTexts() {
-    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-        el.textContent = currentLang === 'ar' ? el.dataset.ar : el.dataset.en;
-    });
-    renderDashboard();
-    renderTables();
-    renderOrdersList();
-    renderMenuView();
+function updateLogoUI() {
+    const container = document.getElementById('bizLogoContainer');
+    const customerContainer = document.getElementById('customerLogoContainer');
+    
+    if (businessLogo) {
+        container.innerHTML = `<img src="${businessLogo}" class="logo-img" alt="Logo">`;
+        customerContainer.innerHTML = `<img src="${businessLogo}" class="logo-img" alt="Logo">`;
+    } else {
+        container.innerHTML = '';
+        customerContainer.innerHTML = '';
+    }
+}
+
+function openLogoSettings() {
+    document.getElementById('logoInput').value = '';
+    document.getElementById('logoPreview').style.display = 'none';
+    document.getElementById('removeLogoBtn').style.display = businessLogo ? 'inline-flex' : 'none';
+    document.getElementById('logoError').textContent = '';
+    if (businessLogo) {
+        document.getElementById('logoPreviewImg').src = businessLogo;
+        document.getElementById('logoPreview').style.display = 'block';
+    }
+    openSheet('settingsLogoOverlay');
+}
+
+// Logo file handler
+document.addEventListener('DOMContentLoaded', function() {
+    const logoInput = document.getElementById('logoInput');
+    if (logoInput) {
+        logoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('logoPreviewImg').src = event.target.result;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.getElementById('removeLogoBtn').style.display = 'inline-flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    const menuImageInput = document.getElementById('menuItemImageInput');
+    if (menuImageInput) {
+        menuImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('menuItemImagePreviewImg').src = event.target.result;
+                    document.getElementById('menuItemImagePreview').style.display = 'block';
+                    document.getElementById('menuItemImageData').value = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+function saveLogo() {
+    const fileInput = document.getElementById('logoInput');
+    const errEl = document.getElementById('logoError');
+    
+    if (fileInput.files.length === 0) {
+        errEl.textContent = t('error_general');
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        businessLogo = event.target.result;
+        localStorage.setItem('platepro_logo', businessLogo);
+        updateLogoUI();
+        closeSheet('settingsLogoOverlay');
+        showToast(t('logo_saved'), 'success');
+        renderSettings();
+    };
+    reader.onerror = function() {
+        errEl.textContent = t('error_upload');
+    };
+    reader.readAsDataURL(file);
+}
+
+function removeLogo() {
+    if (!confirm(t('remove_logo') + '؟')) return;
+    businessLogo = null;
+    localStorage.removeItem('platepro_logo');
+    updateLogoUI();
+    document.getElementById('logoPreview').style.display = 'none';
+    document.getElementById('removeLogoBtn').style.display = 'none';
+    document.getElementById('logoInput').value = '';
+    showToast(t('logo_deleted'), 'success');
     renderSettings();
 }
 
@@ -1665,7 +2233,7 @@ function updateThemeToggle() {
         toggle.classList.toggle('active', currentTheme === 'light');
     }
     if (label) {
-        label.textContent = currentTheme === 'dark' ? '🌙 داكن' : '☀️ فاتح';
+        label.textContent = currentTheme === 'dark' ? t('dark') : t('light');
     }
 }
 
@@ -1728,7 +2296,7 @@ function navigateTo(viewId) {
         };
         const permKey = viewMap[viewId];
         if (permKey && !perms[permKey]) {
-            showToast('⛔ غير مصرح لك بمشاهدة هذه الصفحة', 'error');
+            showToast(t('error_permission'), 'error');
             return;
         }
     }
@@ -1764,10 +2332,6 @@ function escapeHtml(str) {
     const d = document.createElement('div');
     d.textContent = str;
     return d.innerHTML;
-}
-
-function t(ar, en) {
-    return currentLang === 'ar' ? ar : en;
 }
 
 // ============================================================
@@ -1835,6 +2399,7 @@ async function generateQRCode() {
     
     localStorage.setItem('platepro_customer_url', customerUrl);
     localStorage.setItem('platepro_business_id', bizId);
+    showToast(t('qr_generated'), 'success');
 }
 
 function downloadQR() {
@@ -1872,6 +2437,12 @@ async function loadCustomerData() {
             customerBusiness = biz;
             document.getElementById('customerBizName').textContent = biz.name;
             document.title = biz.name + ' - Menu';
+            
+            const savedLogo = localStorage.getItem('platepro_logo');
+            if (savedLogo) {
+                const logoContainer = document.getElementById('customerLogoContainer');
+                logoContainer.innerHTML = `<img src="${savedLogo}" class="logo-img" alt="Logo">`;
+            }
         }
         
         const [itemsRes, catsRes] = await Promise.all([
@@ -1895,7 +2466,7 @@ async function loadCustomerData() {
 function renderCustomerCategories() {
     const container = document.getElementById('customerCategories');
     container.innerHTML = `
-        <button class="btn active" onclick="filterCustomerItems('all')">🍽️ الكل</button>
+        <button class="btn active" onclick="filterCustomerItems('all')">${t('all')}</button>
         ${customerCategories.map(cat => `
             <button class="btn" onclick="filterCustomerItems('${cat.id}')">
                 <i class="fa-solid ${cat.icon || 'fa-utensils'}"></i> ${escapeHtml(cat.name)}
@@ -1929,7 +2500,7 @@ function renderCustomerItems(categoryId) {
         container.innerHTML = `
             <div class="empty" style="padding:40px 16px;">
                 <i class="fa-solid fa-utensils" style="font-size:40px;"></i>
-                <div style="font-size:16px; font-weight:700; margin-top:8px;">مفيش أصناف</div>
+                <div style="font-size:16px; font-weight:700; margin-top:8px;">${t('no_items')}</div>
                 <div style="font-size:13px; color:var(--text-muted);">جاري تحديث المنيو</div>
             </div>
         `;
@@ -1937,9 +2508,10 @@ function renderCustomerItems(categoryId) {
     }
     
     container.innerHTML = items.map(item => {
-        const imageHtml = item.image_url ? 
-            `<img src="${item.image_url}" alt="${escapeHtml(item.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">` : 
-            '🍽️';
+        let imageHtml = '🍽️';
+        if (item.image_url) {
+            imageHtml = `<img src="${item.image_url}" alt="${escapeHtml(item.name)}" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">`;
+        }
         
         return `
             <div class="customer-menu-card">
@@ -1996,7 +2568,7 @@ function updateCustomerCartUI() {
 function showCustomerCart() {
     const container = document.getElementById('customerCartItems');
     if (customerCart.length === 0) {
-        container.innerHTML = '<div class="empty">السلة فارغة</div>';
+        container.innerHTML = `<div class="empty">${t('empty_cart')}</div>`;
         document.getElementById('customerCartTotal').textContent = '0';
         openSheet('customerCartOverlay');
         return;
@@ -2049,12 +2621,12 @@ function showCustomerToast(msg) {
 
 async function submitCustomerOrder() {
     if (customerCart.length === 0) {
-        document.getElementById('customerCartError').textContent = 'السلة فارغة!';
+        document.getElementById('customerCartError').textContent = t('error_no_items');
         return;
     }
     
     if (!customerBusiness) {
-        document.getElementById('customerCartError').textContent = 'حدث خطأ، حاول تاني.';
+        document.getElementById('customerCartError').textContent = t('error_general');
         return;
     }
     
@@ -2071,7 +2643,7 @@ async function submitCustomerOrder() {
             tableId = tablesData[0].id;
             await supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', tableId);
         } else {
-            document.getElementById('customerCartError').textContent = '❌ مفيش طاولات متاحة حالياً';
+            document.getElementById('customerCartError').textContent = t('error_no_tables');
             return;
         }
         
@@ -2109,35 +2681,37 @@ async function submitCustomerOrder() {
         updateCustomerCartUI();
         closeSheet('customerCartOverlay');
         
-        showCustomerToast('✅ تم إرسال طلبك بنجاح!');
+        showCustomerToast(t('order_created'));
         document.getElementById('customerCartError').textContent = '';
         
         renderCustomerItems(currentCustomerFilter);
         
     } catch (e) {
         console.error('Error submitting order:', e);
-        document.getElementById('customerCartError').textContent = '❌ فشل إرسال الطلب';
+        document.getElementById('customerCartError').textContent = t('error_general');
     }
 }
 
 // ============================================================
-// SETUP / ACTIVATION / LOCK (مختصر)
+// SETUP / ACTIVATION / LOCK
 // ============================================================
 async function handleSetupContinue() {
     const code = document.getElementById('setupBusinessCode').value.trim().toUpperCase();
     const errEl = document.getElementById('setupError');
     errEl.textContent = '';
-    if (!code) { errEl.textContent = 'اكتب كود النشاط.'; return; }
+    if (!code) { errEl.textContent = t('error_invalid_code'); return; }
     
     const btn = document.getElementById('setupContinueBtn');
     btn.disabled = true;
     
     try {
-        if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+        if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
         const { data: biz, error } = await supabaseClient.from('businesses').select('*').eq('code', code).single();
-        if (error || !biz) { errEl.textContent = 'مفيش نشاط بالكود ده.'; return; }
+        if (error || !biz) { errEl.textContent = t('error_invalid_code'); return; }
         business = biz;
         localStorage.setItem('platepro_business_code', code);
+        
+        loadLogo();
 
         const deviceId = getDeviceId();
         const { data: dev } = await supabaseClient.from('devices').select('*').eq('business_id', biz.id).eq('device_id', deviceId).maybeSingle();
@@ -2151,7 +2725,7 @@ async function handleSetupContinue() {
         proceedToLock();
     } catch (e) {
         console.error(e);
-        errEl.textContent = 'حصل خطأ في الاتصال، حاول تاني.';
+        errEl.textContent = t('error_connection');
     } finally { btn.disabled = false; }
 }
 
@@ -2159,10 +2733,10 @@ async function handleActivateDevice() {
     const code = document.getElementById('activationCodeInput').value.trim().toUpperCase();
     const errEl = document.getElementById('activationError');
     errEl.textContent = '';
-    if (!code) { errEl.textContent = 'اكتب كود التفعيل.'; return; }
+    if (!code) { errEl.textContent = t('error_general'); return; }
     
     try {
-        if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+        if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
         const { data: actCode, error } = await supabaseClient.from('activation_codes').select('*').eq('business_id', business.id).eq('code', code).eq('used', false).single();
         if (error || !actCode) { errEl.textContent = 'الكود غير صحيح أو مستخدم قبل كده.'; return; }
 
@@ -2177,7 +2751,7 @@ async function handleActivateDevice() {
             expiry_date: expiry.toISOString()
         }).select().single();
         
-        if (devErr) { errEl.textContent = 'فشل التفعيل، حاول تاني.'; return; }
+        if (devErr) { errEl.textContent = t('error_general'); return; }
 
         await supabaseClient.from('activation_codes').update({ used: true, used_at: new Date().toISOString() }).eq('id', actCode.id);
         deviceRecord = newDev;
@@ -2185,7 +2759,7 @@ async function handleActivateDevice() {
         proceedToLock();
     } catch (e) {
         console.error(e);
-        errEl.textContent = 'حصل خطأ، حاول تاني.';
+        errEl.textContent = t('error_connection');
     }
 }
 
@@ -2230,13 +2804,13 @@ async function handleEmployeeUnlock() {
     const errEl = document.getElementById('lockError');
     errEl.textContent = '';
     
-    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = 'الجهاز موقوف.'; return; }
+    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = t('error_general'); return; }
     if (deviceRecord.expiry_date && new Date(deviceRecord.expiry_date) < new Date()) { errEl.textContent = 'الاشتراك منتهي.'; return; }
-    if (!name || !pin) { errEl.textContent = 'اكتب الاسم والـ PIN.'; return; }
+    if (!name || !pin) { errEl.textContent = t('error_general'); return; }
 
-    if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+    if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
     const { data: emps, error } = await supabaseClient.from('employees').select('*').eq('business_id', business.id).eq('is_active', true);
-    if (error) { errEl.textContent = 'حصل خطأ، حاول تاني.'; return; }
+    if (error) { errEl.textContent = t('error_general'); return; }
     
     const emp = (emps || []).find(e => e.name && e.name.trim().toLowerCase() === name.toLowerCase() && String(e.pin) === pin);
     if (emp) {
@@ -2244,7 +2818,7 @@ async function handleEmployeeUnlock() {
         enterMainApp();
         return;
     }
-    errEl.textContent = 'الاسم أو الـ PIN غير صحيح.';
+    errEl.textContent = t('error_invalid_pin');
 }
 
 async function handleUnlock() {
@@ -2252,9 +2826,9 @@ async function handleUnlock() {
     const errEl = document.getElementById('lockError');
     errEl.textContent = '';
     
-    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = 'الجهاز موقوف.'; return; }
+    if (deviceRecord.revoked || !deviceRecord.is_active) { errEl.textContent = t('error_general'); return; }
     if (deviceRecord.expiry_date && new Date(deviceRecord.expiry_date) < new Date()) { errEl.textContent = 'الاشتراك منتهي.'; return; }
-    if (!pin) { errEl.textContent = 'اكتب الـ PIN.'; return; }
+    if (!pin) { errEl.textContent = t('error_general'); return; }
 
     if (pin === business.owner_pin) {
         currentUser = { type: 'owner', name: 'المالك' };
@@ -2262,14 +2836,14 @@ async function handleUnlock() {
         return;
     }
     
-    if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+    if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
     const { data: emp } = await supabaseClient.from('employees').select('*').eq('business_id', business.id).eq('pin', pin).eq('is_active', true).maybeSingle();
     if (emp) {
         currentUser = { type: 'employee', ...emp };
         enterMainApp();
         return;
     }
-    errEl.textContent = 'PIN غير صحيح.';
+    errEl.textContent = t('error_invalid_pin');
 }
 
 function lockApp() {
@@ -2288,7 +2862,11 @@ async function enterMainApp() {
     
     loadTheme();
     loadFeesSettings();
+    loadLogo();
     await loadAllData();
+    
+    document.getElementById('dashBizName').textContent = business.name;
+    updateLogoUI();
     
     if (currentUser.type === 'owner') {
         currentUser.permissions = {
@@ -2298,6 +2876,7 @@ async function enterMainApp() {
     }
     
     updateUIByPermissions();
+    applyTranslations();
     renderDashboard();
     renderTables();
     renderOrdersList();
@@ -2319,7 +2898,7 @@ async function loadAllData() {
 }
 
 // ============================================================
-// DATA LOADERS (مختصرة)
+// DATA LOADERS
 // ============================================================
 async function loadTables() {
     if (!supabaseClient) return;
@@ -2426,21 +3005,51 @@ async function renderDashboard() {
 }
 
 // ============================================================
-// TABLES
+// TABLES — مع إصلاح حالة الطاولات
 // ============================================================
 function renderTables() {
     const grid = document.getElementById('tablesGrid');
-    const statusMap = {
-        available: { label: 'متاحة', class: 'available', badge: '' },
-        occupied: { label: 'مشغولة', class: 'occupied', badge: 'badge-gold' },
-        reserved: { label: 'محجوزة', class: 'reserved', badge: 'badge-info' }
-    };
     
+    // تحديث حالة الطاولات من الطلبات النشطة
+    tables.forEach(table => {
+        const hasActiveOrder = Object.values(orders).some(o => 
+            o.table_id === table.id && 
+            o.status !== 'completed' && 
+            o.status !== 'cancelled' && 
+            o.status !== 'paid'
+        );
+        
+        if (hasActiveOrder && table.status !== 'occupied') {
+            supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', table.id).catch(() => {});
+            table.status = 'occupied';
+        } else if (!hasActiveOrder && table.status === 'occupied') {
+            supabaseClient.from('tables').update({ status: 'available' }).eq('id', table.id).catch(() => {});
+            table.status = 'available';
+        }
+    });
+    
+    // عرض الطاولات
     grid.innerHTML = tables.map(table => {
-        const s = statusMap[table.status] || statusMap.available;
+        const activeOrder = Object.values(orders).find(o => 
+            o.table_id === table.id && 
+            o.status !== 'completed' && 
+            o.status !== 'cancelled' && 
+            o.status !== 'paid'
+        );
+        
+        const status = activeOrder ? 'occupied' : 'available';
+        if (table.status !== status) table.status = status;
+        
+        const statusMap = {
+            available: { label: t('available'), class: 'available', badge: 'badge-table-available' },
+            occupied: { label: t('occupied'), class: 'occupied', badge: 'badge-table-occupied' },
+            reserved: { label: t('reserved'), class: 'reserved', badge: 'badge-table-reserved' }
+        };
+        
+        const s = statusMap[status] || statusMap.available;
         return `
             <div class="table-card ${s.class}" onclick="openTableSheet('${table.id}')">
-                ${table.status !== 'available' ? `<span class="table-badge ${s.badge}">${s.label}</span>` : ''}
+                ${status !== 'available' ? `<span class="table-badge ${s.badge}">${s.label}</span>` : ''}
                 <div class="table-num">${table.number}</div>
                 <div class="table-status">${s.label}</div>
             </div>
@@ -2449,34 +3058,46 @@ function renderTables() {
 }
 
 // ============================================================
-// TABLE SHEET (مختصر)
+// TABLE SHEET — مع Service Fee و VAT + زرار تم الدفع
 // ============================================================
 function openTableSheet(tableId) {
     if (!hasPermission('create_orders')) {
-        showToast('⛔ ليس لديك صلاحية إنشاء طلبات', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
     const table = tables.find(t => t.id === tableId);
     if (!table) return;
     
-    document.getElementById('tableSheetTitle').textContent = `طاولة ${table.number}`;
-    const body = document.getElementById('tableSheetBody');
+    // تحديث حالة الطاولة من الـ orders
+    const activeOrder = Object.values(orders).find(o => 
+        o.table_id === tableId && 
+        o.status !== 'completed' && 
+        o.status !== 'cancelled' && 
+        o.status !== 'paid'
+    );
     
-    const activeOrder = Object.values(orders).find(o => o.table_id === tableId && o.status !== 'completed' && o.status !== 'cancelled');
-    
-    if (table.status === 'available' && !activeOrder) {
+    // لو الطاولة متاحة ومفيش طلب، نفتح صفحة إنشاء طلب
+    if (!activeOrder && table.status !== 'occupied') {
+        // لو الطاولة كانت مشغولة غلط، نعدلها
+        if (table.status === 'occupied') {
+            supabaseClient.from('tables').update({ status: 'available' }).eq('id', tableId).catch(() => {});
+        }
+        
+        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+        const body = document.getElementById('tableSheetBody');
+        
         body.innerHTML = `
-            <div class="section-title">اختر من المنيو</div>
+            <div class="section-title">${t('menu')}</div>
             <div class="menu-quick-add" id="menuItemsForTable">
-                ${menuItems.length === 0 ? '<div class="empty" style="padding:10px;">مفيش أصناف</div>' : ''}
+                ${menuItems.length === 0 ? '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>' : ''}
             </div>
             <div id="tableOrderItems"></div>
             <div style="display:flex;gap:8px;margin-top:12px;">
                 <button class="btn btn-primary" style="flex:1;" onclick="createOrder('${tableId}')">
-                    <i class="fa-solid fa-check"></i> تأكيد الطلب
+                    <i class="fa-solid fa-check"></i> ${t('confirm_order')}
                 </button>
-                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">إلغاء</button>
+                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('cancel')}</button>
             </div>
             <div class="error-text" id="tableSheetError"></div>
         `;
@@ -2498,67 +3119,151 @@ function openTableSheet(tableId) {
         return;
     }
     
+    // لو في طلب نشط
     if (activeOrder) {
         const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
         const isReady = status === 'ready';
         const isPaid = status === 'paid';
+        
+        // حساب الرسوم
+        const subtotal = activeOrder.subtotal || activeOrder.total || 0;
+        const serviceFee = subtotal * (serviceFeePercent / 100);
+        const vat = (subtotal + serviceFee) * (vatPercent / 100);
+        const total = subtotal + serviceFee + vat;
         
         let actionButtons = '';
         
         if (!isReady && !isPaid) {
             actionButtons = `
                 <button class="btn btn-primary" style="flex:1;" onclick="markAsReady('${activeOrder.id}')">
-                    <i class="fa-solid fa-utensils"></i> تحضير
+                    <i class="fa-solid fa-utensils"></i> ${t('preparing')}
                 </button>
             `;
         } else if (isReady && !isPaid) {
+            // زرار الطباعة + زرار تم الدفع
             if (hasPermission('print_receipt')) {
                 actionButtons = `
                     <button class="btn btn-success" style="flex:1;" onclick="printReceipt('${activeOrder.id}')">
-                        <i class="fa-solid fa-print"></i> طباعة الوصل
+                        <i class="fa-solid fa-print"></i> ${t('print_receipt')}
+                    </button>
+                    <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
+                        <i class="fa-solid fa-credit-card"></i> ${t('payment')}
                     </button>
                 `;
             } else {
                 actionButtons = `
                     <button class="btn btn-ghost" style="flex:1;" disabled>
-                        <i class="fa-solid fa-print"></i> غير مصرح بالطباعة
+                        <i class="fa-solid fa-print"></i> ${t('error_permission')}
+                    </button>
+                    <button class="btn btn-primary" style="flex:1;" onclick="showPaymentSheet('${activeOrder.id}')">
+                        <i class="fa-solid fa-credit-card"></i> ${t('payment')}
                     </button>
                 `;
             }
         } else if (isPaid) {
             actionButtons = `
                 <button class="btn btn-success" style="flex:1;" disabled>
-                    <i class="fa-solid fa-check"></i> تم الدفع ✅
+                    <i class="fa-solid fa-check"></i> ${t('paid')}
                 </button>
             `;
         }
         
+        const statusBadgeMap = {
+            pending: 'badge-pending',
+            preparing: 'badge-preparing',
+            ready: 'badge-ready',
+            paid: 'badge-paid',
+            cancelled: 'badge-cancelled'
+        };
+        
+        const statusLabelMap = {
+            pending: t('pending'),
+            preparing: t('preparing'),
+            ready: t('ready'),
+            paid: t('paid'),
+            cancelled: t('cancelled')
+        };
+        
+        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+        const body = document.getElementById('tableSheetBody');
+        
         body.innerHTML = `
             <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                <span class="badge badge-gold">طلب #${activeOrder.id.slice(0, 8)}</span>
-                <span class="badge ${status === 'pending' ? 'badge-warning' : status === 'preparing' ? 'badge-info' : status === 'ready' ? 'badge-success' : 'badge-gold'}">
-                    ${status === 'pending' ? '⏳ قيد الانتظار' : status === 'preparing' ? '🔪 قيد التحضير' : status === 'ready' ? '✅ جاهز للتسليم' : '✅ تم الدفع'}
+                <span class="badge badge-gold">${t('order')} #${activeOrder.id.slice(0, 8)}</span>
+                <span class="badge ${statusBadgeMap[status] || 'badge-warning'}">
+                    ${statusLabelMap[status] || status}
                 </span>
             </div>
             <div id="orderItemsList"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid var(--primary);margin-top:8px;font-weight:700;font-size:17px;">
-                <span>الإجمالي</span>
-                <span style="color:var(--primary-dark);" id="orderTotalDisplay">0</span>
+            
+            <!-- تفاصيل الرسوم -->
+            <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:10px 14px;margin:8px 0;">
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                    <span>${t('subtotal')}</span>
+                    <span>${money(subtotal)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                    <span>${t('service_fee')} (${serviceFeePercent}%)</span>
+                    <span>${money(serviceFee)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
+                    <span>${t('vat')} (${vatPercent}%)</span>
+                    <span>${money(vat)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0 0 0;border-top:2px solid var(--border);font-weight:700;font-size:16px;color:var(--text-primary);">
+                    <span>${t('total')}</span>
+                    <span style="color:var(--primary-dark);">${money(total)}</span>
+                </div>
             </div>
+            
             <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
                 ${actionButtons}
-                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">رجوع</button>
+                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('back')}</button>
             </div>
             <div class="error-text" id="tableSheetError"></div>
         `;
         
         loadOrderItems(activeOrder.id);
         openSheet('tableOverlay');
+    } else {
+        // لو مفيش طلب نشط، نفتح صفحة إنشاء طلب
+        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+        const body = document.getElementById('tableSheetBody');
+        
+        body.innerHTML = `
+            <div class="section-title">${t('menu')}</div>
+            <div class="menu-quick-add" id="menuItemsForTable">
+                ${menuItems.length === 0 ? '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>' : ''}
+            </div>
+            <div id="tableOrderItems"></div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+                <button class="btn btn-primary" style="flex:1;" onclick="createOrder('${tableId}')">
+                    <i class="fa-solid fa-check"></i> ${t('confirm_order')}
+                </button>
+                <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('cancel')}</button>
+            </div>
+            <div class="error-text" id="tableSheetError"></div>
+        `;
+        
+        const menuContainer = document.getElementById('menuItemsForTable');
+        if (menuItems.length > 0) {
+            menuItems.slice(0, 12).forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline btn-sm';
+                btn.innerHTML = `${escapeHtml(item.name)} ${money(item.price)}`;
+                btn.onclick = () => addItemToOrder(item);
+                menuContainer.appendChild(btn);
+            });
+        }
+        
+        _orderItems = [];
+        renderTableOrderItems();
+        openSheet('tableOverlay');
     }
 }
 
 // ============================================================
-// ORDER MANAGEMENT (مختصر)
+// ORDER MANAGEMENT
 // ============================================================
 function addItemToOrder(item) {
     const existing = _orderItems.find(i => i.menu_item_id === item.id);
@@ -2604,7 +3309,7 @@ function renderTableOrderItems() {
             </div>
         `).join('')}
         <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:2px solid var(--border-light);font-weight:700;">
-            <span>الإجمالي</span>
+            <span>${t('total')}</span>
             <span style="color:var(--primary-dark);">${money(total)}</span>
         </div>
     `;
@@ -2617,12 +3322,12 @@ function removeTableOrderItem(index) {
 
 async function createOrder(tableId) {
     if (_orderItems.length === 0) {
-        document.getElementById('tableSheetError').textContent = 'أضف صنف واحد على الأقل.';
+        document.getElementById('tableSheetError').textContent = t('error_no_items');
         return;
     }
     
     if (!supabaseClient) {
-        document.getElementById('tableSheetError').textContent = 'Supabase not initialized.';
+        document.getElementById('tableSheetError').textContent = t('error_connection');
         return;
     }
     
@@ -2655,7 +3360,7 @@ async function createOrder(tableId) {
         orderStatus[order.id] = 'pending';
         _orderItems = [];
         closeSheet('tableOverlay');
-        showToast('✅ تم إنشاء الطلب بنجاح!', 'success');
+        showToast(t('order_created'), 'success');
         
         await loadActiveOrders();
         renderTables();
@@ -2663,7 +3368,7 @@ async function createOrder(tableId) {
         renderDashboard();
     } catch (e) {
         console.error('Error creating order:', e);
-        document.getElementById('tableSheetError').textContent = 'فشل إنشاء الطلب';
+        document.getElementById('tableSheetError').textContent = t('error_general');
     }
 }
 
@@ -2672,7 +3377,7 @@ async function markAsReady(orderId) {
         if (!supabaseClient) return;
         await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
         orderStatus[orderId] = 'ready';
-        showToast('✅ تم تجهيز الطلب!', 'success');
+        showToast(t('order_updated'), 'success');
         await loadActiveOrders();
         renderDashboard();
         renderOrdersList();
@@ -2682,28 +3387,29 @@ async function markAsReady(orderId) {
             openTableSheet(order.table_id);
         }
     } catch (e) {
-        showToast('فشل تحديث الحالة', 'error');
+        showToast(t('error_general'), 'error');
     }
 }
 
-async function printReceipt(orderId) {
-    if (!hasPermission('print_receipt')) {
-        showToast('⛔ ليس لديك صلاحية طباعة فواتير', 'error');
-        return;
-    }
-    
-    showToast('🖨️ جاري طباعة الوصل...', 'info');
-    
+// ============================================================
+// SHOW PAYMENT SHEET
+// ============================================================
+function showPaymentSheet(orderId) {
     const order = Object.values(orders).find(o => o.id === orderId);
     if (!order) return;
+    
+    const subtotal = order.subtotal || order.total || 0;
+    const serviceFee = subtotal * (serviceFeePercent / 100);
+    const vat = (subtotal + serviceFee) * (vatPercent / 100);
+    const total = subtotal + serviceFee + vat;
     
     const body = document.getElementById('tableSheetBody');
     body.innerHTML = `
         <div style="text-align:center;margin:12px 0;">
-            <div style="font-size:32px;font-weight:900;color:var(--primary-dark);">${money(order.total)}</div>
-            <div style="font-size:13px;color:var(--text-muted);">الإجمالي</div>
+            <div style="font-size:32px;font-weight:900;color:var(--primary-dark);">${money(total)}</div>
+            <div style="font-size:13px;color:var(--text-muted);">${t('total')}</div>
         </div>
-        <div class="section-title">اختر طريقة الدفع</div>
+        <div class="section-title">${t('select_payment')}</div>
         <div class="payment-options" id="paymentOptions">
             ${paymentMethods.map(pm => `
                 <div class="payment-option" onclick="selectPaymentMethod('${pm.id}')" data-id="${pm.id}">
@@ -2714,9 +3420,9 @@ async function printReceipt(orderId) {
         </div>
         <div style="display:flex;gap:8px;margin-top:12px;">
             <button class="btn btn-primary" style="flex:1;" id="confirmPaymentBtn" onclick="confirmPaymentAndClose('${orderId}')" disabled>
-                <i class="fa-solid fa-check"></i> تم الدفع
+                <i class="fa-solid fa-check"></i> ${t('payment')}
             </button>
-            <button class="btn btn-ghost" style="flex:1;" onclick="openTableSheet('${order.table_id}')">رجوع</button>
+            <button class="btn btn-ghost" style="flex:1;" onclick="openTableSheet('${order.table_id}')">${t('back')}</button>
         </div>
         <div class="error-text" id="paymentError"></div>
     `;
@@ -2730,10 +3436,109 @@ function selectPaymentMethod(pmId) {
     document.getElementById('confirmPaymentBtn').disabled = false;
 }
 
+// ============================================================
+// PRINT RECEIPT — مع Service Fee و VAT
+// ============================================================
+async function printReceipt(orderId) {
+    if (!hasPermission('print_receipt')) {
+        showToast(t('error_permission'), 'error');
+        return;
+    }
+    
+    const order = Object.values(orders).find(o => o.id === orderId);
+    if (!order) return;
+    
+    // حساب الرسوم
+    const subtotal = order.subtotal || order.total || 0;
+    const serviceFee = subtotal * (serviceFeePercent / 100);
+    const vat = (subtotal + serviceFee) * (vatPercent / 100);
+    const total = subtotal + serviceFee + vat;
+    
+    // جلب تفاصيل الطلب
+    const { data: items } = await supabaseClient
+        .from('order_items')
+        .select('*, menu_items(*)')
+        .eq('order_id', orderId);
+    
+    const table = tables.find(t => t.id === order.table_id);
+    
+    let itemsHtml = '';
+    if (items && items.length > 0) {
+        itemsHtml = items.map(item => `
+            <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #eee;">
+                <span>${escapeHtml(item.menu_items?.name || 'صنف')} × ${item.quantity}</span>
+                <span>${money(item.unit_price * item.quantity)}</span>
+            </div>
+        `).join('');
+    }
+    
+    const receiptHTML = `
+        <div style="font-family:var(--font);max-width:320px;margin:0 auto;padding:16px;background:#fff;color:#1A1A2E;border-radius:8px;direction:rtl;">
+            <div style="text-align:center;border-bottom:2px dashed #ddd;padding-bottom:10px;">
+                <div style="font-size:20px;font-weight:900;color:var(--primary-dark);">${escapeHtml(business.name)}</div>
+                <div style="font-size:11px;color:#888;">${escapeHtml(business.code)}</div>
+                <div style="font-size:11px;color:#888;">${t('order')} #${order.id.slice(0, 8)}</div>
+                <div style="font-size:11px;color:#888;">${t('table')} ${table?.number || '?'}</div>
+            </div>
+            
+            <div style="padding:10px 0;border-bottom:1px dashed #ddd;">
+                ${itemsHtml}
+            </div>
+            
+            <div style="padding:8px 0;">
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:14px;">
+                    <span>${t('subtotal')}</span>
+                    <span>${money(subtotal)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:#666;">
+                    <span>${t('service_fee')} (${serviceFeePercent}%)</span>
+                    <span>${money(serviceFee)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:#666;">
+                    <span>${t('vat')} (${vatPercent}%)</span>
+                    <span>${money(vat)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0 0 0;border-top:2px solid var(--primary);font-weight:700;font-size:18px;color:var(--primary-dark);">
+                    <span>${t('total')}</span>
+                    <span>${money(total)}</span>
+                </div>
+            </div>
+            
+            <div style="text-align:center;border-top:2px dashed #ddd;padding-top:10px;font-size:12px;color:#888;">
+                شكراً لزيارتكم 🌟
+            </div>
+        </div>
+    `;
+    
+    // عرض الوصل في نافذة الطباعة
+    const printWindow = window.open('', '_blank', 'width=400,height=600');
+    if (printWindow) {
+        printWindow.document.write(`
+            <html><head><title>${t('print_receipt')}</title>
+            <style>body{font-family:'Cairo',sans-serif;margin:0;padding:20px;background:#f5f5f5;}</style>
+            </head><body>${receiptHTML}
+            <div style="text-align:center;margin-top:12px;">
+                <button onclick="window.print()" style="padding:10px 30px;background:#E8B84B;border:none;border-radius:8px;font-weight:700;cursor:pointer;">🖨️ ${t('print')}</button>
+                <button onclick="window.close()" style="padding:10px 30px;background:#eee;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin-right:8px;">${t('close')}</button>
+            </div>
+            <script>
+                setTimeout(() => { window.print(); }, 600);
+            <\/script>
+            </body></html>
+        `);
+        printWindow.document.close();
+    } else {
+        showToast(t('error_general'), 'error');
+    }
+}
+
+// ============================================================
+// CONFIRM PAYMENT — الطاولة ترجع متاحة
+// ============================================================
 async function confirmPaymentAndClose(orderId) {
     const paymentId = document.querySelector('.payment-option.selected')?.dataset.id;
     if (!paymentId) {
-        document.getElementById('paymentError').textContent = 'اختر طريقة دفع.';
+        document.getElementById('paymentError').textContent = t('error_general');
         return;
     }
     
@@ -2743,26 +3548,37 @@ async function confirmPaymentAndClose(orderId) {
         const order = Object.values(orders).find(o => o.id === orderId);
         if (!order) throw new Error('Order not found');
         
+        // حساب الإجمالي مع الخدمة والضريبة
+        const subtotal = order.subtotal || order.total || 0;
+        const serviceFee = subtotal * (serviceFeePercent / 100);
+        const vat = (subtotal + serviceFee) * (vatPercent / 100);
+        const total = subtotal + serviceFee + vat;
+        
         await supabaseClient.from('payments').insert({
             order_id: orderId,
-            amount: order.total,
+            amount: total,
             method_id: paymentId,
             status: 'completed'
         });
         
-        await supabaseClient.from('orders').update({ status: 'paid' }).eq('id', orderId);
+        await supabaseClient.from('orders').update({ 
+            status: 'paid',
+            total: total
+        }).eq('id', orderId);
+        
+        // ⭐ الطاولة ترجع متاحة
         await supabaseClient.from('tables').update({ status: 'available' }).eq('id', order.table_id);
         
         orderStatus[orderId] = 'paid';
         closeSheet('tableOverlay');
-        showToast(`✅ تم الدفع بنجاح! ${money(order.total)}`, 'success');
+        showToast(t('payment_success'), 'success');
         
         await loadActiveOrders();
         renderTables();
         renderOrdersList();
         renderDashboard();
     } catch (e) {
-        document.getElementById('paymentError').textContent = 'فشل الدفع';
+        document.getElementById('paymentError').textContent = t('payment_failed');
     }
 }
 
@@ -2777,7 +3593,7 @@ async function loadOrderItems(orderId) {
     const totalEl = document.getElementById('orderTotalDisplay');
     
     if (!items || items.length === 0) {
-        listEl.innerHTML = '<div class="empty" style="padding:10px;">مفيش أصناف</div>';
+        listEl.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
         totalEl.textContent = '0';
         return;
     }
@@ -2805,20 +3621,27 @@ function renderOrdersList() {
     
     const activeEl = document.getElementById('activeOrdersList');
     if (activeOrders.length === 0) {
-        activeEl.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>مفيش طلبات نشطة</div>`;
+        activeEl.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>${t('no_items')}</div>`;
     } else {
         activeEl.innerHTML = activeOrders.map(order => {
             const table = tables.find(t => t.id === order.table_id);
-            const statusMap = {
-                pending: '⏳ قيد الانتظار',
-                preparing: '🔪 قيد التحضير',
-                ready: '✅ جاهز'
+            const statusBadgeMap = {
+                pending: 'badge-pending',
+                preparing: 'badge-preparing',
+                ready: 'badge-ready',
+                paid: 'badge-paid'
+            };
+            const statusLabelMap = {
+                pending: t('pending'),
+                preparing: t('preparing'),
+                ready: t('ready'),
+                paid: t('paid')
             };
             return `
                 <div class="list-row" onclick="viewOrder('${order.id}')" style="cursor:pointer;">
                     <div>
-                        <div class="row-title">طاولة ${table?.number || '?'}</div>
-                        <div class="row-sub">${statusMap[order.status] || order.status}</div>
+                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
+                        <div class="row-sub"><span class="badge ${statusBadgeMap[order.status] || 'badge-warning'}">${statusLabelMap[order.status] || order.status}</span></div>
                     </div>
                     <div class="row-value">${money(order.total)}</div>
                 </div>
@@ -2828,14 +3651,14 @@ function renderOrdersList() {
     
     const recentEl = document.getElementById('recentOrdersList');
     if (recentOrders.length === 0) {
-        recentEl.innerHTML = `<div class="empty"><i class="fa-solid fa-clock-rotate-left"></i>مفيش طلبات سابقة</div>`;
+        recentEl.innerHTML = `<div class="empty"><i class="fa-solid fa-clock-rotate-left"></i>${t('no_items')}</div>`;
     } else {
         recentEl.innerHTML = recentOrders.map(order => {
             const table = tables.find(t => t.id === order.table_id);
             return `
                 <div class="list-row" style="opacity:0.6;">
                     <div>
-                        <div class="row-title">طاولة ${table?.number || '?'}</div>
+                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
                         <div class="row-sub">${new Date(order.created_at).toLocaleTimeString()}</div>
                     </div>
                     <div class="row-value">${money(order.total)}</div>
@@ -2852,15 +3675,15 @@ function viewOrder(orderId) {
     const body = document.getElementById('orderSheetBody');
     body.innerHTML = `
         <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-            <span class="badge badge-gold">طلب #${order.id.slice(0, 8)}</span>
+            <span class="badge badge-gold">${t('order')} #${order.id.slice(0, 8)}</span>
             <span class="badge badge-info">${order.status}</span>
         </div>
         <div id="orderDetailItems"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
         <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid var(--primary);margin-top:8px;font-weight:700;font-size:17px;">
-            <span>الإجمالي</span>
+            <span>${t('total')}</span>
             <span style="color:var(--primary-dark);">${money(order.total)}</span>
         </div>
-        <button class="btn btn-ghost btn-block" onclick="closeSheet('orderOverlay')">إغلاق</button>
+        <button class="btn btn-ghost btn-block" onclick="closeSheet('orderOverlay')">${t('close')}</button>
     `;
     
     loadOrderDetailItems(order.id);
@@ -2876,7 +3699,7 @@ async function loadOrderDetailItems(orderId) {
     
     const el = document.getElementById('orderDetailItems');
     if (!items || items.length === 0) {
-        el.innerHTML = '<div class="empty" style="padding:10px;">مفيش أصناف</div>';
+        el.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
         return;
     }
     
@@ -2892,13 +3715,13 @@ async function loadOrderDetailItems(orderId) {
 }
 
 // ============================================================
-// MENU VIEW + MANAGEMENT
+// MENU VIEW
 // ============================================================
 function renderMenuView() {
     const el = document.getElementById('menuView');
     
     if (menuItems.length === 0) {
-        el.innerHTML = `<div class="empty"><i class="fa-solid fa-utensils"></i>مفيش أصناف</div>`;
+        el.innerHTML = `<div class="empty"><i class="fa-solid fa-utensils"></i>${t('no_items')}</div>`;
         return;
     }
     
@@ -2953,7 +3776,7 @@ function renderMenuView() {
 function renderMenuManagement() {
     const el = document.getElementById('menuManagementList');
     if (menuItems.length === 0) {
-        el.innerHTML = `<div class="empty" style="padding:12px;">مفيش أصناف في المنيو</div>`;
+        el.innerHTML = `<div class="empty" style="padding:12px;">${t('no_items')}</div>`;
         return;
     }
     el.innerHTML = menuItems.map(item => {
@@ -2978,7 +3801,7 @@ function renderMenuManagement() {
 // ============================================================
 function openMenuItemSheet() {
     if (!hasPermission('manage_menu')) {
-        showToast('⛔ ليس لديك صلاحية إدارة المنيو', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
@@ -2986,14 +3809,16 @@ function openMenuItemSheet() {
     document.getElementById('menuItemName').value = '';
     document.getElementById('menuItemPrice').value = '';
     document.getElementById('menuItemDesc').value = '';
-    document.getElementById('menuItemImage').value = '';
+    document.getElementById('menuItemImageInput').value = '';
+    document.getElementById('menuItemImagePreview').style.display = 'none';
+    document.getElementById('menuItemImageData').value = '';
     document.getElementById('menuItemActive').checked = true;
-    document.getElementById('menuItemSheetTitle').textContent = 'إضافة صنف';
+    document.getElementById('menuItemSheetTitle').textContent = t('add_item');
     document.getElementById('deleteMenuItemBtn').style.display = 'none';
     document.getElementById('menuItemError').textContent = '';
     
     const catSelect = document.getElementById('menuItemCategory');
-    catSelect.innerHTML = '<option value="">بدون تصنيف</option>';
+    catSelect.innerHTML = '<option value="">' + t('no_categories') + '</option>';
     menuCategories.forEach(cat => {
         catSelect.innerHTML += `<option value="${cat.id}">${escapeHtml(cat.name)}</option>`;
     });
@@ -3004,7 +3829,7 @@ function openMenuItemSheet() {
 
 function editMenuItem(itemId) {
     if (!hasPermission('manage_menu')) {
-        showToast('⛔ ليس لديك صلاحية إدارة المنيو', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
@@ -3014,14 +3839,20 @@ function editMenuItem(itemId) {
     document.getElementById('menuItemName').value = item.name;
     document.getElementById('menuItemPrice').value = item.price;
     document.getElementById('menuItemDesc').value = item.description || '';
-    document.getElementById('menuItemImage').value = item.image_url || '';
+    document.getElementById('menuItemImageData').value = item.image_url || '';
+    if (item.image_url) {
+        document.getElementById('menuItemImagePreviewImg').src = item.image_url;
+        document.getElementById('menuItemImagePreview').style.display = 'block';
+    } else {
+        document.getElementById('menuItemImagePreview').style.display = 'none';
+    }
     document.getElementById('menuItemActive').checked = item.is_active !== false;
-    document.getElementById('menuItemSheetTitle').textContent = 'تعديل صنف';
+    document.getElementById('menuItemSheetTitle').textContent = t('edit');
     document.getElementById('deleteMenuItemBtn').style.display = 'flex';
     document.getElementById('menuItemError').textContent = '';
     
     const catSelect = document.getElementById('menuItemCategory');
-    catSelect.innerHTML = '<option value="">بدون تصنيف</option>';
+    catSelect.innerHTML = '<option value="">' + t('no_categories') + '</option>';
     menuCategories.forEach(cat => {
         const selected = cat.id === item.category_id ? 'selected' : '';
         catSelect.innerHTML += `<option value="${cat.id}" ${selected}>${escapeHtml(cat.name)}</option>`;
@@ -3037,30 +3868,37 @@ async function saveMenuItem() {
     const name = document.getElementById('menuItemName').value.trim();
     const price = parseFloat(document.getElementById('menuItemPrice').value);
     const description = document.getElementById('menuItemDesc').value.trim();
-    const image_url = document.getElementById('menuItemImage').value.trim();
+    const image_data = document.getElementById('menuItemImageData').value;
     const category_id = document.getElementById('menuItemCategory').value || null;
     const is_active = document.getElementById('menuItemActive').checked;
     const errEl = document.getElementById('menuItemError');
     
     if (!name || isNaN(price) || price < 0) {
-        errEl.textContent = 'اكتب اسم وسعر صحيحين.';
+        errEl.textContent = t('error_general');
         return;
     }
     
     if (!supabaseClient) {
-        errEl.textContent = 'Supabase not initialized.';
+        errEl.textContent = t('error_connection');
         return;
     }
     
     try {
-        const data = { name, price, description, image_url: image_url || null, category_id, is_active };
+        const data = { 
+            name, 
+            price, 
+            description, 
+            image_url: image_data || null, 
+            category_id, 
+            is_active 
+        };
         if (id) {
             await supabaseClient.from('menu_items').update(data).eq('id', id);
-            showToast('تم تحديث الصنف', 'success');
+            showToast(t('item_updated'), 'success');
         } else {
             data.business_id = business.id;
             await supabaseClient.from('menu_items').insert(data);
-            showToast('تم إضافة الصنف', 'success');
+            showToast(t('item_added'), 'success');
         }
         closeSheet('menuItemOverlay');
         await loadMenuItems();
@@ -3068,28 +3906,28 @@ async function saveMenuItem() {
         renderMenuManagement();
         renderSettings();
     } catch (e) {
-        errEl.textContent = 'فشل الحفظ';
+        errEl.textContent = t('error_general');
     }
 }
 
 async function deleteMenuItem(itemId) {
     if (!hasPermission('manage_menu')) {
-        showToast('⛔ ليس لديك صلاحية إدارة المنيو', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
-    if (!confirm('متأكد من حذف هذا الصنف؟')) return;
+    if (!confirm(t('delete') + '؟')) return;
     if (!supabaseClient) return;
     try {
         await supabaseClient.from('menu_items').delete().eq('id', itemId);
-        showToast('تم الحذف', 'success');
+        showToast(t('item_deleted'), 'success');
         closeSheet('menuItemOverlay');
         await loadMenuItems();
         renderMenuView();
         renderMenuManagement();
         renderSettings();
     } catch (e) {
-        showToast('فشل الحذف', 'error');
+        showToast(t('error_general'), 'error');
     }
 }
 
@@ -3098,7 +3936,7 @@ async function deleteMenuItem(itemId) {
 // ============================================================
 function openCategorySheet() {
     if (!hasPermission('manage_menu')) {
-        showToast('⛔ ليس لديك صلاحية إدارة المنيو', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
@@ -3113,8 +3951,8 @@ async function saveCategory() {
     const name = document.getElementById('categoryName').value.trim();
     const icon = document.getElementById('categoryIcon').value;
     const errEl = document.getElementById('categoryError');
-    if (!name) { errEl.textContent = 'اكتب اسم التصنيف.'; return; }
-    if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+    if (!name) { errEl.textContent = t('error_general'); return; }
+    if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
     try {
         await supabaseClient.from('menu_categories').insert({
             business_id: business.id,
@@ -3122,13 +3960,13 @@ async function saveCategory() {
             icon: icon,
             is_active: true
         });
-        showToast('تم إضافة التصنيف', 'success');
+        showToast(t('category_added'), 'success');
         closeSheet('categoryOverlay');
         await loadMenuCategories();
         renderMenuView();
         renderMenuManagement();
         renderSettings();
-    } catch (e) { errEl.textContent = 'فشل الحفظ'; }
+    } catch (e) { errEl.textContent = t('error_general'); }
 }
 
 // ============================================================
@@ -3136,7 +3974,7 @@ async function saveCategory() {
 // ============================================================
 function openExpenseSheet() {
     if (!hasPermission('add_expense')) {
-        showToast('⛔ ليس لديك صلاحية إضافة مصروفات', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
@@ -3152,11 +3990,11 @@ async function saveExpense() {
     const amount = parseFloat(document.getElementById('expenseAmount').value);
     const errEl = document.getElementById('expenseError');
     if (!description || isNaN(amount) || amount <= 0) {
-        errEl.textContent = 'اكتب وصف ومبلغ صحيحين.';
+        errEl.textContent = t('error_general');
         return;
     }
     if (!supabaseClient || !currentShift) {
-        errEl.textContent = 'لا يوجد شيفت مفتوح.';
+        errEl.textContent = t('error_general');
         return;
     }
     try {
@@ -3166,10 +4004,10 @@ async function saveExpense() {
             description,
             amount
         });
-        showToast('تم تسجيل المصروف', 'success');
+        showToast(t('expense_added'), 'success');
         closeSheet('expenseOverlay');
         renderDashboard();
-    } catch (e) { errEl.textContent = 'فشل الحفظ'; }
+    } catch (e) { errEl.textContent = t('error_general'); }
 }
 
 // ============================================================
@@ -3177,11 +4015,11 @@ async function saveExpense() {
 // ============================================================
 async function openCloseShiftSheet() {
     if (!hasPermission('close_shift')) {
-        showToast('⛔ ليس لديك صلاحية إقفال الشيفت', 'error');
+        showToast(t('error_permission'), 'error');
         return;
     }
     
-    if (!currentShift) { showToast('لا يوجد شيفت مفتوح', 'warning'); return; }
+    if (!currentShift) { showToast(t('no_open_shift'), 'warning'); return; }
     if (!supabaseClient) return;
     try {
         const { data: completedOrders } = await supabaseClient
@@ -3198,13 +4036,13 @@ async function openCloseShiftSheet() {
         const totalExpenses = (expenses || []).reduce((sum, e) => sum + Number(e.amount), 0);
         
         document.getElementById('closeShiftSummary').innerHTML = `
-            <div class="list-row"><div class="row-title">الإيراد</div><div class="row-value mono">${money(revenue)}</div></div>
-            <div class="list-row"><div class="row-title">المصروفات</div><div class="row-value mono">${money(totalExpenses)}</div></div>
-            <div class="list-row"><div class="row-title">الصافي</div><div class="row-value mono" style="color:var(--primary-dark);">${money(revenue - totalExpenses)}</div></div>
+            <div class="list-row"><div class="row-title">${t('shift_revenue')}</div><div class="row-value mono">${money(revenue)}</div></div>
+            <div class="list-row"><div class="row-title">${t('shift_expenses')}</div><div class="row-value mono">${money(totalExpenses)}</div></div>
+            <div class="list-row"><div class="row-title">${t('shift_profit')}</div><div class="row-value mono" style="color:var(--primary-dark);">${money(revenue - totalExpenses)}</div></div>
         `;
         document.getElementById('confirmCloseShiftBtn').onclick = confirmCloseShift;
         openSheet('closeShiftOverlay');
-    } catch (e) { showToast('فشل تحميل بيانات الشيفت', 'error'); }
+    } catch (e) { showToast(t('error_general'), 'error'); }
 }
 
 async function confirmCloseShift() {
@@ -3216,21 +4054,21 @@ async function confirmCloseShift() {
             closed_by: currentUser?.name || 'system'
         }).eq('id', currentShift.id);
         closeSheet('closeShiftOverlay');
-        showToast('تم إقفال الشيفت', 'success');
+        showToast(t('shift_closed'), 'success');
         await loadOrOpenShift();
         renderSettings();
         renderDashboard();
-    } catch (e) { showToast('فشل إقفال الشيفت', 'error'); }
+    } catch (e) { showToast(t('shift_close_failed'), 'error'); }
 }
 
 // ============================================================
-// PAYMENT METHOD, EMPLOYEE
+// PAYMENT METHOD
 // ============================================================
 function openPaymentMethodSheet() {
     document.getElementById('editPaymentMethodId').value = '';
     document.getElementById('paymentMethodName').value = '';
     document.getElementById('paymentMethodIcon').value = 'fa-money-bill-wave';
-    document.getElementById('paymentMethodSheetTitle').textContent = 'إضافة طريقة دفع';
+    document.getElementById('paymentMethodSheetTitle').textContent = t('add_payment_method');
     document.getElementById('deletePaymentMethodBtn').style.display = 'none';
     document.getElementById('paymentMethodError').textContent = '';
     document.getElementById('savePaymentMethodBtn').onclick = savePaymentMethod;
@@ -3241,8 +4079,8 @@ async function savePaymentMethod() {
     const name = document.getElementById('paymentMethodName').value.trim();
     const icon = document.getElementById('paymentMethodIcon').value;
     const errEl = document.getElementById('paymentMethodError');
-    if (!name) { errEl.textContent = 'اكتب اسم طريقة الدفع.'; return; }
-    if (!supabaseClient) { errEl.textContent = 'Supabase not initialized.'; return; }
+    if (!name) { errEl.textContent = t('error_general'); return; }
+    if (!supabaseClient) { errEl.textContent = t('error_connection'); return; }
     try {
         await supabaseClient.from('payment_methods').insert({
             business_id: business.id,
@@ -3250,15 +4088,15 @@ async function savePaymentMethod() {
             icon: icon,
             is_active: true
         });
-        showToast('تم إضافة طريقة الدفع', 'success');
+        showToast(t('payment_method_added'), 'success');
         closeSheet('paymentMethodOverlay');
         await loadPaymentMethods();
         renderSettings();
-    } catch (e) { errEl.textContent = 'فشل الحفظ'; }
+    } catch (e) { errEl.textContent = t('error_general'); }
 }
 
 // ============================================================
-// EMPLOYEE MANAGEMENT (مختصر)
+// EMPLOYEE MANAGEMENT
 // ============================================================
 function openEmployeeSheet() {
     document.getElementById('editEmployeeId').value = '';
@@ -3332,12 +4170,12 @@ async function saveEmployee() {
     };
     
     if (!name || !pin || !/^\d{4,6}$/.test(pin)) {
-        errEl.textContent = 'اكتب اسم و PIN صحيح (4-6 أرقام).';
+        errEl.textContent = t('error_general');
         return;
     }
     
     if (!supabaseClient) {
-        errEl.textContent = 'Supabase not initialized.';
+        errEl.textContent = t('error_connection');
         return;
     }
     
@@ -3352,31 +4190,31 @@ async function saveEmployee() {
         
         if (id) {
             await supabaseClient.from('employees').update(data).eq('id', id);
-            showToast('تم تحديث الموظف', 'success');
+            showToast(t('employee_updated'), 'success');
         } else {
             data.business_id = business.id;
             await supabaseClient.from('employees').insert(data);
-            showToast('تم إضافة الموظف', 'success');
+            showToast(t('employee_added'), 'success');
         }
         closeSheet('employeeOverlay');
         await loadEmployees();
         renderSettings();
     } catch (e) {
-        errEl.textContent = 'فشل الحفظ: ' + e.message;
+        errEl.textContent = t('error_general');
     }
 }
 
 async function deleteEmployee(empId) {
-    if (!confirm('متأكد من حذف هذا الموظف؟')) return;
+    if (!confirm(t('delete') + '؟')) return;
     if (!supabaseClient) return;
     try {
         await supabaseClient.from('employees').delete().eq('id', empId);
-        showToast('تم الحذف', 'success');
+        showToast(t('employee_deleted'), 'success');
         closeSheet('employeeOverlay');
         await loadEmployees();
         renderSettings();
     } catch (e) {
-        showToast('فشل الحذف', 'error');
+        showToast(t('error_general'), 'error');
     }
 }
 
@@ -3398,12 +4236,14 @@ function renderSettings() {
             <div class="toggle-switch ${!isDark ? 'active' : ''}" id="themeToggle" onclick="toggleTheme()">
                 <div class="toggle-slider"></div>
             </div>
-            <span class="toggle-label" id="themeToggleLabel">${isDark ? '🌙 داكن' : '☀️ فاتح'}</span>
+            <span class="toggle-label" id="themeToggleLabel">${isDark ? t('dark') : t('light')}</span>
         </div>
         
-        <div class="section-title">🏪 المطعم</div>
-        <div class="list-row"><div class="row-title">الاسم</div><div class="row-value">${escapeHtml(business.name)}</div></div>
-        <div class="list-row"><div class="row-title">الكود</div><div class="row-value mono">${escapeHtml(business.code)}</div></div>
+        <div class="section-title">🖼️ الشعار</div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            ${businessLogo ? `<img src="${businessLogo}" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--primary);object-fit:cover;">` : '<span style="color:var(--text-muted);">' + t('no_logo') + '</span>'}
+            <button class="btn btn-primary btn-sm" onclick="openLogoSettings()"><i class="fa-solid fa-pen"></i> ${t('edit_logo')}</button>
+        </div>
         
         <div class="section-title">💰 الرسوم والضرائب</div>
         <div class="list-row">
@@ -3415,19 +4255,19 @@ function renderSettings() {
             <div class="row-value mono">${vatPercent}%</div>
         </div>
         <button class="btn btn-primary btn-sm btn-block" onclick="openFeesSettings()">
-            <i class="fa-solid fa-pen"></i> تعديل الرسوم
+            <i class="fa-solid fa-pen"></i> ${t('edit_fees')}
         </button>
         
         <div class="section-title">💳 طرق الدفع</div>
-        <button class="btn btn-primary btn-sm" onclick="openPaymentMethodSheet()"><i class="fa-solid fa-plus"></i> إضافة</button>
+        <button class="btn btn-primary btn-sm" onclick="openPaymentMethodSheet()"><i class="fa-solid fa-plus"></i> ${t('add')}</button>
         <div class="panel" id="settingsPaymentMethods"></div>
         
         <div class="section-title">👥 الموظفين</div>
-        <button class="btn btn-primary btn-sm" onclick="openEmployeeSheet()"><i class="fa-solid fa-plus"></i> إضافة</button>
+        <button class="btn btn-primary btn-sm" onclick="openEmployeeSheet()"><i class="fa-solid fa-plus"></i> ${t('add')}</button>
         <div class="panel" id="settingsEmployees"></div>
         
         <button class="btn btn-ghost btn-block" style="margin-top:16px;" onclick="switchBusiness()">
-            <i class="fa-solid fa-right-left"></i> تبديل النشاط
+            <i class="fa-solid fa-right-left"></i> ${t('switch_business')}
         </button>
     `;
     
@@ -3438,7 +4278,7 @@ function renderSettings() {
 function renderSettingsPaymentMethods() {
     const el = document.getElementById('settingsPaymentMethods');
     if (paymentMethods.length === 0) {
-        el.innerHTML = `<div class="empty" style="padding:12px;">مفيش طرق دفع</div>`;
+        el.innerHTML = `<div class="empty" style="padding:12px;">${t('no_items')}</div>`;
         return;
     }
     el.innerHTML = paymentMethods.slice(0, 3).map(pm => `
@@ -3451,16 +4291,19 @@ function renderSettingsPaymentMethods() {
 function renderSettingsEmployees() {
     const el = document.getElementById('settingsEmployees');
     if (employees.length === 0) {
-        el.innerHTML = `<div class="empty" style="padding:12px;">مفيش موظفين</div>`;
+        el.innerHTML = `<div class="empty" style="padding:12px;">${t('no_items')}</div>`;
         return;
     }
     el.innerHTML = employees.map(emp => {
         const roleMap = {
-            'waiter': 'نادل',
-            'chef': 'طباخ',
-            'cashier': 'كاشير',
-            'admin': 'أدمن'
+            'waiter': t('waiter'),
+            'chef': t('chef'),
+            'cashier': t('cashier'),
+            'admin': t('admin')
         };
+        const statusBadge = emp.is_active !== false 
+            ? `<span class="badge badge-success">✅ ${t('active')}</span>` 
+            : `<span class="badge badge-inactive">⛔ ${t('inactive')}</span>`;
         return `
             <div class="list-row">
                 <div>
@@ -3468,7 +4311,7 @@ function renderSettingsEmployees() {
                     <div class="row-sub">${roleMap[emp.role] || emp.role}</div>
                 </div>
                 <div class="row-actions">
-                    <span class="badge badge-success">نشط</span>
+                    ${statusBadge}
                     <button class="btn btn-ghost btn-xs" onclick="editEmployee('${emp.id}')"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-danger btn-xs" onclick="deleteEmployee('${emp.id}')"><i class="fa-solid fa-trash"></i></button>
                 </div>
@@ -3482,6 +4325,7 @@ function renderSettingsEmployees() {
 // ============================================================
 function switchBusiness() {
     localStorage.removeItem('platepro_business_code');
+    localStorage.removeItem('platepro_logo');
     business = null;
     deviceRecord = null;
     currentUser = null;
@@ -3507,6 +4351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadTheme();
     loadFeesSettings();
+    loadLogo();
     initCustomerPage();
     tryAutoResume();
 });
@@ -3530,9 +4375,15 @@ async function tryAutoResume() {
 }
 
 console.log('🍽️ Plate Pro — Full System!');
+console.log('✅ All badges fixed and visible');
+console.log('🌐 Language toggle working');
+console.log('🌗 Theme toggle in settings');
 console.log('📱 QR Code for customer ordering');
-console.log('💰 Service Fee & VAT included');
-console.log('🖼️ Item images supported');
+console.log('💰 Service Fee & VAT included and shown');
+console.log('🖼️ Item images with upload support');
+console.log('🖼️ Business logo support');
+console.log('🪑 Table becomes available after payment');
+console.log('💳 Payment button added next to print');
 </script>
 </body>
 </html>
