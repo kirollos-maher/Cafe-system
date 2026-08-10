@@ -108,16 +108,7 @@
 .badge-inactive { background: #6B7280; color: #FFFFFF !important; border-color: #4B5563; }
 .badge-purple { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
 .badge-teal { background: #14B8A6; color: #FFFFFF !important; border-color: #0D9488; }
-
-.badge-pending { background: #F59E0B; color: #1A1A2E !important; border-color: #D97706; }
-.badge-preparing { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
-.badge-ready { background: #8B5CF6; color: #FFFFFF !important; border-color: #7C3AED; }
-.badge-paid { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
-.badge-cancelled { background: #EF4444; color: #FFFFFF !important; border-color: #DC2626; }
-
-.badge-table-available { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
-.badge-table-occupied { background: var(--primary); color: var(--text-primary) !important; border-color: var(--primary-dark); }
-.badge-table-reserved { background: #3B82F6; color: #FFFFFF !important; border-color: #2563EB; }
+.badge-ready-table { background: #22C55E; color: #FFFFFF !important; border-color: #16A34A; }
 
 /* ============================================================
    THEME TOGGLE
@@ -943,6 +934,21 @@ body {
 }
 .table-card.reserved .table-status { color: var(--info); }
 
+.table-card.ready_to_serve {
+    border-color: var(--success);
+    background: linear-gradient(145deg, #1A3A28, #1A1A2E);
+    animation: pulseReady 1.5s infinite;
+}
+
+@keyframes pulseReady {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(45, 155, 78, 0.2); }
+    50% { box-shadow: 0 0 20px 5px rgba(45, 155, 78, 0.15); }
+}
+
+[data-theme="light"] .table-card.ready_to_serve {
+    background: linear-gradient(145deg, #E8F5ED, #F7F0F0);
+}
+
 .table-badge {
     position: absolute;
     top: -6px;
@@ -1314,12 +1320,10 @@ body {
         <div class="tables-grid" id="tablesGrid"></div>
     </div>
 
-    <!-- ORDERS (للمطبخ والشيف) -->
-    <div class="view" id="view-orders">
-        <div class="section-title" data-i18n="active_orders">📋 الطلبات النشطة</div>
-        <div id="activeOrdersList"></div>
-        <div class="section-title" data-i18n="recent_orders">📜 آخر الطلبات</div>
-        <div id="recentOrdersList"></div>
+    <!-- KITCHEN (الأوردرات) -->
+    <div class="view" id="view-kitchen">
+        <div class="section-title" data-i18n="kitchen_orders">📋 الأوردرات النشطة</div>
+        <div id="kitchenOrdersList"></div>
     </div>
 
     <!-- MENU -->
@@ -1348,8 +1352,8 @@ body {
         <button class="nav-btn" data-view="view-tables" onclick="navigateTo('view-tables')">
             <i class="fa-solid fa-table-cells"></i><span data-i18n="tables">الطاولات</span>
         </button>
-        <button class="nav-btn" data-view="view-orders" onclick="navigateTo('view-orders')">
-            <i class="fa-solid fa-receipt"></i><span data-i18n="orders">الطلبات</span>
+        <button class="nav-btn" data-view="view-kitchen" onclick="navigateTo('view-kitchen')">
+            <i class="fa-solid fa-utensils"></i><span data-i18n="kitchen">الأوردرات</span>
         </button>
         <button class="nav-btn" data-view="view-menu" onclick="navigateTo('view-menu')">
             <i class="fa-solid fa-utensils"></i><span data-i18n="menu">المنيو</span>
@@ -1454,15 +1458,15 @@ body {
     </div>
 </div>
 
-<!-- Order Detail Sheet -->
-<div class="overlay" id="orderOverlay">
+<!-- Kitchen Order Sheet -->
+<div class="overlay" id="kitchenOrderOverlay">
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span data-i18n="order_details">تفاصيل الطلب</span>
-            <button class="close-x" onclick="closeSheet('orderOverlay')"><i class="fa-solid fa-xmark"></i></button>
+            <span data-i18n="order_details">تفاصيل الأوردر</span>
+            <button class="close-x" onclick="closeSheet('kitchenOrderOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div id="orderSheetBody"></div>
+        <div id="kitchenOrderBody"></div>
     </div>
 </div>
 
@@ -1736,7 +1740,7 @@ try {
 }
 
 // ============================================================
-// TRANSLATIONS — كل الرسائل مترجمة
+// TRANSLATIONS
 // ============================================================
 let currentLang = 'ar';
 
@@ -1890,7 +1894,12 @@ const translations = {
         'recent_orders': '📜 آخر الطلبات',
         'order_details': 'تفاصيل الطلب',
         'tables': '🪑 الطاولات',
-        'orders': '📋 الطلبات',
+        'kitchen': '👨‍🍳 الأوردرات',
+        'kitchen_orders': '📋 الأوردرات النشطة',
+        'no_kitchen_orders': 'مفيش أوردرات نشطة',
+        'items': 'أصناف',
+        'more': 'أكثر',
+        'ready_to_serve': '🛎️ جاهز للتسليم',
         'dashboard': 'الرئيسية',
         'activate': 'تفعيل',
         'qr_generated': '✅ تم توليد QR Code',
@@ -1921,7 +1930,8 @@ const translations = {
         'item_added_to_order': '✅ تم إضافة {name}',
         'loading': 'جاري التحميل...',
         'default_item': 'صنف',
-        'no_open_shift': 'لا يوجد شيفت مفتوح'
+        'no_open_shift': 'لا يوجد شيفت مفتوح',
+        'orders': '📋 الطلبات'
     },
     en: {
         'platepro': '✦ PLATE PRO ✦',
@@ -2072,7 +2082,12 @@ const translations = {
         'recent_orders': '📜 Recent Orders',
         'order_details': 'Order Details',
         'tables': '🪑 Tables',
-        'orders': '📋 Orders',
+        'kitchen': '👨‍🍳 Orders',
+        'kitchen_orders': '📋 Active Orders',
+        'no_kitchen_orders': 'No active orders',
+        'items': 'items',
+        'more': 'more',
+        'ready_to_serve': '🛎️ Ready to Serve',
         'dashboard': 'Dashboard',
         'activate': 'Activate',
         'qr_generated': '✅ QR Code generated',
@@ -2103,7 +2118,8 @@ const translations = {
         'item_added_to_order': '✅ {name} added',
         'loading': 'Loading...',
         'default_item': 'Item',
-        'no_open_shift': 'No open shift'
+        'no_open_shift': 'No open shift',
+        'orders': '📋 Orders'
     }
 };
 
@@ -2135,7 +2151,7 @@ function applyTranslations() {
     
     renderDashboard();
     renderTables();
-    renderOrdersList();
+    renderKitchenOrders();
     renderMenuView();
     renderSettings();
     
@@ -2144,9 +2160,9 @@ function applyTranslations() {
         openTableSheet(window._activeTableId);
     }
     
-    const orderOverlay = document.getElementById('orderOverlay');
-    if (orderOverlay && orderOverlay.classList.contains('show') && window._activeOrderId) {
-        viewOrderDetail(window._activeOrderId);
+    const kitchenOrderOverlay = document.getElementById('kitchenOrderOverlay');
+    if (kitchenOrderOverlay && kitchenOrderOverlay.classList.contains('show') && window._activeKitchenOrderId) {
+        viewKitchenOrder(window._activeKitchenOrderId);
     }
 }
 
@@ -2397,7 +2413,7 @@ function navigateTo(viewId) {
         const viewMap = {
             'view-dashboard': 'dashboard',
             'view-tables': 'tables',
-            'view-orders': 'orders',
+            'view-kitchen': 'orders',
             'view-menu': 'menu',
             'view-settings': 'settings'
         };
@@ -2416,7 +2432,7 @@ function navigateTo(viewId) {
     
     if (viewId === 'view-dashboard') renderDashboard();
     if (viewId === 'view-tables') renderTables();
-    if (viewId === 'view-orders') renderOrdersList();
+    if (viewId === 'view-kitchen') renderKitchenOrders();
     if (viewId === 'view-menu') { renderMenuView(); renderMenuManagement(); }
     if (viewId === 'view-settings') renderSettings();
 }
@@ -2478,7 +2494,7 @@ function updateUIByPermissions() {
         const viewMap = {
             'view-dashboard': 'dashboard',
             'view-tables': 'tables',
-            'view-orders': 'orders',
+            'view-kitchen': 'orders',
             'view-menu': 'menu',
             'view-settings': 'settings'
         };
@@ -2829,7 +2845,7 @@ async function submitCustomerOrder() {
         
         loadCustomerData();
         renderTables();
-        renderOrdersList();
+        renderKitchenOrders();
         renderDashboard();
         
     } catch (e) {
@@ -3025,21 +3041,24 @@ async function enterMainApp() {
     applyTranslations();
     renderDashboard();
     renderTables();
-    renderOrdersList();
+    renderKitchenOrders();
     renderMenuView();
     renderMenuManagement();
     renderSettings();
 }
 
+// ============================================================
+// LOAD ALL DATA
+// ============================================================
 async function loadAllData() {
+    await loadTables();
+    await loadActiveOrders();
     await Promise.all([
-        loadTables(),
         loadMenuItems(),
         loadMenuCategories(),
         loadEmployees(),
         loadPaymentMethods(),
-        loadOrOpenShift(),
-        loadActiveOrders()
+        loadOrOpenShift()
     ]);
 }
 
@@ -3130,7 +3149,7 @@ async function loadActiveOrders() {
 // ============================================================
 async function renderDashboard() {
     const activeOrders = Object.values(orders).filter(o => o.status !== 'completed' && o.status !== 'cancelled' && o.status !== 'paid');
-    const occupiedTables = tables.filter(t => t.status === 'occupied');
+    const occupiedTables = tables.filter(t => t.status === 'occupied' || t.status === 'ready_to_serve');
     const availableTables = tables.filter(t => t.status === 'available');
     
     let revenue = 0;
@@ -3151,59 +3170,250 @@ async function renderDashboard() {
 }
 
 // ============================================================
-// TABLES — مع الحفاظ على Reserved
+// TABLES — مع حالة "جاهز للتسليم"
 // ============================================================
-function renderTables() {
+async function renderTables() {
     const grid = document.getElementById('tablesGrid');
+    if (!grid) return;
     
-    tables.forEach(table => {
-        if (table.status === 'reserved') return;
-        
-        const hasActiveOrder = Object.values(orders).some(o => 
-            o.table_id === table.id && 
-            o.status !== 'completed' && 
-            o.status !== 'cancelled' && 
-            o.status !== 'paid'
-        );
-        
-        if (hasActiveOrder && table.status !== 'occupied') {
-            supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', table.id).catch(() => {});
-            table.status = 'occupied';
-        } else if (!hasActiveOrder && table.status === 'occupied') {
-            supabaseClient.from('tables').update({ status: 'available' }).eq('id', table.id).catch(() => {});
-            table.status = 'available';
-        }
-    });
+    grid.innerHTML = '';
     
-    grid.innerHTML = tables.map(table => {
-        const statusMap = {
-            available: { label: t('available'), class: 'available', badge: 'badge-table-available' },
-            occupied: { label: t('occupied'), class: 'occupied', badge: 'badge-table-occupied' },
-            reserved: { label: t('reserved'), class: 'reserved', badge: 'badge-table-reserved' }
-        };
-        
-        const s = statusMap[table.status] || statusMap.available;
-        return `
-            <div class="table-card ${s.class}" onclick="openTableSheet('${table.id}')">
-                ${table.status !== 'available' ? `<span class="table-badge ${s.badge}">${s.label}</span>` : ''}
+    for (const table of tables) {
+        try {
+            const activeOrder = Object.values(orders).find(o => 
+                o.table_id === table.id && 
+                o.status !== 'completed' && 
+                o.status !== 'cancelled' && 
+                o.status !== 'paid'
+            );
+            
+            let finalStatus = table.status;
+            
+            if (activeOrder) {
+                if (activeOrder.status === 'ready') {
+                    finalStatus = 'ready_to_serve';
+                } else {
+                    finalStatus = 'occupied';
+                }
+                if (table.status !== finalStatus) {
+                    await supabaseClient.from('tables').update({ status: finalStatus }).eq('id', table.id);
+                    table.status = finalStatus;
+                }
+            } else if (table.status === 'occupied' || table.status === 'ready_to_serve') {
+                finalStatus = 'available';
+                await supabaseClient.from('tables').update({ status: 'available' }).eq('id', table.id);
+                table.status = 'available';
+            } else if (table.status === 'reserved') {
+                finalStatus = 'reserved';
+            }
+            
+            const statusMap = {
+                available: { label: t('available'), class: 'available' },
+                occupied: { label: t('occupied'), class: 'occupied' },
+                reserved: { label: t('reserved'), class: 'reserved' },
+                ready_to_serve: { label: t('ready_to_serve'), class: 'ready_to_serve' }
+            };
+            
+            const s = statusMap[finalStatus] || statusMap.available;
+            
+            const card = document.createElement('div');
+            card.className = `table-card ${s.class}`;
+            card.onclick = () => openTableSheet(table.id);
+            
+            const badge = finalStatus !== 'available' ? 
+                `<span class="table-badge ${finalStatus === 'ready_to_serve' ? 'badge-ready-table' : ''}">${s.label}</span>` : '';
+            
+            card.innerHTML = `
+                ${badge}
                 <div class="table-num">${table.number}</div>
                 <div class="table-status">${s.label}</div>
                 <div class="table-capacity">${table.capacity || 4} ${t('persons')}</div>
+            `;
+            
+            grid.appendChild(card);
+        } catch (error) {
+            console.error('Error rendering table:', error);
+        }
+    }
+}
+
+// ============================================================
+// KITCHEN — عرض الأوردرات للشيف
+// ============================================================
+function renderKitchenOrders() {
+    const isChef = currentUser?.role === 'chef' || currentUser?.type === 'owner';
+    
+    if (!isChef) {
+        document.getElementById('kitchenOrdersList').innerHTML = `
+            <div class="empty"><i class="fa-solid fa-lock"></i>${t('error_permission')}</div>
+        `;
+        return;
+    }
+    
+    const kitchenOrders = Object.values(orders).filter(o => 
+        o.status === 'pending' || o.status === 'preparing'
+    );
+    
+    const el = document.getElementById('kitchenOrdersList');
+    
+    if (kitchenOrders.length === 0) {
+        el.innerHTML = `<div class="empty"><i class="fa-solid fa-utensils"></i>${t('no_kitchen_orders')}</div>`;
+        return;
+    }
+    
+    el.innerHTML = kitchenOrders.map(order => {
+        const table = tables.find(t => t.id === order.table_id);
+        const orderItems = order.order_items || [];
+        const itemCount = orderItems.reduce((sum, i) => sum + (i.quantity || 0), 0);
+        
+        let itemsPreview = '';
+        if (orderItems.length > 0) {
+            itemsPreview = orderItems.slice(0, 3).map(item => 
+                `${item.quantity}× ${item.menu_items?.name || t('default_item')}`
+            ).join('، ');
+            if (orderItems.length > 3) {
+                itemsPreview += ` +${orderItems.length - 3} ${t('more')}`;
+            }
+        }
+        
+        const statusLabelMap = {
+            pending: t('pending'),
+            preparing: t('preparing')
+        };
+        
+        return `
+            <div class="list-row" onclick="viewKitchenOrder('${order.id}')" style="cursor:pointer; border-bottom:2px solid var(--border); padding:14px 4px;">
+                <div>
+                    <div class="row-title" style="font-size:16px;">${t('table')} ${table?.number || '?'}</div>
+                    <div class="row-sub">${itemCount} ${t('items')} · ${itemsPreview}</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                    <span class="badge ${order.status === 'pending' ? 'badge-warning' : 'badge-info'}">
+                        ${statusLabelMap[order.status] || order.status}
+                    </span>
+                    <span style="font-size:11px; color:var(--text-muted);">${new Date(order.created_at).toLocaleTimeString()}</span>
+                </div>
             </div>
         `;
     }).join('');
 }
 
 // ============================================================
-// TABLE SHEET
+// VIEW KITCHEN ORDER — تفاصيل الأوردر للشيف
 // ============================================================
-function openTableSheet(tableId) {
-    window._activeTableId = tableId;
+async function viewKitchenOrder(orderId) {
+    window._activeKitchenOrderId = orderId;
     
-    if (!hasPermission('create_orders')) {
+    const order = Object.values(orders).find(o => o.id === orderId);
+    if (!order) return;
+    
+    const { data: items } = await supabaseClient
+        .from('order_items')
+        .select('*, menu_items(*)')
+        .eq('order_id', orderId);
+    
+    const table = tables.find(t => t.id === order.table_id);
+    
+    const body = document.getElementById('kitchenOrderBody');
+    
+    let itemsHtml = '';
+    if (items && items.length > 0) {
+        itemsHtml = items.map(item => `
+            <div class="order-item" style="padding:8px 0;">
+                <div>
+                    <div class="item-name" style="font-size:16px;">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
+                    <div class="item-details" style="font-size:14px; color:var(--text-secondary);">
+                        ${item.quantity} ×
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    let actionButtons = '';
+    if (order.status === 'pending') {
+        actionButtons = `
+            <button class="btn btn-primary btn-block" onclick="startPreparing('${orderId}')">
+                <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
+            </button>
+        `;
+    } else if (order.status === 'preparing') {
+        actionButtons = `
+            <button class="btn btn-success btn-block" onclick="markAsReady('${orderId}')">
+                <i class="fa-solid fa-check"></i> ${t('ready_for_delivery')}
+            </button>
+        `;
+    }
+    
+    body.innerHTML = `
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span class="badge badge-gold" style="font-size:14px;">${t('table')} ${table?.number || '?'}</span>
+            <span class="badge ${order.status === 'pending' ? 'badge-warning' : 'badge-info'}" style="font-size:14px;">
+                ${order.status === 'pending' ? t('pending') : t('preparing')}
+            </span>
+        </div>
+        <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;">
+            ${itemsHtml}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${actionButtons}
+            <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('kitchenOrderOverlay')">${t('close')}</button>
+        </div>
+    `;
+    
+    openSheet('kitchenOrderOverlay');
+}
+
+// ============================================================
+// ORDER WORKFLOW — للشيف
+// ============================================================
+async function startPreparing(orderId) {
+    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
         showToast(t('error_permission'), 'error');
         return;
     }
+    try {
+        await supabaseClient.from('orders').update({ status: 'preparing' }).eq('id', orderId);
+        orderStatus[orderId] = 'preparing';
+        showToast(t('preparing_started'), 'info');
+        await loadActiveOrders();
+        renderKitchenOrders();
+        renderTables();
+        renderDashboard();
+        closeSheet('kitchenOrderOverlay');
+    } catch (e) {
+        showToast(t('error_general'), 'error');
+    }
+}
+
+async function markAsReady(orderId) {
+    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
+        showToast(t('error_permission'), 'error');
+        return;
+    }
+    try {
+        await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
+        orderStatus[orderId] = 'ready';
+        showToast(t('order_ready_notification'), 'success');
+        await loadActiveOrders();
+        renderKitchenOrders();
+        renderTables();
+        renderDashboard();
+        closeSheet('kitchenOrderOverlay');
+        
+        const order = Object.values(orders).find(o => o.id === orderId);
+        const table = tables.find(t => t.id === order?.table_id);
+        showToast(`📢 ${t('table')} ${table?.number || '?'} ${t('ready_for_delivery')}`, 'info');
+    } catch (e) {
+        showToast(t('error_general'), 'error');
+    }
+}
+
+// ============================================================
+// TABLE SHEET (للكاشير والويتر)
+// ============================================================
+function openTableSheet(tableId) {
+    window._activeTableId = tableId;
     
     const table = tables.find(t => t.id === tableId);
     if (!table) return;
@@ -3215,13 +3425,19 @@ function openTableSheet(tableId) {
         o.status !== 'paid'
     );
     
+    // لو مفيش طلب نشط، افتح إنشاء طلب (للكاشير بس)
     if (!activeOrder) {
-        if (table.status === 'occupied') {
+        if (!hasPermission('create_orders')) {
+            showToast(t('error_permission'), 'error');
+            return;
+        }
+        
+        if (table.status === 'occupied' || table.status === 'ready_to_serve') {
             supabaseClient.from('tables').update({ status: 'available' }).eq('id', tableId).catch(() => {});
             table.status = 'available';
         }
         
-        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+        document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number} (${table.capacity || 4} ${t('persons')})`;
         const body = document.getElementById('tableSheetBody');
         
         body.innerHTML = `
@@ -3256,6 +3472,7 @@ function openTableSheet(tableId) {
         return;
     }
     
+    // لو في طلب نشط — عرض تفاصيل الطلب
     const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
     const isReady = status === 'ready';
     const isPaid = status === 'paid';
@@ -3267,13 +3484,10 @@ function openTableSheet(tableId) {
     
     let actionButtons = '';
     
-    if (!isReady && !isPaid) {
-        actionButtons = `
-            <button class="btn btn-primary" style="flex:1;" onclick="markAsReady('${activeOrder.id}')">
-                <i class="fa-solid fa-utensils"></i> ${t('preparing')}
-            </button>
-        `;
-    } else if (isReady && !isPaid) {
+    // للكاشير أو الأونر - عرض أزرار الدفع
+    const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
+    
+    if (isReady && !isPaid && isCashier) {
         if (hasPermission('print_receipt')) {
             actionButtons = `
                 <button class="btn btn-success" style="flex:1;" onclick="printReceipt('${activeOrder.id}')">
@@ -3299,12 +3513,27 @@ function openTableSheet(tableId) {
                 <i class="fa-solid fa-check"></i> ${t('paid')}
             </button>
         `;
+    } else if (!isReady && !isPaid) {
+        // لو الطلب لسه pending أو preparing، الشيف بس يقدر يعدل
+        if (currentUser?.role === 'chef' || currentUser?.type === 'owner') {
+            actionButtons = `
+                <button class="btn btn-primary" style="flex:1;" onclick="startPreparing('${activeOrder.id}')">
+                    <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
+                </button>
+            `;
+        } else {
+            actionButtons = `
+                <button class="btn btn-ghost" style="flex:1;" disabled>
+                    <i class="fa-solid fa-clock"></i> ${t('pending')}
+                </button>
+            `;
+        }
     }
     
     const statusBadgeMap = {
-        pending: 'badge-pending',
-        preparing: 'badge-preparing',
-        ready: 'badge-ready',
+        pending: 'badge-warning',
+        preparing: 'badge-info',
+        ready: 'badge-ready-table',
         paid: 'badge-paid',
         cancelled: 'badge-cancelled'
     };
@@ -3312,12 +3541,12 @@ function openTableSheet(tableId) {
     const statusLabelMap = {
         pending: t('pending'),
         preparing: t('preparing'),
-        ready: t('ready'),
+        ready: t('ready_to_serve'),
         paid: t('paid'),
         cancelled: t('cancelled')
     };
     
-    document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number}`;
+    document.getElementById('tableSheetTitle').textContent = `${t('table')} ${table.number} (${table.capacity || 4} ${t('persons')})`;
     const body = document.getElementById('tableSheetBody');
     
     body.innerHTML = `
@@ -3360,7 +3589,7 @@ function openTableSheet(tableId) {
 }
 
 // ============================================================
-// ORDER MANAGEMENT
+// ORDER CREATION (للكاشير)
 // ============================================================
 function addItemToOrder(item) {
     const existing = _orderItems.find(i => i.menu_item_id === item.id);
@@ -3480,7 +3709,7 @@ async function createOrder(tableId) {
         
         await loadActiveOrders();
         renderTables();
-        renderOrdersList();
+        renderKitchenOrders();
         renderDashboard();
     } catch (e) {
         console.error('Error creating order:', e);
@@ -3489,266 +3718,7 @@ async function createOrder(tableId) {
 }
 
 // ============================================================
-// ORDER WORKFLOW — للشيف والويتر
-// ============================================================
-async function startPreparing(orderId) {
-    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
-        showToast(t('error_permission'), 'error');
-        return;
-    }
-    try {
-        await supabaseClient.from('orders').update({ status: 'preparing' }).eq('id', orderId);
-        orderStatus[orderId] = 'preparing';
-        showToast(t('preparing_started'), 'info');
-        await loadActiveOrders();
-        renderOrdersList();
-        renderDashboard();
-        if (document.getElementById('orderOverlay').classList.contains('show')) {
-            viewOrderDetail(orderId);
-        }
-    } catch (e) {
-        showToast(t('error_general'), 'error');
-    }
-}
-
-async function markAsReady(orderId) {
-    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
-        showToast(t('error_permission'), 'error');
-        return;
-    }
-    try {
-        await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
-        orderStatus[orderId] = 'ready';
-        showToast(t('order_ready_notification'), 'success');
-        await loadActiveOrders();
-        renderOrdersList();
-        renderDashboard();
-        
-        const order = Object.values(orders).find(o => o.id === orderId);
-        const table = tables.find(t => t.id === order?.table_id);
-        showToast(`📢 ${t('table')} ${table?.number || '?'} ${t('ready_for_delivery')}`, 'info');
-        
-        if (document.getElementById('orderOverlay').classList.contains('show')) {
-            viewOrderDetail(orderId);
-        }
-    } catch (e) {
-        showToast(t('error_general'), 'error');
-    }
-}
-
-async function markAsDelivered(orderId) {
-    if (currentUser?.role !== 'waiter' && currentUser?.type !== 'owner') {
-        showToast(t('error_permission'), 'error');
-        return;
-    }
-    try {
-        await supabaseClient.from('orders').update({ 
-            status: 'completed',
-            completed_at: new Date().toISOString()
-        }).eq('id', orderId);
-        orderStatus[orderId] = 'completed';
-        showToast(t('order_delivered'), 'success');
-        await loadActiveOrders();
-        renderOrdersList();
-        renderDashboard();
-        
-        if (document.getElementById('orderOverlay').classList.contains('show')) {
-            viewOrderDetail(orderId);
-        }
-    } catch (e) {
-        showToast(t('error_general'), 'error');
-    }
-}
-
-// ============================================================
-// ORDERS LIST — مع أدوار مختلفة
-// ============================================================
-function renderOrdersList() {
-    const isChef = currentUser?.role === 'chef';
-    const isWaiter = currentUser?.role === 'waiter';
-    const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
-    
-    const activeOrders = Object.values(orders).filter(o => 
-        o.status !== 'completed' && 
-        o.status !== 'cancelled' && 
-        o.status !== 'paid'
-    );
-    
-    const recentOrders = Object.values(orders).filter(o => 
-        o.status === 'paid' || o.status === 'completed'
-    ).slice(0, 10);
-    
-    const activeEl = document.getElementById('activeOrdersList');
-    if (activeOrders.length === 0) {
-        activeEl.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>${t('no_items')}</div>`;
-    } else {
-        activeEl.innerHTML = activeOrders.map(order => {
-            const table = tables.find(t => t.id === order.table_id);
-            const statusBadgeMap = {
-                pending: 'badge-pending',
-                preparing: 'badge-preparing',
-                ready: 'badge-ready',
-                paid: 'badge-paid'
-            };
-            const statusLabelMap = {
-                pending: t('pending'),
-                preparing: t('preparing'),
-                ready: t('ready'),
-                paid: t('paid')
-            };
-            
-            let actionButtons = '';
-            if (isChef && order.status === 'pending') {
-                actionButtons = `
-                    <button class="btn btn-primary btn-xs" onclick="event.stopPropagation();startPreparing('${order.id}')">
-                        <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
-                    </button>
-                `;
-            } else if (isChef && order.status === 'preparing') {
-                actionButtons = `
-                    <button class="btn btn-success btn-xs" onclick="event.stopPropagation();markAsReady('${order.id}')">
-                        <i class="fa-solid fa-check"></i> ${t('ready_for_delivery')}
-                    </button>
-                `;
-            } else if (isWaiter && order.status === 'ready') {
-                actionButtons = `
-                    <button class="btn btn-success btn-xs" onclick="event.stopPropagation();markAsDelivered('${order.id}')">
-                        <i class="fa-solid fa-hand-peace"></i> ${t('deliver')}
-                    </button>
-                `;
-            }
-            
-            const displayPrice = isChef ? '' : `<div class="row-value">${money(order.total)}</div>`;
-            
-            return `
-                <div class="list-row" onclick="viewOrderDetail('${order.id}')" style="cursor:pointer;">
-                    <div>
-                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
-                        <div class="row-sub"><span class="badge ${statusBadgeMap[order.status] || 'badge-warning'}">${statusLabelMap[order.status] || order.status}</span></div>
-                    </div>
-                    ${displayPrice}
-                    <div class="row-actions">${actionButtons}</div>
-                </div>
-            `;
-        }).join('');
-    }
-    
-    const recentEl = document.getElementById('recentOrdersList');
-    if (recentOrders.length === 0) {
-        recentEl.innerHTML = `<div class="empty"><i class="fa-solid fa-clock-rotate-left"></i>${t('no_items')}</div>`;
-    } else {
-        recentEl.innerHTML = recentOrders.map(order => {
-            const table = tables.find(t => t.id === order.table_id);
-            return `
-                <div class="list-row" style="opacity:0.6;" onclick="viewOrderDetail('${order.id}')" style="cursor:pointer;">
-                    <div>
-                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
-                        <div class="row-sub">${new Date(order.created_at).toLocaleTimeString()}</div>
-                    </div>
-                    <div class="row-value">${money(order.total)}</div>
-                </div>
-            `;
-        }).join('');
-    }
-}
-
-// ============================================================
-// VIEW ORDER DETAIL — حسب الدور
-// ============================================================
-async function viewOrderDetail(orderId) {
-    window._activeOrderId = orderId;
-    
-    const order = Object.values(orders).find(o => o.id === orderId);
-    if (!order) return;
-    
-    const isChef = currentUser?.role === 'chef';
-    const isWaiter = currentUser?.role === 'waiter';
-    const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
-    
-    const { data: items } = await supabaseClient
-        .from('order_items')
-        .select('*, menu_items(*)')
-        .eq('order_id', orderId);
-    
-    const table = tables.find(t => t.id === order.table_id);
-    
-    let itemsHtml = '';
-    if (items && items.length > 0) {
-        itemsHtml = items.map(item => {
-            if (isChef) {
-                return `
-                    <div class="order-item">
-                        <div>
-                            <div class="item-name">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
-                            <div class="item-details">${item.quantity} ×</div>
-                        </div>
-                    </div>
-                `;
-            }
-            return `
-                <div class="order-item">
-                    <div>
-                        <div class="item-name">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
-                        <div class="item-details">${item.quantity} × ${money(item.unit_price)}</div>
-                    </div>
-                    <div class="item-price">${money(item.total)}</div>
-                </div>
-            `;
-        }).join('');
-    }
-    
-    const body = document.getElementById('orderSheetBody');
-    
-    let actionButtons = '';
-    if (isChef && order.status === 'pending') {
-        actionButtons = `
-            <button class="btn btn-primary btn-block" onclick="startPreparing('${orderId}')">
-                <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
-            </button>
-        `;
-    } else if (isChef && order.status === 'preparing') {
-        actionButtons = `
-            <button class="btn btn-success btn-block" onclick="markAsReady('${orderId}')">
-                <i class="fa-solid fa-check"></i> ${t('ready_for_delivery')}
-            </button>
-        `;
-    } else if (isWaiter && order.status === 'ready') {
-        actionButtons = `
-            <button class="btn btn-success btn-block" onclick="markAsDelivered('${orderId}')">
-                <i class="fa-solid fa-hand-peace"></i> ${t('deliver')}
-            </button>
-        `;
-    } else if (isCashier && (order.status === 'completed' || order.status === 'paid')) {
-        actionButtons = `
-            <button class="btn btn-primary btn-block" onclick="showPaymentSheet('${orderId}')">
-                <i class="fa-solid fa-credit-card"></i> ${t('payment')}
-            </button>
-        `;
-    }
-    
-    body.innerHTML = `
-        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-            <span class="badge badge-gold">${t('order')} #${order.id.slice(0, 8)}</span>
-            <span class="badge badge-info">${t('table')} ${table?.number || '?'}</span>
-        </div>
-        <div id="orderDetailItems">${itemsHtml}</div>
-        ${!isChef ? `
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid var(--primary);margin-top:8px;font-weight:700;font-size:17px;">
-                <span>${t('total')}</span>
-                <span style="color:var(--primary-dark);">${money(order.total)}</span>
-            </div>
-        ` : ''}
-        <div style="margin-top:12px;">
-            ${actionButtons}
-            <button class="btn btn-ghost btn-block" onclick="closeSheet('orderOverlay')">${t('close')}</button>
-        </div>
-    `;
-    
-    openSheet('orderOverlay');
-}
-
-// ============================================================
-// LOAD ORDER ITEMS (للجدول)
+// LOAD ORDER ITEMS
 // ============================================================
 async function loadOrderItems(orderId) {
     if (!supabaseClient) return;
@@ -3758,16 +3728,11 @@ async function loadOrderItems(orderId) {
         .eq('order_id', orderId);
     
     const listEl = document.getElementById('orderItemsList');
-    const totalEl = document.getElementById('orderTotalDisplay');
     
     if (!items || items.length === 0) {
         listEl.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
-        totalEl.textContent = '0';
         return;
     }
-    
-    const total = items.reduce((sum, item) => sum + (Number(item.total) || 0), 0);
-    totalEl.textContent = money(total);
     
     listEl.innerHTML = items.map(item => `
         <div class="order-item">
@@ -3959,7 +3924,7 @@ async function confirmPaymentAndClose(orderId) {
         
         await loadActiveOrders();
         renderTables();
-        renderOrdersList();
+        renderKitchenOrders();
         renderDashboard();
     } catch (e) {
         document.getElementById('paymentError').textContent = t('payment_failed');
@@ -4390,9 +4355,9 @@ async function confirmCloseShift() {
             status: 'closed',
             closed_at: new Date().toISOString(),
             closed_by: currentUser?.name || 'system',
-            total_revenue: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0',
-            total_expenses: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0',
-            total_profit: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0'
+            total_revenue: parseFloat(document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0'),
+            total_expenses: parseFloat(document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0'),
+            total_profit: parseFloat(document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0')
         }).eq('id', currentShift.id);
         closeSheet('closeShiftOverlay');
         showToast(t('shift_closed'), 'success');
@@ -4781,24 +4746,14 @@ async function tryAutoResume() {
     }
 }
 
-console.log('🍽️ Plate Pro — Full System with all fixes!');
-console.log('✅ All badges fixed and visible');
-console.log('🌐 Language toggle working with all texts');
-console.log('🌗 Theme toggle in settings');
+console.log('🍽️ Plate Pro — Full System with Kitchen Orders!');
+console.log('✅ Kitchen orders view for chef');
+console.log('🪑 Table status: occupied → ready_to_serve → available');
+console.log('👨‍🍳 Chef: start preparing → mark ready');
+console.log('💳 Cashier: handle payment');
 console.log('📱 QR Code for customer ordering');
-console.log('💰 Service Fee & VAT included and shown');
-console.log('🖼️ Item images with upload support');
-console.log('🖼️ Business logo support');
-console.log('🪑 Table becomes available after payment');
-console.log('💳 Payment button added next to print');
-console.log('🪑 Customer can select table number');
-console.log('👨‍🍳 Chef workflow: start preparing → mark ready');
-console.log('🚚 Waiter workflow: deliver ready orders');
-console.log('🪑 Table management: add/edit/delete tables with capacity');
-console.log('📋 Shift history: view all closed shifts');
-console.log('✅ Reserved table status preserved');
-console.log('✅ Order workflow fixed (chef → waiter → cashier)');
-console.log('✅ Remove item button decrements quantity');
+console.log('✅ Table status preserved after refresh');
+console.log('✅ All errors fixed!');
 </script>
 </body>
 </html>
