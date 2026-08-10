@@ -923,6 +923,11 @@ body {
     transition: color 0.3s var(--ease);
 }
 
+.table-card .table-capacity {
+    font-size: 9px;
+    color: var(--text-faint);
+}
+
 .table-card.available { border-color: var(--border-light); }
 .table-card.available:hover { border-color: var(--primary); box-shadow: var(--shadow-gold); }
 
@@ -1133,17 +1138,17 @@ body {
    ============================================================ -->
 <div id="setupScreen" class="screen active">
     <div class="centered-screen">
-        <div class="brand-mark">✦ PLATE PRO ✦</div>
+        <div class="brand-mark" data-i18n="platepro">✦ PLATE PRO ✦</div>
         <div class="brand-title">
-            <span class="gold">مرحباً بك</span>
+            <span class="gold" data-i18n="welcome">مرحباً بك</span>
         </div>
         <div class="card">
             <div class="field">
-                <label>كود النشاط التجاري</label>
+                <label data-i18n="business_code">كود النشاط التجاري</label>
                 <input type="text" id="setupBusinessCode" class="mono" placeholder="مثال: CAFE01" style="text-transform:uppercase">
             </div>
             <button class="btn btn-primary btn-block" id="setupContinueBtn">
-                <i class="fa-solid fa-arrow-left"></i> متابعة
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="continue">متابعة</span>
             </button>
             <div class="error-text" id="setupError"></div>
         </div>
@@ -1167,9 +1172,9 @@ body {
                 <input type="text" id="activationCodeInput" class="mono" placeholder="XXXX-XXXX" style="text-transform:uppercase">
             </div>
             <button class="btn btn-primary btn-block" id="activateBtn">
-                <i class="fa-solid fa-check"></i> تفعيل
+                <i class="fa-solid fa-check"></i> <span data-i18n="activate">تفعيل</span>
             </button>
-            <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="backToSetupBtn">رجوع</button>
+            <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="backToSetupBtn"><span data-i18n="back">رجوع</span></button>
             <div class="error-text" id="activationError"></div>
         </div>
     </div>
@@ -1201,7 +1206,7 @@ body {
                 <button class="btn btn-primary btn-block" id="unlockOwnerBtn">
                     <i class="fa-solid fa-unlock"></i> دخول
                 </button>
-                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockBtn">رجوع</button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockBtn"><span data-i18n="back">رجوع</span></button>
             </div>
 
             <div id="lockEmployeeForm" style="display:none;">
@@ -1216,7 +1221,7 @@ body {
                 <button class="btn btn-primary btn-block" id="unlockEmpBtn">
                     <i class="fa-solid fa-unlock"></i> دخول
                 </button>
-                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockEmpBtn">رجوع</button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px;" id="resetLockEmpBtn"><span data-i18n="back">رجوع</span></button>
             </div>
 
             <div class="error-text" id="lockError"></div>
@@ -1245,37 +1250,37 @@ body {
 
     <!-- DASHBOARD -->
     <div class="view active" id="view-dashboard">
-        <div class="section-title">📊 أداء اليوم</div>
+        <div class="section-title" data-i18n="today_performance">📊 أداء اليوم</div>
         <div class="stat-grid">
             <div class="stat-card revenue" id="bizHeaderCard">
                 <div id="bizLogoContainer"></div>
                 <div class="brand-name" id="dashBizName">—</div>
-                <div class="brand-sub">💰 إيراد اليوم</div>
+                <div class="brand-sub" data-i18n="today_revenue">💰 إيراد اليوم</div>
                 <div class="stat-value"><span id="dashRevenue">0</span> <span class="currency">ج.م</span></div>
             </div>
             <div class="stat-card orders-card">
-                <div class="stat-label">📋 الطلبات النشطة</div>
+                <div class="stat-label" data-i18n="active_orders">📋 الطلبات النشطة</div>
                 <div class="stat-value mono" id="dashActiveOrders">0</div>
             </div>
             <div class="stat-card occupied-card">
-                <div class="stat-label">🪑 طاولات مشغولة</div>
+                <div class="stat-label" data-i18n="occupied_tables">🪑 طاولات مشغولة</div>
                 <div class="stat-value mono" id="dashOccupiedTables">0</div>
             </div>
             <div class="stat-card available-card">
-                <div class="stat-label">🟢 طاولات متاحة</div>
+                <div class="stat-label" data-i18n="available_tables">🟢 طاولات متاحة</div>
                 <div class="stat-value mono" id="dashAvailableTables">0</div>
             </div>
         </div>
 
         <!-- QR Code Toggle -->
-        <div class="section-title">📱 طلب من العميل</div>
+        <div class="section-title" data-i18n="qr_code">📱 طلب من العميل</div>
         <div class="qr-toggle-row">
             <div>
-                <div class="qr-label"><i class="fa-solid fa-qrcode"></i> QR Code الطاولات</div>
-                <div class="qr-sub">امسح للطلب من المنيو مباشرة</div>
+                <div class="qr-label" data-i18n="qr_label"><i class="fa-solid fa-qrcode"></i> QR Code الطاولات</div>
+                <div class="qr-sub" data-i18n="qr_sub">امسح للطلب من المنيو مباشرة</div>
             </div>
             <button class="btn btn-primary btn-sm" onclick="toggleQRCode()">
-                <i class="fa-solid fa-qrcode"></i> عرض QR
+                <i class="fa-solid fa-qrcode"></i> <span data-i18n="show_qr">عرض QR</span>
             </button>
         </div>
 
@@ -1284,73 +1289,73 @@ body {
                 <img id="qrCodeImage" src="" alt="QR Code">
             </div>
             <div style="margin-top:10px; font-size:12px; color:var(--text-muted);">
-                <i class="fa-solid fa-info-circle"></i> امسح الكود لفتح منيو العميل
+                <i class="fa-solid fa-info-circle"></i> <span data-i18n="scan_qr">امسح الكود لفتح منيو العميل</span>
             </div>
             <button class="btn btn-ghost btn-sm" onclick="downloadQR()" style="margin-top:6px;">
-                <i class="fa-solid fa-download"></i> تحميل QR
+                <i class="fa-solid fa-download"></i> <span data-i18n="download_qr">تحميل QR</span>
             </button>
         </div>
 
         <!-- أزرار الإجراءات السريعة -->
-        <div class="section-title">⚡ إجراءات سريعة</div>
+        <div class="section-title" data-i18n="quick_actions">⚡ إجراءات سريعة</div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <button class="btn btn-primary btn-block" onclick="openExpenseSheet()" id="dashExpenseBtn">
-                <i class="fa-solid fa-plus"></i> إضافة مصروف
+                <i class="fa-solid fa-plus"></i> <span data-i18n="add_expense">إضافة مصروف</span>
             </button>
             <button class="btn btn-danger btn-block" onclick="openCloseShiftSheet()" id="dashCloseShiftBtn">
-                <i class="fa-solid fa-lock"></i> إقفال الشيفت
+                <i class="fa-solid fa-lock"></i> <span data-i18n="close_shift">إقفال الشيفت</span>
             </button>
         </div>
     </div>
 
     <!-- TABLES -->
     <div class="view" id="view-tables">
-        <div class="section-title">🪑 الطاولات</div>
+        <div class="section-title" data-i18n="tables">🪑 الطاولات</div>
         <div class="tables-grid" id="tablesGrid"></div>
     </div>
 
-    <!-- ORDERS -->
+    <!-- ORDERS (للمطبخ والشيف) -->
     <div class="view" id="view-orders">
-        <div class="section-title">📋 الطلبات النشطة</div>
+        <div class="section-title" data-i18n="active_orders">📋 الطلبات النشطة</div>
         <div id="activeOrdersList"></div>
-        <div class="section-title">📜 آخر الطلبات</div>
+        <div class="section-title" data-i18n="recent_orders">📜 آخر الطلبات</div>
         <div id="recentOrdersList"></div>
     </div>
 
     <!-- MENU -->
     <div class="view" id="view-menu">
-        <div class="section-title">🍽️ المنيو</div>
+        <div class="section-title" data-i18n="menu">🍽️ المنيو</div>
         <div id="menuView"></div>
         
-        <div class="section-title">⚙️ إدارة المنيو</div>
+        <div class="section-title" data-i18n="manage_menu">⚙️ إدارة المنيو</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-            <button class="btn btn-primary btn-sm" onclick="openMenuItemSheet()"><i class="fa-solid fa-plus"></i> إضافة صنف</button>
-            <button class="btn btn-outline btn-sm" onclick="openCategorySheet()"><i class="fa-solid fa-tags"></i> إضافة تصنيف</button>
+            <button class="btn btn-primary btn-sm" onclick="openMenuItemSheet()"><i class="fa-solid fa-plus"></i> <span data-i18n="add_item">إضافة صنف</span></button>
+            <button class="btn btn-outline btn-sm" onclick="openCategorySheet()"><i class="fa-solid fa-tags"></i> <span data-i18n="add_category">إضافة تصنيف</span></button>
         </div>
         <div class="panel" id="menuManagementList"></div>
     </div>
 
     <!-- SETTINGS -->
     <div class="view" id="view-settings">
-        <div class="section-title">⚙️ الإعدادات</div>
+        <div class="section-title" data-i18n="settings">⚙️ الإعدادات</div>
         <div class="panel" id="settingsContent"></div>
     </div>
 
     <div class="bottom-nav">
         <button class="nav-btn active" data-view="view-dashboard" onclick="navigateTo('view-dashboard')">
-            <i class="fa-solid fa-gauge-high"></i><span>الرئيسية</span>
+            <i class="fa-solid fa-gauge-high"></i><span data-i18n="dashboard">الرئيسية</span>
         </button>
         <button class="nav-btn" data-view="view-tables" onclick="navigateTo('view-tables')">
-            <i class="fa-solid fa-table-cells"></i><span>الطاولات</span>
+            <i class="fa-solid fa-table-cells"></i><span data-i18n="tables">الطاولات</span>
         </button>
         <button class="nav-btn" data-view="view-orders" onclick="navigateTo('view-orders')">
-            <i class="fa-solid fa-receipt"></i><span>الطلبات</span>
+            <i class="fa-solid fa-receipt"></i><span data-i18n="orders">الطلبات</span>
         </button>
         <button class="nav-btn" data-view="view-menu" onclick="navigateTo('view-menu')">
-            <i class="fa-solid fa-utensils"></i><span>المنيو</span>
+            <i class="fa-solid fa-utensils"></i><span data-i18n="menu">المنيو</span>
         </button>
         <button class="nav-btn" data-view="view-settings" onclick="navigateTo('view-settings')">
-            <i class="fa-solid fa-sliders"></i><span>الإعدادات</span>
+            <i class="fa-solid fa-sliders"></i><span data-i18n="settings">الإعدادات</span>
         </button>
     </div>
 </div>
@@ -1365,7 +1370,7 @@ body {
             <div id="customerLogoContainer"></div>
             <div class="brand">✦ PLATE PRO ✦</div>
             <h1 id="customerBizName">المطعم</h1>
-            <p>📱 امسح واطلب من مكانك</p>
+            <p data-i18n="scan_order">📱 امسح واطلب من مكانك</p>
         </div>
 
         <!-- اختيار الطاولة -->
@@ -1398,32 +1403,32 @@ body {
             <div class="sheet">
                 <div class="sheet-handle"></div>
                 <div class="sheet-title">
-                    <span>🛒 سلة الطلبات</span>
+                    <span data-i18n="cart">🛒 سلة الطلبات</span>
                     <button class="close-x" onclick="closeSheet('customerCartOverlay')"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div id="customerCartItems"></div>
                 
                 <div class="cart-summary" id="cartSummary">
                     <div class="summary-row">
-                        <span>المجموع</span>
+                        <span data-i18n="subtotal">المجموع</span>
                         <span id="cartSubtotal">0</span>
                     </div>
                     <div class="summary-row" id="serviceFeeRow">
-                        <span>رسوم الخدمة (<span id="serviceFeePercent">0</span>%)</span>
+                        <span data-i18n="service_fee">رسوم الخدمة (<span id="serviceFeePercent">0</span>%)</span>
                         <span id="cartServiceFee">0</span>
                     </div>
                     <div class="summary-row" id="vatRow">
-                        <span>ضريبة القيمة المضافة (<span id="vatPercent">14</span>%)</span>
+                        <span data-i18n="vat">ضريبة القيمة المضافة (<span id="vatPercent">14</span>%)</span>
                         <span id="cartVat">0</span>
                     </div>
                     <div class="summary-row total">
-                        <span>الإجمالي</span>
+                        <span data-i18n="total">الإجمالي</span>
                         <span class="amount" id="customerCartTotal">0</span>
                     </div>
                 </div>
                 
                 <button class="btn btn-primary btn-block" onclick="submitCustomerOrder()">
-                    <i class="fa-solid fa-check"></i> تأكيد الطلب
+                    <i class="fa-solid fa-check"></i> <span data-i18n="confirm_order">تأكيد الطلب</span>
                 </button>
                 <div class="error-text" id="customerCartError"></div>
             </div>
@@ -1442,7 +1447,7 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span id="tableSheetTitle">طاولة</span>
+            <span id="tableSheetTitle" data-i18n="table">طاولة</span>
             <button class="close-x" onclick="closeSheet('tableOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="tableSheetBody"></div>
@@ -1454,7 +1459,7 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>تفاصيل الطلب</span>
+            <span data-i18n="order_details">تفاصيل الطلب</span>
             <button class="close-x" onclick="closeSheet('orderOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="orderSheetBody"></div>
@@ -1466,15 +1471,15 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span id="menuItemSheetTitle">إضافة صنف</span>
+            <span id="menuItemSheetTitle" data-i18n="add_item">إضافة صنف</span>
             <button class="close-x" onclick="closeSheet('menuItemOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <input type="hidden" id="editMenuItemId">
-        <div class="field"><label>اسم الصنف</label><input type="text" id="menuItemName" placeholder="مثال: كابتشينو"></div>
-        <div class="field"><label>السعر (جنية)</label><input type="number" id="menuItemPrice" class="mono" placeholder="25"></div>
-        <div class="field"><label>الوصف (اختياري)</label><input type="text" id="menuItemDesc" placeholder="وصف مختصر"></div>
+        <div class="field"><label data-i18n="item_name">اسم الصنف</label><input type="text" id="menuItemName" placeholder="مثال: كابتشينو"></div>
+        <div class="field"><label data-i18n="item_price">السعر (جنية)</label><input type="number" id="menuItemPrice" class="mono" placeholder="25"></div>
+        <div class="field"><label data-i18n="item_desc">الوصف (اختياري)</label><input type="text" id="menuItemDesc" placeholder="وصف مختصر"></div>
         <div class="field">
-            <label>صورة الصنف</label>
+            <label data-i18n="item_image">صورة الصنف</label>
             <input type="file" id="menuItemImageInput" accept="image/*" style="padding:8px;">
             <div id="menuItemImagePreview" style="margin-top:8px; display:none;">
                 <img id="menuItemImagePreviewImg" style="max-width:100px;max-height:100px;border-radius:8px;">
@@ -1484,15 +1489,15 @@ body {
             </div>
             <input type="hidden" id="menuItemImageData">
         </div>
-        <div class="field"><label>التصنيف</label>
+        <div class="field"><label data-i18n="category">التصنيف</label>
             <select id="menuItemCategory"><option value="">بدون تصنيف</option></select>
         </div>
         <div class="field" style="display:flex;align-items:center;gap:12px;">
-            <label style="margin-bottom:0;">مفعل</label>
+            <label style="margin-bottom:0;" data-i18n="active">مفعل</label>
             <input type="checkbox" id="menuItemActive" checked style="width:auto;">
         </div>
-        <button class="btn btn-primary btn-block" id="saveMenuItemBtn">حفظ</button>
-        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deleteMenuItemBtn">حذف</button>
+        <button class="btn btn-primary btn-block" id="saveMenuItemBtn"><span data-i18n="save">حفظ</span></button>
+        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deleteMenuItemBtn"><span data-i18n="delete">حذف</span></button>
         <div class="error-text" id="menuItemError"></div>
     </div>
 </div>
@@ -1502,11 +1507,11 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>إضافة تصنيف</span>
+            <span data-i18n="add_category_title">إضافة تصنيف</span>
             <button class="close-x" onclick="closeSheet('categoryOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="field"><label>اسم التصنيف</label><input type="text" id="categoryName" placeholder="مثال: مشروبات ساخنة"></div>
-        <div class="field"><label>الأيقونة</label>
+        <div class="field"><label data-i18n="category_name">اسم التصنيف</label><input type="text" id="categoryName" placeholder="مثال: مشروبات ساخنة"></div>
+        <div class="field"><label data-i18n="category_icon">الأيقونة</label>
             <select id="categoryIcon">
                 <option value="fa-mug-hot">☕ مشروبات ساخنة</option>
                 <option value="fa-wine-glass">🍷 مشروبات باردة</option>
@@ -1518,7 +1523,7 @@ body {
                 <option value="fa-utensils">🍽️ أطباق رئيسية</option>
             </select>
         </div>
-        <button class="btn btn-primary btn-block" id="saveCategoryBtn">حفظ</button>
+        <button class="btn btn-primary btn-block" id="saveCategoryBtn"><span data-i18n="save">حفظ</span></button>
         <div class="error-text" id="categoryError"></div>
     </div>
 </div>
@@ -1528,22 +1533,22 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span id="paymentMethodSheetTitle">إضافة طريقة دفع</span>
+            <span id="paymentMethodSheetTitle" data-i18n="add_payment_method">إضافة طريقة دفع</span>
             <button class="close-x" onclick="closeSheet('paymentMethodOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <input type="hidden" id="editPaymentMethodId">
-        <div class="field"><label>اسم طريقة الدفع</label><input type="text" id="paymentMethodName" placeholder="مثال: إنستا باي"></div>
-        <div class="field"><label>الأيقونة</label>
+        <div class="field"><label data-i18n="payment_method_name">اسم طريقة الدفع</label><input type="text" id="paymentMethodName" placeholder="مثال: إنستا باي"></div>
+        <div class="field"><label data-i18n="payment_method_icon">الأيقونة</label>
             <select id="paymentMethodIcon">
-                <option value="fa-money-bill-wave">💰 كاش</option>
-                <option value="fa-credit-card">💳 بطاقة</option>
-                <option value="fa-wallet">👛 محفظة</option>
-                <option value="fa-mobile-screen-button">📱 محفظة إلكترونية</option>
-                <option value="fa-building-columns">🏦 تحويل بنكي</option>
+                <option value="fa-money-bill-wave">💰 <span data-i18n="cash">كاش</span></option>
+                <option value="fa-credit-card">💳 <span data-i18n="card">بطاقة</span></option>
+                <option value="fa-wallet">👛 <span data-i18n="wallet">محفظة</span></option>
+                <option value="fa-mobile-screen-button">📱 <span data-i18n="mobile_wallet">محفظة إلكترونية</span></option>
+                <option value="fa-building-columns">🏦 <span data-i18n="bank_transfer">تحويل بنكي</span></option>
             </select>
         </div>
-        <button class="btn btn-primary btn-block" id="savePaymentMethodBtn">حفظ</button>
-        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deletePaymentMethodBtn">حذف</button>
+        <button class="btn btn-primary btn-block" id="savePaymentMethodBtn"><span data-i18n="save">حفظ</span></button>
+        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deletePaymentMethodBtn"><span data-i18n="delete">حذف</span></button>
         <div class="error-text" id="paymentMethodError"></div>
     </div>
 </div>
@@ -1553,57 +1558,57 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>إضافة موظف</span>
+            <span data-i18n="add_employee">إضافة موظف</span>
             <button class="close-x" onclick="closeSheet('employeeOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <input type="hidden" id="editEmployeeId">
-        <div class="field"><label>الاسم</label><input type="text" id="employeeName" placeholder="اسم الموظف"></div>
-        <div class="field"><label>PIN (4 أرقام)</label><input type="text" inputmode="numeric" maxlength="6" id="employeePin" class="mono" placeholder="1234"></div>
-        <div class="field"><label>الدور</label>
+        <div class="field"><label data-i18n="employee_name">الاسم</label><input type="text" id="employeeName" placeholder="اسم الموظف"></div>
+        <div class="field"><label data-i18n="employee_pin">PIN (4 أرقام)</label><input type="text" inputmode="numeric" maxlength="6" id="employeePin" class="mono" placeholder="1234"></div>
+        <div class="field"><label data-i18n="employee_role">الدور</label>
             <select id="employeeRole">
-                <option value="waiter">نادل</option>
-                <option value="chef">طباخ</option>
-                <option value="cashier">كاشير</option>
-                <option value="admin">أدمن</option>
+                <option value="waiter" data-i18n="waiter">نادل</option>
+                <option value="chef" data-i18n="chef">طباخ</option>
+                <option value="cashier" data-i18n="cashier">كاشير</option>
+                <option value="admin" data-i18n="admin">أدمن</option>
             </select>
         </div>
         
-        <div class="section-title" style="margin-top:12px;font-size:11px;">🔐 الصلاحيات</div>
+        <div class="section-title" style="margin-top:12px;font-size:11px;" data-i18n="permissions">🔐 الصلاحيات</div>
         <div class="field" style="margin-bottom:8px;">
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permDashboard" checked> 👀 الرئيسية
+                <input type="checkbox" id="permDashboard" checked> <span data-i18n="perm_dashboard">👀 الرئيسية</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permTables" checked> 🪑 الطاولات
+                <input type="checkbox" id="permTables" checked> <span data-i18n="perm_tables">🪑 الطاولات</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permOrders" checked> 📋 الطلبات
+                <input type="checkbox" id="permOrders" checked> <span data-i18n="perm_orders">📋 الطلبات</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permMenu" checked> 🍽️ المنيو
+                <input type="checkbox" id="permMenu" checked> <span data-i18n="perm_menu">🍽️ المنيو</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permSettings"> ⚙️ الإعدادات
+                <input type="checkbox" id="permSettings"> <span data-i18n="perm_settings">⚙️ الإعدادات</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permCreateOrders" checked> 🛒 إنشاء طلبات
+                <input type="checkbox" id="permCreateOrders" checked> <span data-i18n="perm_create_orders">🛒 إنشاء طلبات</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permAddExpense"> 💰 إضافة مصروف
+                <input type="checkbox" id="permAddExpense"> <span data-i18n="perm_add_expense">💰 إضافة مصروف</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permCloseShift"> 🔒 إقفال الشيفت
+                <input type="checkbox" id="permCloseShift"> <span data-i18n="perm_close_shift">🔒 إقفال الشيفت</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permPrintReceipt" checked> 🧾 طباعة الفواتير
+                <input type="checkbox" id="permPrintReceipt" checked> <span data-i18n="perm_print_receipt">🧾 طباعة الفواتير</span>
             </label>
             <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--text-primary);cursor:pointer;">
-                <input type="checkbox" id="permManageMenu"> 📝 إدارة المنيو
+                <input type="checkbox" id="permManageMenu"> <span data-i18n="perm_manage_menu">📝 إدارة المنيو</span>
             </label>
         </div>
 
-        <button class="btn btn-primary btn-block" id="saveEmployeeBtn">حفظ</button>
-        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deleteEmployeeBtn">حذف</button>
+        <button class="btn btn-primary btn-block" id="saveEmployeeBtn"><span data-i18n="save">حفظ</span></button>
+        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deleteEmployeeBtn"><span data-i18n="delete">حذف</span></button>
         <div class="error-text" id="employeeError"></div>
     </div>
 </div>
@@ -1613,12 +1618,12 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>إضافة مصروف</span>
+            <span data-i18n="add_expense_title">إضافة مصروف</span>
             <button class="close-x" onclick="closeSheet('expenseOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="field"><label>الوصف</label><input type="text" id="expenseDesc" placeholder="مثال: فاتورة كهرباء"></div>
-        <div class="field"><label>المبلغ</label><input type="number" id="expenseAmount" class="mono" placeholder="0"></div>
-        <button class="btn btn-primary btn-block" id="saveExpenseBtn">حفظ</button>
+        <div class="field"><label data-i18n="expense_desc">الوصف</label><input type="text" id="expenseDesc" placeholder="مثال: فاتورة كهرباء"></div>
+        <div class="field"><label data-i18n="expense_amount">المبلغ</label><input type="number" id="expenseAmount" class="mono" placeholder="0"></div>
+        <button class="btn btn-primary btn-block" id="saveExpenseBtn"><span data-i18n="save">حفظ</span></button>
         <div class="error-text" id="expenseError"></div>
     </div>
 </div>
@@ -1628,11 +1633,11 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>تأكيد إقفال الشيفت</span>
+            <span data-i18n="close_shift_title">تأكيد إقفال الشيفت</span>
             <button class="close-x" onclick="closeSheet('closeShiftOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="panel" id="closeShiftSummary"></div>
-        <button class="btn btn-primary btn-block" id="confirmCloseShiftBtn">تأكيد الإقفال</button>
+        <button class="btn btn-primary btn-block" id="confirmCloseShiftBtn"><span data-i18n="confirm_close">تأكيد الإقفال</span></button>
     </div>
 </div>
 
@@ -1641,18 +1646,18 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>⚙️ إعدادات الرسوم والضرائب</span>
+            <span data-i18n="edit_fees">⚙️ إعدادات الرسوم والضرائب</span>
             <button class="close-x" onclick="closeSheet('settingsFeesOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="field">
-            <label>رسوم الخدمة (Service Fee) %</label>
+            <label data-i18n="service_fee_label">رسوم الخدمة (Service Fee) %</label>
             <input type="number" id="serviceFeeInput" class="mono" step="0.5" min="0" placeholder="مثال: 10">
         </div>
         <div class="field">
-            <label>ضريبة القيمة المضافة (VAT) %</label>
+            <label data-i18n="vat_label">ضريبة القيمة المضافة (VAT) %</label>
             <input type="number" id="vatInput" class="mono" step="0.5" min="0" placeholder="مثال: 14">
         </div>
-        <button class="btn btn-primary btn-block" onclick="saveFeesSettings()">حفظ</button>
+        <button class="btn btn-primary btn-block" onclick="saveFeesSettings()"><span data-i18n="save">حفظ</span></button>
         <div class="error-text" id="feesError"></div>
     </div>
 </div>
@@ -1662,23 +1667,54 @@ body {
     <div class="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
-            <span>🖼️ إعدادات الشعار (Logo)</span>
+            <span data-i18n="edit_logo">🖼️ إعدادات الشعار (Logo)</span>
             <button class="close-x" onclick="closeSheet('settingsLogoOverlay')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="field">
-            <label>شعار المحل</label>
+            <label data-i18n="upload_logo">شعار المحل</label>
             <input type="file" id="logoInput" accept="image/*" style="padding:8px;">
             <div style="margin-top:8px; text-align:center;">
                 <div id="logoPreview" style="display:none;">
                     <img id="logoPreviewImg" style="max-width:120px;max-height:120px;border-radius:50%;border:2px solid var(--primary);">
                 </div>
                 <button class="btn btn-danger btn-sm" onclick="removeLogo()" id="removeLogoBtn" style="display:none;margin-top:8px;">
-                    <i class="fa-solid fa-trash"></i> حذف الشعار
+                    <i class="fa-solid fa-trash"></i> <span data-i18n="remove_logo">حذف الشعار</span>
                 </button>
             </div>
         </div>
-        <button class="btn btn-primary btn-block" onclick="saveLogo()">حفظ الشعار</button>
+        <button class="btn btn-primary btn-block" onclick="saveLogo()"><span data-i18n="save_logo">حفظ الشعار</span></button>
         <div class="error-text" id="logoError"></div>
+    </div>
+</div>
+
+<!-- Table Management Sheet -->
+<div class="overlay" id="tableManagementOverlay">
+    <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <span id="tableManagementTitle" data-i18n="add_table">إدارة الطاولات</span>
+            <button class="close-x" onclick="closeSheet('tableManagementOverlay')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <input type="hidden" id="editTableId">
+        <div class="field">
+            <label data-i18n="table_number">رقم الطاولة</label>
+            <input type="number" id="editTableNumber" class="mono" min="1" placeholder="1">
+        </div>
+        <div class="field">
+            <label data-i18n="capacity">السعة (أشخاص)</label>
+            <input type="number" id="editTableCapacity" class="mono" min="1" placeholder="4">
+        </div>
+        <div class="field">
+            <label data-i18n="status">الحالة</label>
+            <select id="editTableStatus">
+                <option value="available" data-i18n="available">🟢 متاحة</option>
+                <option value="occupied" data-i18n="occupied">🟡 مشغولة</option>
+                <option value="reserved" data-i18n="reserved">🔵 محجوزة</option>
+            </select>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="saveTableManagement()"><span data-i18n="save">حفظ</span></button>
+        <button class="btn btn-danger btn-block" style="margin-top:8px;display:none;" id="deleteTableBtn" onclick="deleteTableFromSheet()"><span data-i18n="delete">حذف</span></button>
+        <div class="error-text" id="tableManagementError"></div>
     </div>
 </div>
 
@@ -1700,7 +1736,7 @@ try {
 }
 
 // ============================================================
-// TRANSLATIONS
+// TRANSLATIONS — كل الرسائل مترجمة
 // ============================================================
 let currentLang = 'ar';
 
@@ -1736,8 +1772,8 @@ const translations = {
         'confirm_order': 'تأكيد الطلب',
         'pending': '⏳ قيد الانتظار',
         'preparing': '🔪 قيد التحضير',
-        'ready': '💳 في انتظار الدفع',
-        'paid': '✅ تم الدفع',
+        'ready': '✅ جاهز للتسليم',
+        'paid': '💳 مدفوع',
         'cancelled': '❌ ملغي',
         'order': 'طلب',
         'table': 'طاولة',
@@ -1857,7 +1893,35 @@ const translations = {
         'orders': '📋 الطلبات',
         'dashboard': 'الرئيسية',
         'activate': 'تفعيل',
-        'qr_generated': '✅ تم توليد QR Code'
+        'qr_generated': '✅ تم توليد QR Code',
+        'start_preparing': '🔪 بدء التحضير',
+        'ready_for_delivery': '✅ جاهز للتسليم',
+        'deliver': '🚚 تسليم',
+        'delivered': '✅ تم التوصيل',
+        'chef_view': '👨‍🍳 عرض المطبخ',
+        'persons': 'أشخاص',
+        'manage_tables': '🪑 إدارة الطاولات',
+        'add_table': 'إضافة طاولة',
+        'edit_table': 'تعديل طاولة',
+        'delete_table': 'حذف طاولة',
+        'no_tables': 'مفيش طاولات',
+        'table_added': '✅ تم إضافة الطاولة',
+        'table_updated': '✅ تم تحديث الطاولة',
+        'table_deleted': '✅ تم حذف الطاولة',
+        'delete_table_confirm': 'متأكد من حذف الطاولة؟',
+        'shift_history': '📋 سجل الشيفتات',
+        'no_shift_history': 'مفيش شيفتات مقفولة',
+        'preparing_started': '🔪 جاري التحضير...',
+        'order_ready_notification': '✅ الطلب جاهز! إشعار للويتر',
+        'order_delivered': '✅ تم توصيل الطلب للعميل',
+        'table_number': 'رقم الطاولة',
+        'capacity': 'السعة (أشخاص)',
+        'status': 'الحالة',
+        'device_activated': '✅ تم تفعيل الجهاز بنجاح',
+        'item_added_to_order': '✅ تم إضافة {name}',
+        'loading': 'جاري التحميل...',
+        'default_item': 'صنف',
+        'no_open_shift': 'لا يوجد شيفت مفتوح'
     },
     en: {
         'platepro': '✦ PLATE PRO ✦',
@@ -1890,8 +1954,8 @@ const translations = {
         'confirm_order': 'Confirm Order',
         'pending': '⏳ Pending',
         'preparing': '🔪 Preparing',
-        'ready': '💳 Awaiting Payment',
-        'paid': '✅ Paid',
+        'ready': '✅ Ready for Delivery',
+        'paid': '💳 Paid',
         'cancelled': '❌ Cancelled',
         'order': 'Order',
         'table': 'Table',
@@ -2011,7 +2075,35 @@ const translations = {
         'orders': '📋 Orders',
         'dashboard': 'Dashboard',
         'activate': 'Activate',
-        'qr_generated': '✅ QR Code generated'
+        'qr_generated': '✅ QR Code generated',
+        'start_preparing': '🔪 Start Preparing',
+        'ready_for_delivery': '✅ Ready for Delivery',
+        'deliver': '🚚 Deliver',
+        'delivered': '✅ Delivered',
+        'chef_view': '👨‍🍳 Kitchen View',
+        'persons': 'persons',
+        'manage_tables': '🪑 Manage Tables',
+        'add_table': 'Add Table',
+        'edit_table': 'Edit Table',
+        'delete_table': 'Delete Table',
+        'no_tables': 'No tables',
+        'table_added': '✅ Table added',
+        'table_updated': '✅ Table updated',
+        'table_deleted': '✅ Table deleted',
+        'delete_table_confirm': 'Delete this table?',
+        'shift_history': '📋 Shift History',
+        'no_shift_history': 'No closed shifts',
+        'preparing_started': '🔪 Preparing...',
+        'order_ready_notification': '✅ Order ready! Notifying waiter',
+        'order_delivered': '✅ Order delivered to customer',
+        'table_number': 'Table Number',
+        'capacity': 'Capacity (persons)',
+        'status': 'Status',
+        'device_activated': '✅ Device activated successfully',
+        'item_added_to_order': '✅ {name} added',
+        'loading': 'Loading...',
+        'default_item': 'Item',
+        'no_open_shift': 'No open shift'
     }
 };
 
@@ -2023,8 +2115,14 @@ function toggleLanguage() {
     applyTranslations();
 }
 
-function t(key) {
-    return translations[currentLang][key] || key;
+function t(key, replace = null) {
+    let text = translations[currentLang][key] || key;
+    if (replace) {
+        for (const [k, v] of Object.entries(replace)) {
+            text = text.replace(`{${k}}`, v);
+        }
+    }
+    return text;
 }
 
 function applyTranslations() {
@@ -2034,11 +2132,22 @@ function applyTranslations() {
             el.textContent = t(key);
         }
     });
+    
     renderDashboard();
     renderTables();
     renderOrdersList();
     renderMenuView();
     renderSettings();
+    
+    const tableOverlay = document.getElementById('tableOverlay');
+    if (tableOverlay && tableOverlay.classList.contains('show') && window._activeTableId) {
+        openTableSheet(window._activeTableId);
+    }
+    
+    const orderOverlay = document.getElementById('orderOverlay');
+    if (orderOverlay && orderOverlay.classList.contains('show') && window._activeOrderId) {
+        viewOrderDetail(window._activeOrderId);
+    }
 }
 
 // ============================================================
@@ -2126,7 +2235,6 @@ function openLogoSettings() {
     openSheet('settingsLogoOverlay');
 }
 
-// Logo file handler
 document.addEventListener('DOMContentLoaded', function() {
     const logoInput = document.getElementById('logoInput');
     if (logoInput) {
@@ -2252,6 +2360,7 @@ let _orderItems = [];
 let selectedPaymentMethod = null;
 let orderStatus = {};
 let qrGenerated = false;
+let editingTableId = null;
 
 // ============================================================
 // CUSTOMER PAGE STATE
@@ -2338,6 +2447,17 @@ function escapeHtml(str) {
 function hasPermission(perm) {
     if (!currentUser) return false;
     if (currentUser.type === 'owner') return true;
+    
+    if (currentUser.role === 'chef') {
+        return perm === 'orders';
+    }
+    if (currentUser.role === 'waiter') {
+        return perm === 'orders' || perm === 'print_receipt';
+    }
+    if (currentUser.role === 'cashier') {
+        return perm !== 'settings' && perm !== 'manage_menu';
+    }
+    
     return currentUser.permissions && currentUser.permissions[perm] === true;
 }
 
@@ -2451,7 +2571,6 @@ async function loadCustomerData() {
         customerMenuItems = itemsRes.data || [];
         customerCategories = catsRes.data || [];
         
-        // تحميل الطاولات المتاحة
         const { data: tablesData } = await supabaseClient
             .from('tables')
             .select('*')
@@ -2464,7 +2583,7 @@ async function loadCustomerData() {
             tableSelect.innerHTML = `
                 <option value="">-- اختر طاولة --</option>
                 ${tablesData.map(t => `
-                    <option value="${t.id}">طاولة ${t.number} (${t.capacity} أشخاص)</option>
+                    <option value="${t.id}">طاولة ${t.number} (${t.capacity} ${t('persons')})</option>
                 `).join('')}
             `;
         } else {
@@ -2643,7 +2762,6 @@ async function submitCustomerOrder() {
         return;
     }
     
-    // جلب الطاولة المختارة
     const tableSelect = document.getElementById('customerTableSelect');
     const tableId = tableSelect.value;
     
@@ -2658,7 +2776,6 @@ async function submitCustomerOrder() {
     }
     
     try {
-        // التحقق من إن الطاولة لسه متاحة
         const { data: tableCheck } = await supabaseClient
             .from('tables')
             .select('status')
@@ -2671,7 +2788,6 @@ async function submitCustomerOrder() {
             return;
         }
         
-        // تحديث حالة الطاولة لمشغولة
         await supabaseClient.from('tables').update({ status: 'occupied' }).eq('id', tableId);
         
         const subtotal = customerCart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
@@ -2711,7 +2827,6 @@ async function submitCustomerOrder() {
         showCustomerToast(t('order_created'));
         document.getElementById('customerCartError').textContent = '';
         
-        // تحديث قائمة الطاولات
         loadCustomerData();
         renderTables();
         renderOrdersList();
@@ -2786,7 +2901,7 @@ async function handleActivateDevice() {
 
         await supabaseClient.from('activation_codes').update({ used: true, used_at: new Date().toISOString() }).eq('id', actCode.id);
         deviceRecord = newDev;
-        showToast('تم تفعيل الجهاز بنجاح', 'success');
+        showToast(t('device_activated'), 'success');
         proceedToLock();
     } catch (e) {
         console.error(e);
@@ -3036,13 +3151,14 @@ async function renderDashboard() {
 }
 
 // ============================================================
-// TABLES — مع إصلاح مشكلة الطاولات
+// TABLES — مع الحفاظ على Reserved
 // ============================================================
 function renderTables() {
     const grid = document.getElementById('tablesGrid');
     
-    // تحديث حالة الطاولات من الطلبات النشطة
     tables.forEach(table => {
+        if (table.status === 'reserved') return;
+        
         const hasActiveOrder = Object.values(orders).some(o => 
             o.table_id === table.id && 
             o.status !== 'completed' && 
@@ -3059,30 +3175,20 @@ function renderTables() {
         }
     });
     
-    // عرض الطاولات
     grid.innerHTML = tables.map(table => {
-        const activeOrder = Object.values(orders).find(o => 
-            o.table_id === table.id && 
-            o.status !== 'completed' && 
-            o.status !== 'cancelled' && 
-            o.status !== 'paid'
-        );
-        
-        const status = activeOrder ? 'occupied' : 'available';
-        if (table.status !== status) table.status = status;
-        
         const statusMap = {
             available: { label: t('available'), class: 'available', badge: 'badge-table-available' },
             occupied: { label: t('occupied'), class: 'occupied', badge: 'badge-table-occupied' },
             reserved: { label: t('reserved'), class: 'reserved', badge: 'badge-table-reserved' }
         };
         
-        const s = statusMap[status] || statusMap.available;
+        const s = statusMap[table.status] || statusMap.available;
         return `
             <div class="table-card ${s.class}" onclick="openTableSheet('${table.id}')">
-                ${status !== 'available' ? `<span class="table-badge ${s.badge}">${s.label}</span>` : ''}
+                ${table.status !== 'available' ? `<span class="table-badge ${s.badge}">${s.label}</span>` : ''}
                 <div class="table-num">${table.number}</div>
                 <div class="table-status">${s.label}</div>
+                <div class="table-capacity">${table.capacity || 4} ${t('persons')}</div>
             </div>
         `;
     }).join('');
@@ -3092,6 +3198,8 @@ function renderTables() {
 // TABLE SHEET
 // ============================================================
 function openTableSheet(tableId) {
+    window._activeTableId = tableId;
+    
     if (!hasPermission('create_orders')) {
         showToast(t('error_permission'), 'error');
         return;
@@ -3100,7 +3208,6 @@ function openTableSheet(tableId) {
     const table = tables.find(t => t.id === tableId);
     if (!table) return;
     
-    // البحث عن طلب نشط على الطاولة
     const activeOrder = Object.values(orders).find(o => 
         o.table_id === tableId && 
         o.status !== 'completed' && 
@@ -3108,9 +3215,7 @@ function openTableSheet(tableId) {
         o.status !== 'paid'
     );
     
-    // لو مفيش طلب نشط، نفتح صفحة إنشاء طلب
     if (!activeOrder) {
-        // لو الطاولة كانت مشغولة غلط، نعدلها
         if (table.status === 'occupied') {
             supabaseClient.from('tables').update({ status: 'available' }).eq('id', tableId).catch(() => {});
             table.status = 'available';
@@ -3151,12 +3256,10 @@ function openTableSheet(tableId) {
         return;
     }
     
-    // لو في طلب نشط
     const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
     const isReady = status === 'ready';
     const isPaid = status === 'paid';
     
-    // حساب الرسوم
     const subtotal = activeOrder.subtotal || activeOrder.total || 0;
     const serviceFee = subtotal * (serviceFeePercent / 100);
     const vat = (subtotal + serviceFee) * (vatPercent / 100);
@@ -3224,9 +3327,8 @@ function openTableSheet(tableId) {
                 ${statusLabelMap[status] || status}
             </span>
         </div>
-        <div id="orderItemsList"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
+        <div id="orderItemsList"><div class="empty" style="padding:10px;">${t('loading')}</div></div>
         
-        <!-- تفاصيل الرسوم -->
         <div style="background:var(--bg-input);border-radius:var(--radius-sm);padding:10px 14px;margin:8px 0;">
             <div style="display:flex;justify-content:space-between;padding:3px 0;font-size:13px;color:var(--text-secondary);">
                 <span>${t('subtotal')}</span>
@@ -3275,7 +3377,7 @@ function addItemToOrder(item) {
         });
     }
     renderTableOrderItems();
-    showToast(`تم إضافة ${item.name}`, 'success');
+    showToast(t('item_added_to_order', { name: item.name }), 'success');
 }
 
 function renderTableOrderItems() {
@@ -3298,6 +3400,9 @@ function renderTableOrderItems() {
                         <button class="btn btn-xs" style="background:var(--danger);color:#fff;border:none;border-radius:6px;cursor:pointer;margin-right:8px;" onclick="removeTableOrderItem(${index})">
                             <i class="fa-solid fa-minus"></i>
                         </button>
+                        <button class="btn btn-xs" style="background:var(--success);color:#fff;border:none;border-radius:6px;cursor:pointer;margin-right:4px;" onclick="addTableOrderItem(${index})">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="item-price">${money(item.total)}</div>
@@ -3311,7 +3416,23 @@ function renderTableOrderItems() {
 }
 
 function removeTableOrderItem(index) {
-    _orderItems.splice(index, 1);
+    const item = _orderItems[index];
+    if (!item) return;
+    
+    if (item.quantity > 1) {
+        item.quantity -= 1;
+        item.total = item.quantity * item.unit_price;
+    } else {
+        _orderItems.splice(index, 1);
+    }
+    renderTableOrderItems();
+}
+
+function addTableOrderItem(index) {
+    const item = _orderItems[index];
+    if (!item) return;
+    item.quantity += 1;
+    item.total = item.quantity * item.unit_price;
     renderTableOrderItems();
 }
 
@@ -3367,23 +3488,296 @@ async function createOrder(tableId) {
     }
 }
 
-async function markAsReady(orderId) {
+// ============================================================
+// ORDER WORKFLOW — للشيف والويتر
+// ============================================================
+async function startPreparing(orderId) {
+    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
+        showToast(t('error_permission'), 'error');
+        return;
+    }
     try {
-        if (!supabaseClient) return;
-        await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
-        orderStatus[orderId] = 'ready';
-        showToast(t('order_updated'), 'success');
+        await supabaseClient.from('orders').update({ status: 'preparing' }).eq('id', orderId);
+        orderStatus[orderId] = 'preparing';
+        showToast(t('preparing_started'), 'info');
         await loadActiveOrders();
-        renderDashboard();
         renderOrdersList();
-        
-        const order = Object.values(orders).find(o => o.id === orderId);
-        if (order) {
-            openTableSheet(order.table_id);
+        renderDashboard();
+        if (document.getElementById('orderOverlay').classList.contains('show')) {
+            viewOrderDetail(orderId);
         }
     } catch (e) {
         showToast(t('error_general'), 'error');
     }
+}
+
+async function markAsReady(orderId) {
+    if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
+        showToast(t('error_permission'), 'error');
+        return;
+    }
+    try {
+        await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
+        orderStatus[orderId] = 'ready';
+        showToast(t('order_ready_notification'), 'success');
+        await loadActiveOrders();
+        renderOrdersList();
+        renderDashboard();
+        
+        const order = Object.values(orders).find(o => o.id === orderId);
+        const table = tables.find(t => t.id === order?.table_id);
+        showToast(`📢 ${t('table')} ${table?.number || '?'} ${t('ready_for_delivery')}`, 'info');
+        
+        if (document.getElementById('orderOverlay').classList.contains('show')) {
+            viewOrderDetail(orderId);
+        }
+    } catch (e) {
+        showToast(t('error_general'), 'error');
+    }
+}
+
+async function markAsDelivered(orderId) {
+    if (currentUser?.role !== 'waiter' && currentUser?.type !== 'owner') {
+        showToast(t('error_permission'), 'error');
+        return;
+    }
+    try {
+        await supabaseClient.from('orders').update({ 
+            status: 'completed',
+            completed_at: new Date().toISOString()
+        }).eq('id', orderId);
+        orderStatus[orderId] = 'completed';
+        showToast(t('order_delivered'), 'success');
+        await loadActiveOrders();
+        renderOrdersList();
+        renderDashboard();
+        
+        if (document.getElementById('orderOverlay').classList.contains('show')) {
+            viewOrderDetail(orderId);
+        }
+    } catch (e) {
+        showToast(t('error_general'), 'error');
+    }
+}
+
+// ============================================================
+// ORDERS LIST — مع أدوار مختلفة
+// ============================================================
+function renderOrdersList() {
+    const isChef = currentUser?.role === 'chef';
+    const isWaiter = currentUser?.role === 'waiter';
+    const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
+    
+    const activeOrders = Object.values(orders).filter(o => 
+        o.status !== 'completed' && 
+        o.status !== 'cancelled' && 
+        o.status !== 'paid'
+    );
+    
+    const recentOrders = Object.values(orders).filter(o => 
+        o.status === 'paid' || o.status === 'completed'
+    ).slice(0, 10);
+    
+    const activeEl = document.getElementById('activeOrdersList');
+    if (activeOrders.length === 0) {
+        activeEl.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>${t('no_items')}</div>`;
+    } else {
+        activeEl.innerHTML = activeOrders.map(order => {
+            const table = tables.find(t => t.id === order.table_id);
+            const statusBadgeMap = {
+                pending: 'badge-pending',
+                preparing: 'badge-preparing',
+                ready: 'badge-ready',
+                paid: 'badge-paid'
+            };
+            const statusLabelMap = {
+                pending: t('pending'),
+                preparing: t('preparing'),
+                ready: t('ready'),
+                paid: t('paid')
+            };
+            
+            let actionButtons = '';
+            if (isChef && order.status === 'pending') {
+                actionButtons = `
+                    <button class="btn btn-primary btn-xs" onclick="event.stopPropagation();startPreparing('${order.id}')">
+                        <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
+                    </button>
+                `;
+            } else if (isChef && order.status === 'preparing') {
+                actionButtons = `
+                    <button class="btn btn-success btn-xs" onclick="event.stopPropagation();markAsReady('${order.id}')">
+                        <i class="fa-solid fa-check"></i> ${t('ready_for_delivery')}
+                    </button>
+                `;
+            } else if (isWaiter && order.status === 'ready') {
+                actionButtons = `
+                    <button class="btn btn-success btn-xs" onclick="event.stopPropagation();markAsDelivered('${order.id}')">
+                        <i class="fa-solid fa-hand-peace"></i> ${t('deliver')}
+                    </button>
+                `;
+            }
+            
+            const displayPrice = isChef ? '' : `<div class="row-value">${money(order.total)}</div>`;
+            
+            return `
+                <div class="list-row" onclick="viewOrderDetail('${order.id}')" style="cursor:pointer;">
+                    <div>
+                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
+                        <div class="row-sub"><span class="badge ${statusBadgeMap[order.status] || 'badge-warning'}">${statusLabelMap[order.status] || order.status}</span></div>
+                    </div>
+                    ${displayPrice}
+                    <div class="row-actions">${actionButtons}</div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    const recentEl = document.getElementById('recentOrdersList');
+    if (recentOrders.length === 0) {
+        recentEl.innerHTML = `<div class="empty"><i class="fa-solid fa-clock-rotate-left"></i>${t('no_items')}</div>`;
+    } else {
+        recentEl.innerHTML = recentOrders.map(order => {
+            const table = tables.find(t => t.id === order.table_id);
+            return `
+                <div class="list-row" style="opacity:0.6;" onclick="viewOrderDetail('${order.id}')" style="cursor:pointer;">
+                    <div>
+                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
+                        <div class="row-sub">${new Date(order.created_at).toLocaleTimeString()}</div>
+                    </div>
+                    <div class="row-value">${money(order.total)}</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// ============================================================
+// VIEW ORDER DETAIL — حسب الدور
+// ============================================================
+async function viewOrderDetail(orderId) {
+    window._activeOrderId = orderId;
+    
+    const order = Object.values(orders).find(o => o.id === orderId);
+    if (!order) return;
+    
+    const isChef = currentUser?.role === 'chef';
+    const isWaiter = currentUser?.role === 'waiter';
+    const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
+    
+    const { data: items } = await supabaseClient
+        .from('order_items')
+        .select('*, menu_items(*)')
+        .eq('order_id', orderId);
+    
+    const table = tables.find(t => t.id === order.table_id);
+    
+    let itemsHtml = '';
+    if (items && items.length > 0) {
+        itemsHtml = items.map(item => {
+            if (isChef) {
+                return `
+                    <div class="order-item">
+                        <div>
+                            <div class="item-name">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
+                            <div class="item-details">${item.quantity} ×</div>
+                        </div>
+                    </div>
+                `;
+            }
+            return `
+                <div class="order-item">
+                    <div>
+                        <div class="item-name">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
+                        <div class="item-details">${item.quantity} × ${money(item.unit_price)}</div>
+                    </div>
+                    <div class="item-price">${money(item.total)}</div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    const body = document.getElementById('orderSheetBody');
+    
+    let actionButtons = '';
+    if (isChef && order.status === 'pending') {
+        actionButtons = `
+            <button class="btn btn-primary btn-block" onclick="startPreparing('${orderId}')">
+                <i class="fa-solid fa-utensils"></i> ${t('start_preparing')}
+            </button>
+        `;
+    } else if (isChef && order.status === 'preparing') {
+        actionButtons = `
+            <button class="btn btn-success btn-block" onclick="markAsReady('${orderId}')">
+                <i class="fa-solid fa-check"></i> ${t('ready_for_delivery')}
+            </button>
+        `;
+    } else if (isWaiter && order.status === 'ready') {
+        actionButtons = `
+            <button class="btn btn-success btn-block" onclick="markAsDelivered('${orderId}')">
+                <i class="fa-solid fa-hand-peace"></i> ${t('deliver')}
+            </button>
+        `;
+    } else if (isCashier && (order.status === 'completed' || order.status === 'paid')) {
+        actionButtons = `
+            <button class="btn btn-primary btn-block" onclick="showPaymentSheet('${orderId}')">
+                <i class="fa-solid fa-credit-card"></i> ${t('payment')}
+            </button>
+        `;
+    }
+    
+    body.innerHTML = `
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span class="badge badge-gold">${t('order')} #${order.id.slice(0, 8)}</span>
+            <span class="badge badge-info">${t('table')} ${table?.number || '?'}</span>
+        </div>
+        <div id="orderDetailItems">${itemsHtml}</div>
+        ${!isChef ? `
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid var(--primary);margin-top:8px;font-weight:700;font-size:17px;">
+                <span>${t('total')}</span>
+                <span style="color:var(--primary-dark);">${money(order.total)}</span>
+            </div>
+        ` : ''}
+        <div style="margin-top:12px;">
+            ${actionButtons}
+            <button class="btn btn-ghost btn-block" onclick="closeSheet('orderOverlay')">${t('close')}</button>
+        </div>
+    `;
+    
+    openSheet('orderOverlay');
+}
+
+// ============================================================
+// LOAD ORDER ITEMS (للجدول)
+// ============================================================
+async function loadOrderItems(orderId) {
+    if (!supabaseClient) return;
+    const { data: items } = await supabaseClient
+        .from('order_items')
+        .select('*, menu_items(*)')
+        .eq('order_id', orderId);
+    
+    const listEl = document.getElementById('orderItemsList');
+    const totalEl = document.getElementById('orderTotalDisplay');
+    
+    if (!items || items.length === 0) {
+        listEl.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
+        totalEl.textContent = '0';
+        return;
+    }
+    
+    const total = items.reduce((sum, item) => sum + (Number(item.total) || 0), 0);
+    totalEl.textContent = money(total);
+    
+    listEl.innerHTML = items.map(item => `
+        <div class="order-item">
+            <div>
+                <div class="item-name">${escapeHtml(item.menu_items?.name || t('default_item'))}</div>
+                <div class="item-details">${item.quantity} × ${money(item.unit_price)}</div>
+            </div>
+            <div class="item-price">${money(item.total)}</div>
+        </div>
+    `).join('');
 }
 
 // ============================================================
@@ -3417,7 +3811,7 @@ function showPaymentSheet(orderId) {
             <button class="btn btn-primary" style="flex:1;" id="confirmPaymentBtn" onclick="confirmPaymentAndClose('${orderId}')" disabled>
                 <i class="fa-solid fa-check"></i> ${t('payment')}
             </button>
-            <button class="btn btn-ghost" style="flex:1;" onclick="openTableSheet('${order.table_id}')">${t('back')}</button>
+            <button class="btn btn-ghost" style="flex:1;" onclick="closeSheet('tableOverlay')">${t('back')}</button>
         </div>
         <div class="error-text" id="paymentError"></div>
     `;
@@ -3432,7 +3826,7 @@ function selectPaymentMethod(pmId) {
 }
 
 // ============================================================
-// PRINT RECEIPT — مع Service Fee و VAT
+// PRINT RECEIPT
 // ============================================================
 async function printReceipt(orderId) {
     if (!hasPermission('print_receipt')) {
@@ -3443,14 +3837,13 @@ async function printReceipt(orderId) {
     const order = Object.values(orders).find(o => o.id === orderId);
     if (!order) return;
     
-    // حساب الرسوم
     const subtotal = order.subtotal || order.total || 0;
     const serviceFee = subtotal * (serviceFeePercent / 100);
     const vat = (subtotal + serviceFee) * (vatPercent / 100);
     const total = subtotal + serviceFee + vat;
     
-    // جلب تفاصيل الطلب
-    const { data: items } = await supabaseClient        .from('order_items')
+    const { data: items } = await supabaseClient
+        .from('order_items')
         .select('*, menu_items(*)')
         .eq('order_id', orderId);
     
@@ -3460,7 +3853,7 @@ async function printReceipt(orderId) {
     if (items && items.length > 0) {
         itemsHtml = items.map(item => `
             <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #eee;">
-                <span>${escapeHtml(item.menu_items?.name || 'صنف')} × ${item.quantity}</span>
+                <span>${escapeHtml(item.menu_items?.name || t('default_item'))} × ${item.quantity}</span>
                 <span>${money(item.unit_price * item.quantity)}</span>
             </div>
         `).join('');
@@ -3504,7 +3897,6 @@ async function printReceipt(orderId) {
         </div>
     `;
     
-    // عرض الوصل في نافذة الطباعة
     const printWindow = window.open('', '_blank', 'width=400,height=600');
     if (printWindow) {
         printWindow.document.write(`
@@ -3527,7 +3919,7 @@ async function printReceipt(orderId) {
 }
 
 // ============================================================
-// CONFIRM PAYMENT — الطاولة ترجع متاحة
+// CONFIRM PAYMENT
 // ============================================================
 async function confirmPaymentAndClose(orderId) {
     const paymentId = document.querySelector('.payment-option.selected')?.dataset.id;
@@ -3542,7 +3934,6 @@ async function confirmPaymentAndClose(orderId) {
         const order = Object.values(orders).find(o => o.id === orderId);
         if (!order) throw new Error('Order not found');
         
-        // حساب الإجمالي مع الخدمة والضريبة
         const subtotal = order.subtotal || order.total || 0;
         const serviceFee = subtotal * (serviceFeePercent / 100);
         const vat = (subtotal + serviceFee) * (vatPercent / 100);
@@ -3560,7 +3951,6 @@ async function confirmPaymentAndClose(orderId) {
             total: total
         }).eq('id', orderId);
         
-        // ⭐ الطاولة ترجع متاحة
         await supabaseClient.from('tables').update({ status: 'available' }).eq('id', order.table_id);
         
         orderStatus[orderId] = 'paid';
@@ -3576,136 +3966,90 @@ async function confirmPaymentAndClose(orderId) {
     }
 }
 
-async function loadOrderItems(orderId) {
-    if (!supabaseClient) return;
-    const { data: items } = await supabaseClient
-        .from('order_items')
-        .select('*, menu_items(*)')
-        .eq('order_id', orderId);
+// ============================================================
+// TABLE MANAGEMENT
+// ============================================================
+function openTableManagementSheet() {
+    document.getElementById('editTableId').value = '';
+    document.getElementById('editTableNumber').value = tables.length + 1;
+    document.getElementById('editTableCapacity').value = 4;
+    document.getElementById('editTableStatus').value = 'available';
+    document.getElementById('tableManagementTitle').textContent = t('add_table');
+    document.getElementById('deleteTableBtn').style.display = 'none';
+    document.getElementById('tableManagementError').textContent = '';
+    openSheet('tableManagementOverlay');
+}
+
+function editTable(tableId) {
+    const table = tables.find(t => t.id === tableId);
+    if (!table) return;
+    document.getElementById('editTableId').value = table.id;
+    document.getElementById('editTableNumber').value = table.number;
+    document.getElementById('editTableCapacity').value = table.capacity || 4;
+    document.getElementById('editTableStatus').value = table.status || 'available';
+    document.getElementById('tableManagementTitle').textContent = t('edit_table');
+    document.getElementById('deleteTableBtn').style.display = 'flex';
+    document.getElementById('tableManagementError').textContent = '';
+    openSheet('tableManagementOverlay');
+}
+
+async function saveTableManagement() {
+    const id = document.getElementById('editTableId').value;
+    const number = parseInt(document.getElementById('editTableNumber').value);
+    const capacity = parseInt(document.getElementById('editTableCapacity').value);
+    const status = document.getElementById('editTableStatus').value;
+    const errEl = document.getElementById('tableManagementError');
     
-    const listEl = document.getElementById('orderItemsList');
-    const totalEl = document.getElementById('orderTotalDisplay');
-    
-    if (!items || items.length === 0) {
-        listEl.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
-        totalEl.textContent = '0';
+    if (!number || number < 1) {
+        errEl.textContent = t('error_general');
         return;
     }
     
-    const total = items.reduce((sum, item) => sum + (Number(item.total) || 0), 0);
-    totalEl.textContent = money(total);
-    
-    listEl.innerHTML = items.map(item => `
-        <div class="order-item">
-            <div>
-                <div class="item-name">${escapeHtml(item.menu_items?.name || 'صنف')}</div>
-                <div class="item-details">${item.quantity} × ${money(item.unit_price)}</div>
-            </div>
-            <div class="item-price">${money(item.total)}</div>
-        </div>
-    `).join('');
-}
-
-// ============================================================
-// ORDERS LIST
-// ============================================================
-function renderOrdersList() {
-    const activeOrders = Object.values(orders).filter(o => o.status !== 'completed' && o.status !== 'cancelled' && o.status !== 'paid');
-    const recentOrders = Object.values(orders).filter(o => o.status === 'paid' || o.status === 'completed').slice(0, 10);
-    
-    const activeEl = document.getElementById('activeOrdersList');
-    if (activeOrders.length === 0) {
-        activeEl.innerHTML = `<div class="empty"><i class="fa-solid fa-receipt"></i>${t('no_items')}</div>`;
-    } else {
-        activeEl.innerHTML = activeOrders.map(order => {
-            const table = tables.find(t => t.id === order.table_id);
-            const statusBadgeMap = {
-                pending: 'badge-pending',
-                preparing: 'badge-preparing',
-                ready: 'badge-ready',
-                paid: 'badge-paid'
-            };
-            const statusLabelMap = {
-                pending: t('pending'),
-                preparing: t('preparing'),
-                ready: t('ready'),
-                paid: t('paid')
-            };
-            return `
-                <div class="list-row" onclick="viewOrder('${order.id}')" style="cursor:pointer;">
-                    <div>
-                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
-                        <div class="row-sub"><span class="badge ${statusBadgeMap[order.status] || 'badge-warning'}">${statusLabelMap[order.status] || order.status}</span></div>
-                    </div>
-                    <div class="row-value">${money(order.total)}</div>
-                </div>
-            `;
-        }).join('');
-    }
-    
-    const recentEl = document.getElementById('recentOrdersList');
-    if (recentOrders.length === 0) {
-        recentEl.innerHTML = `<div class="empty"><i class="fa-solid fa-clock-rotate-left"></i>${t('no_items')}</div>`;
-    } else {
-        recentEl.innerHTML = recentOrders.map(order => {
-            const table = tables.find(t => t.id === order.table_id);
-            return `
-                <div class="list-row" style="opacity:0.6;">
-                    <div>
-                        <div class="row-title">${t('table')} ${table?.number || '?'}</div>
-                        <div class="row-sub">${new Date(order.created_at).toLocaleTimeString()}</div>
-                    </div>
-                    <div class="row-value">${money(order.total)}</div>
-                </div>
-            `;
-        }).join('');
-    }
-}
-
-function viewOrder(orderId) {
-    const order = Object.values(orders).find(o => o.id === orderId);
-    if (!order) return;
-    
-    const body = document.getElementById('orderSheetBody');
-    body.innerHTML = `
-        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-            <span class="badge badge-gold">${t('order')} #${order.id.slice(0, 8)}</span>
-            <span class="badge badge-info">${order.status}</span>
-        </div>
-        <div id="orderDetailItems"><div class="empty" style="padding:10px;">جاري التحميل...</div></div>
-        <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:2px solid var(--primary);margin-top:8px;font-weight:700;font-size:17px;">
-            <span>${t('total')}</span>
-            <span style="color:var(--primary-dark);">${money(order.total)}</span>
-        </div>
-        <button class="btn btn-ghost btn-block" onclick="closeSheet('orderOverlay')">${t('close')}</button>
-    `;
-    
-    loadOrderDetailItems(order.id);
-    openSheet('orderOverlay');
-}
-
-async function loadOrderDetailItems(orderId) {
-    if (!supabaseClient) return;
-    const { data: items } = await supabaseClient
-        .from('order_items')
-        .select('*, menu_items(*)')
-        .eq('order_id', orderId);
-    
-    const el = document.getElementById('orderDetailItems');
-    if (!items || items.length === 0) {
-        el.innerHTML = '<div class="empty" style="padding:10px;">' + t('no_items') + '</div>';
+    if (!supabaseClient) {
+        errEl.textContent = t('error_connection');
         return;
     }
     
-    el.innerHTML = items.map(item => `
-        <div class="order-item">
-            <div>
-                <div class="item-name">${escapeHtml(item.menu_items?.name || 'صنف')}</div>
-                <div class="item-details">${item.quantity} × ${money(item.unit_price)}</div>
-            </div>
-            <div class="item-price">${money(item.total)}</div>
-        </div>
-    `).join('');
+    try {
+        const data = { number, capacity, status };
+        if (id) {
+            await supabaseClient.from('tables').update(data).eq('id', id);
+            showToast(t('table_updated'), 'success');
+        } else {
+            data.business_id = business.id;
+            await supabaseClient.from('tables').insert(data);
+            showToast(t('table_added'), 'success');
+        }
+        closeSheet('tableManagementOverlay');
+        await loadTables();
+        renderTables();
+        renderSettings();
+        renderDashboard();
+    } catch (e) {
+        errEl.textContent = t('error_general');
+    }
+}
+
+async function deleteTableFromSheet() {
+    const id = document.getElementById('editTableId').value;
+    if (!id) return;
+    closeSheet('tableManagementOverlay');
+    await deleteTable(id);
+}
+
+async function deleteTable(tableId) {
+    if (!confirm(t('delete_table_confirm'))) return;
+    if (!supabaseClient) return;
+    try {
+        await supabaseClient.from('tables').delete().eq('id', tableId);
+        showToast(t('table_deleted'), 'success');
+        await loadTables();
+        renderTables();
+        renderSettings();
+        renderDashboard();
+    } catch (e) {
+        showToast(t('error_general'), 'error');
+    }
 }
 
 // ============================================================
@@ -4045,7 +4389,10 @@ async function confirmCloseShift() {
         await supabaseClient.from('shifts').update({
             status: 'closed',
             closed_at: new Date().toISOString(),
-            closed_by: currentUser?.name || 'system'
+            closed_by: currentUser?.name || 'system',
+            total_revenue: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0',
+            total_expenses: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0',
+            total_profit: document.querySelector('#closeShiftSummary .row-value.mono')?.textContent || '0'
         }).eq('id', currentShift.id);
         closeSheet('closeShiftOverlay');
         showToast(t('shift_closed'), 'success');
@@ -4053,6 +4400,41 @@ async function confirmCloseShift() {
         renderSettings();
         renderDashboard();
     } catch (e) { showToast(t('shift_close_failed'), 'error'); }
+}
+
+// ============================================================
+// SHIFT HISTORY
+// ============================================================
+async function renderShiftHistory() {
+    const el = document.getElementById('settingsShiftHistory');
+    if (!el) return;
+    
+    if (!supabaseClient) return;
+    const { data: shifts } = await supabaseClient
+        .from('shifts')
+        .select('*')
+        .eq('business_id', business.id)
+        .eq('status', 'closed')
+        .order('closed_at', { ascending: false })
+        .limit(20);
+    
+    if (!shifts || shifts.length === 0) {
+        el.innerHTML = `<div class="empty" style="padding:12px;">${t('no_shift_history')}</div>`;
+        return;
+    }
+    
+    el.innerHTML = shifts.map(shift => `
+        <div class="list-row">
+            <div>
+                <div class="row-title">${new Date(shift.closed_at).toLocaleDateString()}</div>
+                <div class="row-sub">${new Date(shift.closed_at).toLocaleTimeString()}</div>
+            </div>
+            <div>
+                <div class="row-sub">${t('shift_revenue')}: ${money(shift.total_revenue || 0)}</div>
+                <div class="row-sub">${t('shift_profit')}: ${money(shift.total_profit || 0)}</div>
+            </div>
+        </div>
+    `).join('');
 }
 
 // ============================================================
@@ -4221,7 +4603,7 @@ function renderSettings() {
     const isDark = currentTheme === 'dark';
     
     el.innerHTML = `
-        <div class="section-title">🎨 المظهر</div>
+        <div class="section-title" data-i18n="appearance">🎨 المظهر</div>
         <div class="theme-toggle">
             <div class="toggle-icons">
                 <span class="icon-moon">🌙</span>
@@ -4233,30 +4615,39 @@ function renderSettings() {
             <span class="toggle-label" id="themeToggleLabel">${isDark ? t('dark') : t('light')}</span>
         </div>
         
-        <div class="section-title">🖼️ الشعار</div>
+        <div class="section-title" data-i18n="logo">🖼️ الشعار</div>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             ${businessLogo ? `<img src="${businessLogo}" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--primary);object-fit:cover;">` : '<span style="color:var(--text-muted);">' + t('no_logo') + '</span>'}
             <button class="btn btn-primary btn-sm" onclick="openLogoSettings()"><i class="fa-solid fa-pen"></i> ${t('edit_logo')}</button>
         </div>
         
-        <div class="section-title">💰 الرسوم والضرائب</div>
+        <div class="section-title" data-i18n="fees">💰 الرسوم والضرائب</div>
         <div class="list-row">
-            <div class="row-title">رسوم الخدمة</div>
+            <div class="row-title" data-i18n="service_fee_label">رسوم الخدمة</div>
             <div class="row-value mono">${serviceFeePercent}%</div>
         </div>
         <div class="list-row">
-            <div class="row-title">ضريبة القيمة المضافة (VAT)</div>
+            <div class="row-title" data-i18n="vat_label">ضريبة القيمة المضافة (VAT)</div>
             <div class="row-value mono">${vatPercent}%</div>
         </div>
         <button class="btn btn-primary btn-sm btn-block" onclick="openFeesSettings()">
             <i class="fa-solid fa-pen"></i> ${t('edit_fees')}
         </button>
         
-        <div class="section-title">💳 طرق الدفع</div>
+        <div class="section-title" data-i18n="manage_tables">🪑 إدارة الطاولات</div>
+        <button class="btn btn-primary btn-sm" onclick="openTableManagementSheet()">
+            <i class="fa-solid fa-plus"></i> ${t('add_table')}
+        </button>
+        <div class="panel" id="settingsTablesList"></div>
+        
+        <div class="section-title" data-i18n="shift_history">📋 سجل الشيفتات</div>
+        <div class="panel" id="settingsShiftHistory"></div>
+        
+        <div class="section-title" data-i18n="payment_methods">💳 طرق الدفع</div>
         <button class="btn btn-primary btn-sm" onclick="openPaymentMethodSheet()"><i class="fa-solid fa-plus"></i> ${t('add')}</button>
         <div class="panel" id="settingsPaymentMethods"></div>
         
-        <div class="section-title">👥 الموظفين</div>
+        <div class="section-title" data-i18n="employees">👥 الموظفين</div>
         <button class="btn btn-primary btn-sm" onclick="openEmployeeSheet()"><i class="fa-solid fa-plus"></i> ${t('add')}</button>
         <div class="panel" id="settingsEmployees"></div>
         
@@ -4265,8 +4656,30 @@ function renderSettings() {
         </button>
     `;
     
+    renderSettingsTables();
     renderSettingsPaymentMethods();
     renderSettingsEmployees();
+    renderShiftHistory();
+}
+
+function renderSettingsTables() {
+    const el = document.getElementById('settingsTablesList');
+    if (tables.length === 0) {
+        el.innerHTML = `<div class="empty" style="padding:12px;">${t('no_tables')}</div>`;
+        return;
+    }
+    el.innerHTML = tables.map(table => `
+        <div class="list-row">
+            <div>
+                <div class="row-title">${t('table')} #${table.number}</div>
+                <div class="row-sub">${table.capacity || 4} ${t('persons')} · ${t(table.status)}</div>
+            </div>
+            <div class="row-actions">
+                <button class="btn btn-ghost btn-xs" onclick="editTable('${table.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-danger btn-xs" onclick="deleteTable('${table.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderSettingsPaymentMethods() {
@@ -4368,9 +4781,9 @@ async function tryAutoResume() {
     }
 }
 
-console.log('🍽️ Plate Pro — Full System!');
+console.log('🍽️ Plate Pro — Full System with all fixes!');
 console.log('✅ All badges fixed and visible');
-console.log('🌐 Language toggle working');
+console.log('🌐 Language toggle working with all texts');
 console.log('🌗 Theme toggle in settings');
 console.log('📱 QR Code for customer ordering');
 console.log('💰 Service Fee & VAT included and shown');
@@ -4379,6 +4792,13 @@ console.log('🖼️ Business logo support');
 console.log('🪑 Table becomes available after payment');
 console.log('💳 Payment button added next to print');
 console.log('🪑 Customer can select table number');
+console.log('👨‍🍳 Chef workflow: start preparing → mark ready');
+console.log('🚚 Waiter workflow: deliver ready orders');
+console.log('🪑 Table management: add/edit/delete tables with capacity');
+console.log('📋 Shift history: view all closed shifts');
+console.log('✅ Reserved table status preserved');
+console.log('✅ Order workflow fixed (chef → waiter → cashier)');
+console.log('✅ Remove item button decrements quantity');
 </script>
 </body>
 </html>
