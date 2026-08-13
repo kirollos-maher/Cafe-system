@@ -1110,6 +1110,57 @@ body {
 .sheet-title .close-x:hover { color: var(--text-primary); }
 
 /* ============================================================
+   RING NOTIFICATION - خاص بالتنبيهات الصوتية والمرئية
+   ============================================================ */
+.ring-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: var(--bg-card);
+    border: 3px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 16px 24px;
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    width: 90%;
+    animation: ringSlideDown 0.5s var(--ease);
+    display: none;
+    cursor: pointer;
+}
+
+.ring-notification.show {
+    display: block;
+}
+
+.ring-notification .ring-icon {
+    font-size: 32px;
+    animation: ringBell 0.3s infinite alternate;
+}
+
+@keyframes ringBell {
+    0% { transform: rotate(-20deg); }
+    100% { transform: rotate(20deg); }
+}
+
+@keyframes ringSlideDown {
+    from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+.ring-notification .ring-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.ring-notification .ring-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* ============================================================
    SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -1440,6 +1491,19 @@ body {
 
         <!-- Toast -->
         <div class="toast" id="customerToast"></div>
+    </div>
+</div>
+
+<!-- ============================================================
+   RING NOTIFICATION - عنصر التنبيه الصوتي والمرئي
+   ============================================================ -->
+<div class="ring-notification" id="ringNotification">
+    <div style="display:flex; align-items:center; gap:12px;">
+        <div class="ring-icon">🔔</div>
+        <div>
+            <div class="ring-title" id="ringTitle">طلب جديد!</div>
+            <div class="ring-sub" id="ringSub">طاولة رقم 5</div>
+        </div>
     </div>
 </div>
 
@@ -2386,6 +2450,7 @@ let customerBusiness = null;
 let customerMenuItems = [];
 let customerCategories = [];
 let currentCustomerFilter = 'all';
+let customerBusinessId = null;
 
 // ============================================================
 // UTILITIES
@@ -2455,6 +2520,143 @@ function escapeHtml(str) {
     const d = document.createElement('div');
     d.textContent = str;
     return d.innerHTML;
+}
+
+// ============================================================
+// RING NOTIFICATION SYSTEM - نظام التنبيهات الصوتية والمرئية
+// ============================================================
+
+let audioContext = null;
+let ringTimeout = null;
+
+// تهيئة الصوت
+function initAudio() {
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        console.log('🎵 Audio initialized');
+    } catch (e) {
+        console.warn('⚠️ Audio not supported');
+    }
+}
+
+// تشغيل صوت الرنة باستخدام Web Audio API
+function playRingSound(type = 'new_order') {
+    try {
+        if (!audioContext) {
+            initAudio();
+        }
+        if (!audioContext) return;
+        
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        
+        const now = audioContext.currentTime;
+        
+        if (type === 'new_order') {
+            // رنة الطلب الجديد (3 نغمات متتالية)
+            const frequencies = [800, 1000, 1200, 1000, 800];
+            const durations = [0.15, 0.15, 0.15, 0.15, 0.2];
+            let time = now;
+            
+            frequencies.forEach((freq, i) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.setValueAtTime(freq, time);
+                gain.gain.setValueAtTime(0.25, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + durations[i]);
+                
+                osc.start(time);
+                osc.stop(time + durations[i]);
+                time += durations[i] + 0.05;
+            });
+            
+            // اهتزاز للجوال
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200, 100, 200]);
+            }
+            
+        } else if (type === 'order_ready') {
+            // رنة الطلب الجاهز (رنتين متتاليتين)
+            // الرنة الأولى
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            
+            osc1.frequency.setValueAtTime(1000, now);
+            osc1.frequency.setValueAtTime(1200, now + 0.1);
+            osc1.frequency.setValueAtTime(1000, now + 0.2);
+            
+            gain1.gain.setValueAtTime(0.3, now);
+            gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            
+            osc1.start(now);
+            osc1.stop(now + 0.3);
+            
+            // الرنة الثانية بعد 0.4 ثانية
+            setTimeout(() => {
+                if (!audioContext) return;
+                const now2 = audioContext.currentTime;
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                
+                osc2.frequency.setValueAtTime(1200, now2);
+                osc2.frequency.setValueAtTime(1500, now2 + 0.1);
+                osc2.frequency.setValueAtTime(1200, now2 + 0.2);
+                
+                gain2.gain.setValueAtTime(0.3, now2);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now2 + 0.3);
+                
+                osc2.start(now2);
+                osc2.stop(now2 + 0.3);
+            }, 400);
+            
+            // اهتزاز للجوال
+            if (navigator.vibrate) {
+                navigator.vibrate([300, 150, 300]);
+            }
+        }
+        
+    } catch (e) {
+        console.warn('⚠️ Could not play sound:', e);
+    }
+}
+
+// عرض إشعار مرئي مع الصوت
+function showRingNotification(title, message, type = 'new_order') {
+    // تشغيل الصوت
+    playRingSound(type);
+    
+    // عرض الإشعار
+    const el = document.getElementById('ringNotification');
+    if (!el) {
+        // إذا لم يوجد عنصر الإشعار، استخدم Toast
+        showToast(`🔔 ${title}: ${message}`, 'info');
+        return;
+    }
+    
+    document.getElementById('ringTitle').textContent = title;
+    document.getElementById('ringSub').textContent = message;
+    
+    el.classList.add('show');
+    
+    // إخفاء الإشعار بعد 5 ثواني
+    clearTimeout(ringTimeout);
+    ringTimeout = setTimeout(() => {
+        el.classList.remove('show');
+    }, 5000);
+    
+    // النقر على الإشعار لإخفائه
+    el.onclick = function() {
+        el.classList.remove('show');
+        clearTimeout(ringTimeout);
+    };
 }
 
 // ============================================================
@@ -2544,7 +2746,7 @@ function downloadQR() {
 }
 
 // ============================================================
-// CUSTOMER PAGE - FIXED VERSION
+// CUSTOMER PAGE
 // ============================================================
 function initCustomerPage() {
     const params = new URLSearchParams(window.location.search);
@@ -2572,6 +2774,8 @@ async function loadCustomerData() {
         return;
     }
     
+    customerBusinessId = bizId;
+    
     if (!supabaseClient) {
         document.getElementById('customerBizName').textContent = '⚠️ خطأ في الاتصال';
         document.getElementById('customerMenuItems').innerHTML = `
@@ -2585,7 +2789,6 @@ async function loadCustomerData() {
     }
     
     try {
-        // تحميل بيانات المطعم
         const { data: biz, error: bizError } = await supabaseClient
             .from('businesses')
             .select('*')
@@ -2608,14 +2811,12 @@ async function loadCustomerData() {
         document.getElementById('customerBizName').textContent = biz.name;
         document.title = biz.name + ' - Menu';
         
-        // تحميل الشعار
         const savedLogo = localStorage.getItem('platepro_logo');
         if (savedLogo) {
             const logoContainer = document.getElementById('customerLogoContainer');
             logoContainer.innerHTML = `<img src="${savedLogo}" class="logo-img" alt="Logo">`;
         }
         
-        // تحميل المنيو والتصنيفات
         const [itemsRes, catsRes] = await Promise.all([
             supabaseClient.from('menu_items')
                 .select('*')
@@ -2632,25 +2833,7 @@ async function loadCustomerData() {
         customerMenuItems = itemsRes.data || [];
         customerCategories = catsRes.data || [];
         
-        // تحميل الطاولات المتاحة
-        const { data: tablesData } = await supabaseClient
-            .from('tables')
-            .select('*')
-            .eq('business_id', bizId)
-            .eq('status', 'available')
-            .order('number');
-        
-        const tableSelect = document.getElementById('customerTableSelect');
-        if (tablesData && tablesData.length > 0) {
-            tableSelect.innerHTML = `
-                <option value="">-- اختر طاولة --</option>
-                ${tablesData.map(t => `
-                    <option value="${t.id}">طاولة ${t.number} (${t.capacity || 4} أشخاص)</option>
-                `).join('')}
-            `;
-        } else {
-            tableSelect.innerHTML = `<option value="">⚠️ مفيش طاولات متاحة حالياً</option>`;
-        }
+        await renderCustomerTables();
         
         renderCustomerCategories();
         renderCustomerItems();
@@ -2668,6 +2851,39 @@ async function loadCustomerData() {
                 <div style="font-size:13px; color:var(--text-muted);">حاول تحديث الصفحة</div>
             </div>
         `;
+    }
+}
+
+async function renderCustomerTables() {
+    if (!customerBusiness) return;
+    
+    const bizId = customerBusiness.id;
+    
+    try {
+        const { data: tablesData } = await supabaseClient
+            .from('tables')
+            .select('*')
+            .eq('business_id', bizId)
+            .order('number');
+        
+        const tableSelect = document.getElementById('customerTableSelect');
+        if (tablesData && tablesData.length > 0) {
+            const availableTables = tablesData.filter(t => t.status === 'available');
+            if (availableTables.length > 0) {
+                tableSelect.innerHTML = `
+                    <option value="">-- اختر طاولة --</option>
+                    ${availableTables.map(t => `
+                        <option value="${t.id}">طاولة ${t.number} (${t.capacity || 4} أشخاص)</option>
+                    `).join('')}
+                `;
+            } else {
+                tableSelect.innerHTML = `<option value="">⚠️ مفيش طاولات متاحة حالياً</option>`;
+            }
+        } else {
+            tableSelect.innerHTML = `<option value="">⚠️ مفيش طاولات متاحة حالياً</option>`;
+        }
+    } catch (e) {
+        console.error('Error loading tables:', e);
     }
 }
 
@@ -2831,6 +3047,9 @@ function showCustomerToast(msg) {
     el._t = setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
 
+// ============================================================
+// SUBMIT CUSTOMER ORDER - مع إضافة رنة الطلب الجديد
+// ============================================================
 async function submitCustomerOrder() {
     if (customerCart.length === 0) {
         document.getElementById('customerCartError').textContent = t('error_no_items');
@@ -2851,13 +3070,14 @@ async function submitCustomerOrder() {
     }
     
     try {
-        const { data: tableCheck } = await supabaseClient
+        // جلب بيانات الطاولة للاستخدام في الإشعار
+        const { data: tableData } = await supabaseClient
             .from('tables')
-            .select('status')
+            .select('*')
             .eq('id', tableId)
             .single();
         
-        if (!tableCheck || tableCheck.status !== 'available') {
+        if (!tableData || tableData.status !== 'available') {
             document.getElementById('customerCartError').textContent = '⚠️ الطاولة أصبحت مشغولة، اختر طاولة أخرى';
             loadCustomerData();
             return;
@@ -2895,6 +3115,13 @@ async function submitCustomerOrder() {
         
         await supabaseClient.from('order_items').insert(orderItems);
         
+        // 🔔 تشغيل رنة الطلب الجديد
+        showRingNotification(
+            '🔔 طلب جديد من العميل!',
+            `طاولة رقم ${tableData.number} - ${customerCart.length} أصناف`,
+            'new_order'
+        );
+        
         customerCart = [];
         updateCustomerCartUI();
         closeSheet('customerCartOverlay');
@@ -2902,18 +3129,12 @@ async function submitCustomerOrder() {
         showCustomerToast(t('order_created'));
         document.getElementById('customerCartError').textContent = '';
         
-        // 🔥 إعادة تحميل البيانات بالكامل
         await loadCustomerData();
         
-        if (business) {
-            await loadActiveOrders();
-            await loadTables();
-            renderTables();
-            renderKitchenOrders();
-            renderDashboard();
-        }
+        localStorage.setItem('platepro_need_refresh', 'true');
+        localStorage.setItem('platepro_last_order_time', Date.now().toString());
         
-        console.log('✅ Order created and synced successfully!');
+        console.log('✅ Order created successfully!');
         
     } catch (e) {
         console.error('Error submitting order:', e);
@@ -3112,6 +3333,40 @@ async function enterMainApp() {
     renderMenuView();
     renderMenuManagement();
     renderSettings();
+    
+    startAutoRefresh();
+}
+
+// ============================================================
+// AUTO REFRESH - التحقق التلقائي من الطلبات الجديدة
+// ============================================================
+let refreshInterval = null;
+
+function startAutoRefresh() {
+    if (refreshInterval) clearInterval(refreshInterval);
+    
+    refreshInterval = setInterval(async () => {
+        const needRefresh = localStorage.getItem('platepro_need_refresh');
+        const lastOrderTime = localStorage.getItem('platepro_last_order_time');
+        
+        if (needRefresh === 'true') {
+            console.log('🔄 New order detected, refreshing data...');
+            
+            try {
+                await loadActiveOrders();
+                await loadTables();
+                renderTables();
+                renderKitchenOrders();
+                renderDashboard();
+                
+                localStorage.removeItem('platepro_need_refresh');
+                
+                showToast('📱 طلب جديد من العميل!', 'info');
+            } catch (e) {
+                console.error('Error refreshing data:', e);
+            }
+        }
+    }, 3000);
 }
 
 // ============================================================
@@ -3133,7 +3388,7 @@ async function loadAllData() {
 // DATA LOADERS
 // ============================================================
 async function loadTables() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     let { data } = await supabaseClient.from('tables').select('*').eq('business_id', business.id).order('number');
     if (!data || data.length === 0) {
         const seed = Array.from({ length: 8 }, (_, i) => ({
@@ -3149,25 +3404,25 @@ async function loadTables() {
 }
 
 async function loadMenuItems() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     const { data } = await supabaseClient.from('menu_items').select('*').eq('business_id', business.id).eq('is_active', true).order('sort_order');
     menuItems = data || [];
 }
 
 async function loadMenuCategories() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     const { data } = await supabaseClient.from('menu_categories').select('*').eq('business_id', business.id).eq('is_active', true).order('sort_order');
     menuCategories = data || [];
 }
 
 async function loadEmployees() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     const { data } = await supabaseClient.from('employees').select('*').eq('business_id', business.id).order('created_at');
     employees = data || [];
 }
 
 async function loadPaymentMethods() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     const { data } = await supabaseClient.from('payment_methods').select('*').eq('business_id', business.id).eq('is_active', true);
     if (data && data.length > 0) {
         paymentMethods = data;
@@ -3183,7 +3438,7 @@ async function loadPaymentMethods() {
 }
 
 async function loadOrOpenShift() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     let { data } = await supabaseClient.from('shifts').select('*').eq('business_id', business.id).eq('status', 'open').maybeSingle();
     if (!data) {
         const { data: created } = await supabaseClient.from('shifts').insert({ business_id: business.id }).select().single();
@@ -3193,7 +3448,7 @@ async function loadOrOpenShift() {
 }
 
 async function loadActiveOrders() {
-    if (!supabaseClient) return;
+    if (!supabaseClient || !business) return;
     const { data } = await supabaseClient
         .from('orders')
         .select('*')
@@ -3432,7 +3687,7 @@ async function viewKitchenOrder(orderId) {
 }
 
 // ============================================================
-// ORDER WORKFLOW — للشيف
+// ORDER WORKFLOW — للشيف - مع إضافة رنة الطلب الجاهز
 // ============================================================
 async function startPreparing(orderId) {
     if (currentUser?.role !== 'chef' && currentUser?.type !== 'owner') {
@@ -3461,6 +3716,16 @@ async function markAsReady(orderId) {
     try {
         await supabaseClient.from('orders').update({ status: 'ready' }).eq('id', orderId);
         orderStatus[orderId] = 'ready';
+        
+        // 🔔 تشغيل رنة الطلب الجاهز للتسليم
+        const order = Object.values(orders).find(o => o.id === orderId);
+        const table = tables.find(t => t.id === order?.table_id);
+        showRingNotification(
+            '🔔 طلب جاهز للتسليم!',
+            `طاولة رقم ${table?.number || '?'} - جاهز للويتر`,
+            'order_ready'
+        );
+        
         showToast(t('order_ready_notification'), 'success');
         await loadActiveOrders();
         renderKitchenOrders();
@@ -3468,9 +3733,6 @@ async function markAsReady(orderId) {
         renderDashboard();
         closeSheet('kitchenOrderOverlay');
         
-        const order = Object.values(orders).find(o => o.id === orderId);
-        const table = tables.find(t => t.id === order?.table_id);
-        showToast(`📢 ${t('table')} ${table?.number || '?'} ${t('ready_for_delivery')}`, 'info');
     } catch (e) {
         showToast(t('error_general'), 'error');
     }
@@ -3492,7 +3754,6 @@ function openTableSheet(tableId) {
         o.status !== 'paid'
     );
     
-    // لو مفيش طلب نشط، افتح إنشاء طلب (للكاشير بس)
     if (!activeOrder) {
         if (!hasPermission('create_orders')) {
             showToast(t('error_permission'), 'error');
@@ -3539,7 +3800,6 @@ function openTableSheet(tableId) {
         return;
     }
     
-    // لو في طلب نشط — عرض تفاصيل الطلب
     const status = orderStatus[activeOrder.id] || activeOrder.status || 'pending';
     const isReady = status === 'ready';
     const isPaid = status === 'paid';
@@ -3551,7 +3811,6 @@ function openTableSheet(tableId) {
     
     let actionButtons = '';
     
-    // للكاشير أو الأونر - عرض أزرار الدفع
     const isCashier = currentUser?.role === 'cashier' || currentUser?.type === 'owner';
     
     if (isReady && !isPaid && isCashier) {
@@ -3581,7 +3840,6 @@ function openTableSheet(tableId) {
             </button>
         `;
     } else if (!isReady && !isPaid) {
-        // لو الطلب لسه pending أو preparing، الشيف بس يقدر يعدل
         if (currentUser?.role === 'chef' || currentUser?.type === 'owner') {
             actionButtons = `
                 <button class="btn btn-primary" style="flex:1;" onclick="startPreparing('${activeOrder.id}')">
@@ -4813,14 +5071,14 @@ async function tryAutoResume() {
     }
 }
 
-console.log('🍽️ Plate Pro — Full System with Kitchen Orders!');
+console.log('🍽️ Plate Pro — Full System with Kitchen Orders & Ring Notifications!');
 console.log('✅ Kitchen orders view for chef');
 console.log('🪑 Table status: occupied → ready_to_serve → available');
 console.log('👨‍🍳 Chef: start preparing → mark ready');
 console.log('💳 Cashier: handle payment');
 console.log('📱 QR Code for customer ordering');
-console.log('✅ Table status preserved after refresh');
-console.log('✅ Customer page fixed!');
+console.log('🔔 Ring notifications for new orders & ready orders');
+console.log('✅ Auto-refresh for new orders enabled');
 </script>
 </body>
 </html>
